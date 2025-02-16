@@ -22,8 +22,9 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="flex justify-between h-16 items-center">
           {/* Logo */}
-          <Image src={'/images/logo.png'} width={100} height={0} alt='logo' />
+          <Link href={'/'}><Image src={'/images/logo.png'} width={100} height={0} alt='logo' /></Link>
           
+
           {/* Desktop Menu */}
           <div className="hidden md:flex space-x-6">
             <Link href="/" className="text-gray-700 hover:text-gray-900 font-bold">HOME</Link>
@@ -52,9 +53,17 @@ export default function Navbar() {
                 </div>
               </SheetContent>
             </Sheet>
-            <Link href="/cart" className="text-gray-700 hover:text-gray-900">
-              <ShoppingCart size={24} />
-            </Link>
+
+            {/* Shopping cart Icon */}
+            <Sheet>
+              <SheetTrigger><ShoppingCart size={24} /></SheetTrigger>
+              <SheetContent  side={'right'}>
+                <SheetHeader>
+                  <SheetTitle>Are you absolutely sure?</SheetTitle>
+                </SheetHeader>
+              </SheetContent>
+            </Sheet>
+
           </div>
         </div>
       </div>
