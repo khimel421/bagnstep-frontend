@@ -1,0 +1,63 @@
+[
+    {
+      "id": 1,
+      "product_code": "P001",
+      "product_name": "Casual Sneakers",
+      "price": 49.99,
+      "sizes": ["6", "7", "8", "9", "10"],
+      "origin": "Italy",
+      "color": "White",
+      "weight": "800g",
+      "upper_material": "Leather",
+      "insole_material": "Foam",
+      "sole": "Rubber",
+      "images": [
+        "https://walkerlifestyle.com/wp-content/uploads/2025/01/sneaker1.jpg",
+        "https://walkerlifestyle.com/wp-content/uploads/2025/01/sneaker2.jpg",
+        "https://walkerlifestyle.com/wp-content/uploads/2025/01/sneaker3.jpg",
+        "https://walkerlifestyle.com/wp-content/uploads/2025/01/sneaker4.jpg",
+        "https://walkerlifestyle.com/wp-content/uploads/2025/01/sneaker5.jpg"
+      ]
+    },
+    {
+      "id": 2,
+      "product_code": "P002",
+      "product_name": "Running Shoes",
+      "price": 59.99,
+      "sizes": ["7", "8", "9", "10", "11"],
+      "origin": "USA",
+      "color": "Black",
+      "weight": "750g",
+      "upper_material": "Mesh",
+      "insole_material": "EVA",
+      "sole": "Rubber",
+      "images": [
+        "https://walkerlifestyle.com/wp-content/uploads/2025/01/running1.jpg",
+        "https://walkerlifestyle.com/wp-content/uploads/2025/01/running2.jpg",
+        "https://walkerlifestyle.com/wp-content/uploads/2025/01/running3.jpg",
+        "https://walkerlifestyle.com/wp-content/uploads/2025/01/running4.jpg",
+        "https://walkerlifestyle.com/wp-content/uploads/2025/01/running5.jpg"
+      ]
+    },
+    {
+      "id": 3,
+      "product_code": "P003",
+      "product_name": "Classic Loafers",
+      "price": 69.99,
+      "sizes": ["6", "7", "8", "9"],
+      "origin": "UK",
+      "color": "Brown",
+      "weight": "900g",
+      "upper_material": "Suede",
+      "insole_material": "Leather",
+      "sole": "TPR",
+      "images": [
+        "https://walkerlifestyle.com/wp-content/uploads/2025/01/loafers1.jpg",
+        "https://walkerlifestyle.com/wp-content/uploads/2025/01/loafers2.jpg",
+        "https://walkerlifestyle.com/wp-content/uploads/2025/01/loafers3.jpg",
+        "https://walkerlifestyle.com/wp-content/uploads/2025/01/loafers4.jpg",
+        "https://walkerlifestyle.com/wp-content/uploads/2025/01/loafers5.jpg"
+      ]
+    }
+  ]
+  
