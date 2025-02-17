@@ -1,5 +1,6 @@
 [
-    {
+  {
+      "id": 1,
       "product_code": "P001",
       "product_name": "Casual Sneakers",
       "price": 49.99,
@@ -11,8 +12,9 @@
       "insole_material": "Foam",
       "sole": "Rubber",
       "image": "https://walkerlifestyle.com/wp-content/uploads/2025/01/564-1-scaled-700x700.jpg"
-    },
-    {
+  },
+  {
+      "id": 2,
       "product_code": "P002",
       "product_name": "Running Shoes",
       "price": 59.99,
@@ -24,8 +26,9 @@
       "insole_material": "EVA",
       "sole": "Rubber",
       "image": "https://walkerlifestyle.com/wp-content/uploads/2025/01/564-1-scaled-700x700.jpg"
-    },
-    {
+  },
+  {
+      "id": 3,
       "product_code": "P003",
       "product_name": "Classic Loafers",
       "price": 69.99,
@@ -37,8 +40,9 @@
       "insole_material": "Leather",
       "sole": "TPR",
       "image": "https://walkerlifestyle.com/wp-content/uploads/2025/01/564-1-scaled-700x700.jpg"
-    },
-    {
+  },
+  {
+      "id": 4,
       "product_code": "P004",
       "product_name": "Sporty Sneakers",
       "price": 55.99,
@@ -50,8 +54,9 @@
       "insole_material": "Foam",
       "sole": "Rubber",
       "image": "https://walkerlifestyle.com/wp-content/uploads/2025/01/564-1-scaled-700x700.jpg"
-    },
-    {
+  },
+  {
+      "id": 5,
       "product_code": "P005",
       "product_name": "Luxury Dress Shoes",
       "price": 120.99,
@@ -63,8 +68,9 @@
       "insole_material": "Memory Foam",
       "sole": "Leather",
       "image": "https://walkerlifestyle.com/wp-content/uploads/2025/01/564-1-scaled-700x700.jpg"
-    },
-    {
+  },
+  {
+      "id": 6,
       "product_code": "P006",
       "product_name": "High-Top Sneakers",
       "price": 79.99,
@@ -76,8 +82,9 @@
       "insole_material": "Foam",
       "sole": "Rubber",
       "image": "https://walkerlifestyle.com/wp-content/uploads/2025/01/564-1-scaled-700x700.jpg"
-    },
-    {
+  },
+  {
+      "id": 7,
       "product_code": "P007",
       "product_name": "Formal Leather Shoes",
       "price": 99.99,
@@ -89,8 +96,9 @@
       "insole_material": "Foam",
       "sole": "Leather",
       "image": "https://walkerlifestyle.com/wp-content/uploads/2025/01/564-1-scaled-700x700.jpg"
-    },
-    {
+  },
+  {
+      "id": 8,
       "product_code": "P008",
       "product_name": "Trail Running Shoes",
       "price": 65.99,
@@ -102,8 +110,9 @@
       "insole_material": "EVA",
       "sole": "Rubber",
       "image": "https://walkerlifestyle.com/wp-content/uploads/2025/01/564-1-scaled-700x700.jpg"
-    },
-    {
+  },
+  {
+      "id": 9,
       "product_code": "P009",
       "product_name": "Slip-On Loafers",
       "price": 74.99,
@@ -115,8 +124,9 @@
       "insole_material": "Foam",
       "sole": "TPR",
       "image": "https://walkerlifestyle.com/wp-content/uploads/2025/01/564-1-scaled-700x700.jpg"
-    },
-    {
+  },
+  {
+      "id": 10,
       "product_code": "P010",
       "product_name": "Hiking Boots",
       "price": 110.99,
@@ -128,6 +138,5 @@
       "insole_material": "Memory Foam",
       "sole": "Rubber",
       "image": "https://walkerlifestyle.com/wp-content/uploads/2025/01/564-1-scaled-700x700.jpg"
-    }
-  ]
-  
+  }
+]
