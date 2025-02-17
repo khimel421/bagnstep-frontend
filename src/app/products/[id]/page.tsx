@@ -5,8 +5,8 @@ import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { ShoppingCart } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
 import ProductImageSlider from '@/components/ProductImageSlider';
+import { motion } from "motion/react"
 
 interface Product {
     id: number;
@@ -26,6 +26,7 @@ export default function ProductDetailPage() {
     const [product, setProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState(true);
     const [selectedSize, setSelectedSize] = useState<string | null>(null);
+    const [shake, setShake] = useState(false);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -44,19 +45,22 @@ export default function ProductDetailPage() {
         fetchProduct();
     }, [id]);
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setShake(true);
+            setTimeout(() => setShake(false), 500); // Stop shaking after 0.5s
+        }, 5000); // Shake every 5 seconds
+
+        return () => clearInterval(interval); // Cleanup
+    }, []);
+
     if (loading) return <p className="text-center mt-10">Loading...</p>;
     if (!product) return <p className="text-center mt-10">Product not found</p>;
 
     return (
         <div className="flex justify-center items-center min-h-screen p-6 bg-gray-50">
-            <Card className="w-full max-w-xl p-6 shadow-lg rounded-2xl bg-white">
-                {/* <Image
-                    src={product.image}
-                    alt={product.product_name}
-                    width={400}
-                    height={300}
-                    className="rounded-lg w-full object-cover"
-                /> */}
+            <div className="w-full max-w-7xl p-6 rounded-2xl bg-white shadow-lg flex flex-col md:flex-row md:">
+                {/* Product Image Slider */}
                 <ProductImageSlider
                     product={{
                         product_name: product.product_name,
@@ -69,7 +73,8 @@ export default function ProductDetailPage() {
                     }}
                 />
 
-                <CardContent className="p-4">
+                {/* Product Details */}
+                <div className="p-4">
                     <h1 className="text-2xl font-bold mb-2">{product.product_name}</h1>
                     <p className="text-gray-600 mb-4">{product.description}</p>
                     <p className="text-lg font-bold">${product.price}</p>
@@ -89,8 +94,8 @@ export default function ProductDetailPage() {
                                 <button
                                     key={size}
                                     className={`px-3 py-1 border rounded-md text-sm transition-all duration-200 ${selectedSize === size
-                                            ? 'bg-black text-white border-black'
-                                            : 'hover:bg-gray-200'
+                                        ? 'bg-black text-white border-black'
+                                        : 'hover:bg-gray-200'
                                         }`}
                                     onClick={() => setSelectedSize(size)}
                                 >
@@ -102,10 +107,19 @@ export default function ProductDetailPage() {
 
                     {/* Add to Cart Button */}
                     <Button className="w-full mt-6 flex items-center gap-2">
-                        <ShoppingCart size={16} /> Add to Cart
+                        <ShoppingCart size={16} /> ADD TO CART
                     </Button>
-                </CardContent>
-            </Card>
+
+                    {/* Buy now button */}
+                    <motion.div className=""
+                        animate={shake ? { x: [-8, 8, -5, 5, 0] } : {}}
+                        transition={{ duration: 0.3 }}>
+                        <Button className="w-full mt-6 flex items-center gap-2">
+                            BUY NOW
+                        </Button>
+                    </motion.div>
+                </div>
+            </div>
         </div>
     );
 }
