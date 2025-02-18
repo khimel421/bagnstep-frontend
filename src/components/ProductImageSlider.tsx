@@ -1,13 +1,13 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import Image from 'next/image';
+import NextImage from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-
+import { Image } from "antd";
 interface Product {
   product_name: string;
   images: string[];
@@ -25,7 +25,7 @@ export default function ProductImageSlider({ product }: { product: Product }) {
   };
 
   return (
-    <div className="w-full max-w-lg p-4 shadow-lg rounded-2xl">
+    <div className=" w-full max-w-lg md:p-4 rounded-2xl">
       {/* Swiper Image Display */}
       <Swiper
         spaceBetween={10}
@@ -38,20 +38,18 @@ export default function ProductImageSlider({ product }: { product: Product }) {
         modules={[Navigation, Pagination]}
       >
         {product.images.map((img, index) => (
-          <SwiperSlide key={index}>
+          <SwiperSlide key={index} className=''  >
             <Image
               src={img}
               alt={`Product image ${index + 1}`}
-              width={500}
-              height={400}
-              className="rounded-lg w-full object-cover"
+              className="rounded-lg  object-cover"
             />
           </SwiperSlide>
         ))}
       </Swiper>
 
       {/* Thumbnail Images */}
-      <div className="mt-4 flex gap-2 justify-center">
+      <div className="mt-4 flex gap-2 justify-center ">
         {product.images.map((img, index) => (
           <button
             key={index}
@@ -60,7 +58,7 @@ export default function ProductImageSlider({ product }: { product: Product }) {
             }`}
             onClick={() => handleThumbnailClick(index)} // Call function on click
           >
-            <Image
+            <NextImage
               src={img}
               alt={`Thumbnail ${index + 1}`}
               width={50}

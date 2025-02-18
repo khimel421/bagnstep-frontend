@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { ShoppingCart } from 'lucide-react';
 import ProductImageSlider from '@/components/ProductImageSlider';
 import { motion } from "motion/react"
+import Breadcrumb from '@/components/Breadcrumb';
 
 interface Product {
     id: number;
@@ -19,6 +20,8 @@ interface Product {
     origin: string;
     color: string;
     upper_material: string;
+    insole_material: string;
+    sole: string;
 }
 
 export default function ProductDetailPage() {
@@ -49,7 +52,7 @@ export default function ProductDetailPage() {
         const interval = setInterval(() => {
             setShake(true);
             setTimeout(() => setShake(false), 500); // Stop shaking after 0.5s
-        }, 5000); // Shake every 5 seconds
+        }, 3000); // Shake every 5 seconds
 
         return () => clearInterval(interval); // Cleanup
     }, []);
@@ -58,8 +61,8 @@ export default function ProductDetailPage() {
     if (!product) return <p className="text-center mt-10">Product not found</p>;
 
     return (
-        <div className="flex justify-center items-center min-h-screen p-6 bg-gray-50">
-            <div className="w-full max-w-7xl p-6 rounded-2xl bg-white shadow-lg flex flex-col md:flex-row md:">
+        <div className="flex justify-center items-center min-h-screen md:p-6 ">
+            <div className="mb-14 w-full p-2 md:p-6 rounded-2xl bg-white  flex flex-col lg:flex-row justify-center items-center lg:items-start gap-8">
                 {/* Product Image Slider */}
                 <ProductImageSlider
                     product={{
@@ -73,27 +76,24 @@ export default function ProductDetailPage() {
                     }}
                 />
 
+                
+
                 {/* Product Details */}
-                <div className="p-4">
-                    <h1 className="text-2xl font-bold mb-2">{product.product_name}</h1>
+                <div className="p-4 flex flex-col">
+                    <Breadcrumb/>
+                    <h1 className="text-2xl font-bold mb-2">Product code : {product.product_code} {product.product_name}</h1>
                     <p className="text-gray-600 mb-4">{product.description}</p>
-                    <p className="text-lg font-bold">${product.price}</p>
+                    <p className="text-3xl font-bold">${product.price}</p>
 
-                    {/* Additional Details */}
-                    <div className="mt-3 space-y-1 text-sm text-gray-700">
-                        <p><span className="font-semibold">Origin:</span> {product.origin}</p>
-                        <p><span className="font-semibold">Color:</span> {product.color}</p>
-                        <p><span className="font-semibold">Material:</span> {product.upper_material}</p>
-                    </div>
-
+                    
                     {/* Sizes Selection */}
                     <div className="mt-4">
-                        <p className="font-semibold">Select Size:</p>
+                        <p className="font-semibold text-xl">Select Size:</p>
                         <div className="flex gap-2 mt-2">
                             {product.sizes.map((size) => (
                                 <button
                                     key={size}
-                                    className={`px-3 py-1 border rounded-md text-sm transition-all duration-200 ${selectedSize === size
+                                    className={`px-3 py-1 border rounded-md text-xl transition-all duration-200 ${selectedSize === size
                                         ? 'bg-black text-white border-black'
                                         : 'hover:bg-gray-200'
                                         }`}
@@ -105,19 +105,36 @@ export default function ProductDetailPage() {
                         </div>
                     </div>
 
-                    {/* Add to Cart Button */}
-                    <Button className="w-full mt-6 flex items-center gap-2">
-                        <ShoppingCart size={16} /> ADD TO CART
-                    </Button>
 
-                    {/* Buy now button */}
-                    <motion.div className=""
-                        animate={shake ? { x: [-8, 8, -5, 5, 0] } : {}}
-                        transition={{ duration: 0.3 }}>
-                        <Button className="w-full mt-6 flex items-center gap-2">
-                            BUY NOW
+                    {/* Buttons  */}
+                    <div className='flex gap-4'>
+                        {/* Add to Cart Button */}
+                        <Button size={'lg'} className="w-full mt-6 flex items-center gap-2">
+                            <ShoppingCart size={16} /> ADD TO CART
                         </Button>
-                    </motion.div>
+
+                        {/* Buy now button */}
+                        <motion.div className="w-full"
+                            animate={shake ? { x: [-8, 8, -5, 5, 0] } : {}}
+                            transition={{ duration: 0.5 }}>
+                            <Button size='lg' className="w-full mt-6 flex items-center gap-2">
+                                BUY NOW
+                            </Button>
+                        </motion.div>
+                    </div>
+
+                    {/* Additional Details */}
+                    <div className="mt-3 space-y-1 text-sm text-gray-700">
+                        <p className='text-lg'><span className="font-semibold md:text-lg">Origin:</span> {product.origin}</p>
+                        <p  className='text-lg'><span className="font-semibold">Color:</span> {product.color}</p>
+                        <p  className='text-lg'><span className="font-semibold">Upper Material:</span> {product.upper_material}</p>
+                        <p  className='text-lg'><span className="font-semibold">Insole Material:</span> {product.insole_material}</p>
+                        <p  className='text-lg'><span className="font-semibold">Sole:</span> {product.sole}</p>
+                    </div>
+
+
+
+
                 </div>
             </div>
         </div>
