@@ -37,7 +37,7 @@ export default function RootLayout({
           <CartProvider>
             <Navbar />
             <main>{children}</main>
-            <Toaster />
+            <Toaster  position="top-center" />
             <BottomNavbar />
             <Footer />
           </CartProvider>

@@ -148,7 +148,7 @@ export default function ProductDetailPage() {
             <Button
               onClick={() => {
                 if (!selectedSize) {
-                  toast("Please select a size before adding to cart!"); // ✅ Show alert if no size is selected
+                  toast.warning("Please select a size before adding to cart!"); // ✅ Show alert if no size is selected
                   return;
                 }
                 addToCart({
@@ -176,9 +176,17 @@ export default function ProductDetailPage() {
             >
               <Button
                 size="lg"
-                className={`w-full mt-6 flex items-center gap-2 ${!selectedSize ? "bg-gray-400 cursor-not-allowed" : "bg-black hover:bg-blue-700 text-white"
-                  }`}
-                onClick={handleBuyNow}
+                className={`w-full mt-6 flex items-center gap-2 
+                ${!selectedSize ? "bg-gray-400 cursor-not-allowed" : "bg-black hover:bg-blue-700 text-white"}`}
+                onClick={() => {
+                  if (!selectedSize) {
+                    toast.warning("Size Not Selected", {
+                      description: "Please select a shoe size before proceeding.",
+                    });
+                    return;
+                  }
+                  router.push(`/checkout?product=${id}&size=${selectedSize}&quantity=${quantity}`);
+                }}
               >
                 BUY NOW
               </Button>

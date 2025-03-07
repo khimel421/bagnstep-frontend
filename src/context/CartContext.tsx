@@ -75,7 +75,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         : [...prev, item];
     });
 
-    toast("Product added to cart")
+    toast.success("Product added to cart")
 
 
     // ✅ Dispatch a custom event to open the cart
