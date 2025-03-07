@@ -61,7 +61,7 @@ export default function BottomNavbar() {
                 <>
                   <div className="space-y-4 max-h-[300px] overflow-y-auto">
                     {cart.map((item) => (
-                      <div key={item.id} className="flex items-center gap-4 border-b pb-3">
+                      <div key={`${item.id}-${item.size}`} className="flex items-center gap-4 border-b pb-3">
                         <Image src={item.image} alt={item.name} width={50} height={50} className="rounded-md" />
                         <div className="flex-1">
                           <h3 className="text-sm font-semibold">{item.name}</h3>

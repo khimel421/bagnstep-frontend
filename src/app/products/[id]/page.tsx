@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, Minus, Plus } from "lucide-react";
@@ -9,6 +9,8 @@ import ProductImageSlider from "@/components/ProductImageSlider";
 import { motion } from "motion/react";
 import Breadcrumb from "@/components/Breadcrumb";
 import { useCart } from "@/context/CartContext";
+import { toast } from "sonner";
+import Link from "next/link";
 
 interface Product {
   id: number;
@@ -27,6 +29,7 @@ interface Product {
 
 export default function ProductDetailPage() {
   const { id: product_id } = useParams();
+  const router = useRouter();
   const productId = Number(product_id);
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
@@ -65,6 +68,17 @@ export default function ProductDetailPage() {
   if (!product) return <p className="text-center mt-10">Product not found</p>;
 
   const { product_name, price, image, id } = product;
+
+  // Handle "Buy Now" Click
+  const handleBuyNow = () => {
+    if (!selectedSize) {
+      toast('size is not selected');
+      return;
+    }
+
+    // ✅ Redirect to checkout page with selected product details
+    router.push(`/checkout`);
+  };
 
   // Increase Quantity
   const increaseQuantity = () => setQuantity((prev) => prev + 1);
@@ -105,8 +119,8 @@ export default function ProductDetailPage() {
                 <button
                   key={size}
                   className={`px-3 py-1 border rounded-md text-xl transition-all duration-200 ${selectedSize === size
-                      ? "bg-black text-white border-black"
-                      : "hover:bg-gray-200"
+                    ? "bg-black text-white border-black"
+                    : "hover:bg-gray-200"
                     }`}
                   onClick={() => setSelectedSize(size)}
                 >
@@ -134,7 +148,7 @@ export default function ProductDetailPage() {
             <Button
               onClick={() => {
                 if (!selectedSize) {
-                  alert("Please select a size before adding to cart!"); // ✅ Show alert if no size is selected
+                  toast("Please select a size before adding to cart!"); // ✅ Show alert if no size is selected
                   return;
                 }
                 addToCart({
@@ -149,7 +163,7 @@ export default function ProductDetailPage() {
               size="lg"
               className={`w-full mt-6 flex items-center gap-2 ${!selectedSize ? "bg-gray-400 cursor-not-allowed" : "bg-black hover:bg-gray-900"
                 }`}
-              disabled={!selectedSize} // ✅ Disable button if no size is selected
+            // disabled={!selectedSize} // ✅ Disable button if no size is selected
             >
               <ShoppingCart size={16} /> ADD {quantity} TO CART
             </Button>
@@ -160,7 +174,12 @@ export default function ProductDetailPage() {
               animate={shake ? { x: [-8, 8, -5, 5, 0] } : {}}
               transition={{ duration: 0.5 }}
             >
-              <Button size="lg" className="w-full mt-6 flex items-center gap-2">
+              <Button
+                size="lg"
+                className={`w-full mt-6 flex items-center gap-2 ${!selectedSize ? "bg-gray-400 cursor-not-allowed" : "bg-black hover:bg-blue-700 text-white"
+                  }`}
+                onClick={handleBuyNow}
+              >
                 BUY NOW
               </Button>
             </motion.div>

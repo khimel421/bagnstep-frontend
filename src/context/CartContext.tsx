@@ -1,9 +1,8 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, useRef } from "react";
+import { toast, Toaster } from "sonner";
 
-
-// Define Cart Item Type
 interface CartItem {
   id: number;
   name: string;
@@ -13,79 +12,105 @@ interface CartItem {
   size?: string;
 }
 
-// Define Context Type
 interface CartContextType {
   cart: CartItem[];
+  isCartOpen: boolean;
+  setCartOpen: (isOpen: boolean) => void;
   addToCart: (item: CartItem) => void;
   removeFromCart: (id: number) => void;
   updateQuantity: (id: number, quantity: number) => void;
   clearCart: () => void;
 }
 
-// Create Cart Context
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-// Custom Hook to Use Cart Context
 export const useCart = () => {
   const context = useContext(CartContext);
   if (!context) throw new Error("useCart must be used within CartProvider");
   return context;
 };
 
-// Cart Provider Component
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [isCartOpen, setCartOpen] = useState(false);
+  const prevCartLength = useRef(0);
+  const initialLoad = useRef(true);
 
-  // Load Cart from Local Storage
+  // Cart length change detection
+  useEffect(() => {
+    if (initialLoad.current) {
+      initialLoad.current = false;
+      prevCartLength.current = cart.length;
+      return;
+    }
+
+    if (cart.length > prevCartLength.current) {
+      setCartOpen(true);
+    }
+    prevCartLength.current = cart.length;
+  }, [cart]);
+
+  // Persistence
   useEffect(() => {
     const storedCart = localStorage.getItem("cart");
-    if (storedCart) {
-      setCart(JSON.parse(storedCart));
-    }
+    storedCart && setCart(JSON.parse(storedCart));
   }, []);
 
-  // Save Cart to Local Storage
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
-  // Add Item to Cart
   const addToCart = (item: CartItem) => {
-    setCart((prevCart) => {
-      const existingItem = prevCart.find((i) => i.id === item.id && i.size === item.size);
-      if (existingItem) {
-        return prevCart.map((i) =>
-          i.id === item.id && i.size === item.size
-            ? { ...i, quantity: i.quantity + item.quantity }
-            : i
-        );
-      }
-      return [...prevCart, item];
-  
+    setCart(prev => {
+      const existing = prev.find(i => 
+        i.id === item.id && i.size === item.size
+      );
+      
+      return existing
+        ? prev.map(i =>
+            i.id === item.id && i.size === item.size
+              ? { ...i, quantity: i.quantity + item.quantity }
+              : i
+          )
+        : [...prev, item];
     });
+
+    toast("Product added to cart")
+
+
+    // ✅ Dispatch a custom event to open the cart
+    document.dispatchEvent(new Event("cartUpdated"));
   };
 
-  // Remove Item from Cart
   const removeFromCart = (id: number) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== id));
+    setCart(prev => prev.filter(item => item.id !== id));
   };
 
-  // Update Item Quantity
   const updateQuantity = (id: number, quantity: number) => {
-    setCart((prevCart) =>
-      prevCart.map((item) =>
-        item.id === id ? { ...item, quantity } : item
+    setCart(prev =>
+      prev.map(item =>
+        item.id === id ? { ...item, quantity: Math.max(1, quantity) } : item
       )
     );
   };
 
-  // Clear Cart
   const clearCart = () => {
     setCart([]);
+    setCartOpen(false);
   };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart }}>
+    <CartContext.Provider
+      value={{
+        cart,
+        isCartOpen,
+        setCartOpen,
+        addToCart,
+        removeFromCart,
+        updateQuantity,
+        clearCart
+      }}
+    >
       {children}
     </CartContext.Provider>
   );
