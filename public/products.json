@@ -1,5 +1,5 @@
 [
-    {
+  {
       "id": 1,
       "product_code": "P001",
       "product_name": "Casual Sneakers",
@@ -11,15 +11,9 @@
       "upper_material": "Leather",
       "insole_material": "Foam",
       "sole": "Rubber",
-      "images": [
-        "https://walkerlifestyle.com/wp-content/uploads/2025/01/sneaker1.jpg",
-        "https://walkerlifestyle.com/wp-content/uploads/2025/01/sneaker2.jpg",
-        "https://walkerlifestyle.com/wp-content/uploads/2025/01/sneaker3.jpg",
-        "https://walkerlifestyle.com/wp-content/uploads/2025/01/sneaker4.jpg",
-        "https://walkerlifestyle.com/wp-content/uploads/2025/01/sneaker5.jpg"
-      ]
-    },
-    {
+      "image": "https://walkerlifestyle.com/wp-content/uploads/2025/01/564-1-scaled-700x700.jpg"
+  },
+  {
       "id": 2,
       "product_code": "P002",
       "product_name": "Running Shoes",
@@ -31,15 +25,9 @@
       "upper_material": "Mesh",
       "insole_material": "EVA",
       "sole": "Rubber",
-      "images": [
-        "https://walkerlifestyle.com/wp-content/uploads/2025/01/running1.jpg",
-        "https://walkerlifestyle.com/wp-content/uploads/2025/01/running2.jpg",
-        "https://walkerlifestyle.com/wp-content/uploads/2025/01/running3.jpg",
-        "https://walkerlifestyle.com/wp-content/uploads/2025/01/running4.jpg",
-        "https://walkerlifestyle.com/wp-content/uploads/2025/01/running5.jpg"
-      ]
-    },
-    {
+      "image": "https://walkerlifestyle.com/wp-content/uploads/2025/01/564-1-scaled-700x700.jpg"
+  },
+  {
       "id": 3,
       "product_code": "P003",
       "product_name": "Classic Loafers",
@@ -51,13 +39,104 @@
       "upper_material": "Suede",
       "insole_material": "Leather",
       "sole": "TPR",
-      "images": [
-        "https://walkerlifestyle.com/wp-content/uploads/2025/01/loafers1.jpg",
-        "https://walkerlifestyle.com/wp-content/uploads/2025/01/loafers2.jpg",
-        "https://walkerlifestyle.com/wp-content/uploads/2025/01/loafers3.jpg",
-        "https://walkerlifestyle.com/wp-content/uploads/2025/01/loafers4.jpg",
-        "https://walkerlifestyle.com/wp-content/uploads/2025/01/loafers5.jpg"
-      ]
-    }
-  ]
-  
+      "image": "https://walkerlifestyle.com/wp-content/uploads/2025/01/564-1-scaled-700x700.jpg"
+  },
+  {
+      "id": 4,
+      "product_code": "P004",
+      "product_name": "Sporty Sneakers",
+      "price": 55.99,
+      "sizes": ["7", "8", "9", "10"],
+      "origin": "Germany",
+      "color": "Blue",
+      "weight": "820g",
+      "upper_material": "Synthetic",
+      "insole_material": "Foam",
+      "sole": "Rubber",
+      "image": "https://walkerlifestyle.com/wp-content/uploads/2025/01/564-1-scaled-700x700.jpg"
+  },
+  {
+      "id": 5,
+      "product_code": "P005",
+      "product_name": "Luxury Dress Shoes",
+      "price": 120.99,
+      "sizes": ["8", "9", "10", "11"],
+      "origin": "France",
+      "color": "Black",
+      "weight": "950g",
+      "upper_material": "Genuine Leather",
+      "insole_material": "Memory Foam",
+      "sole": "Leather",
+      "image": "https://walkerlifestyle.com/wp-content/uploads/2025/01/564-1-scaled-700x700.jpg"
+  },
+  {
+      "id": 6,
+      "product_code": "P006",
+      "product_name": "High-Top Sneakers",
+      "price": 79.99,
+      "sizes": ["7", "8", "9", "10", "11", "12"],
+      "origin": "Japan",
+      "color": "Red",
+      "weight": "860g",
+      "upper_material": "Canvas",
+      "insole_material": "Foam",
+      "sole": "Rubber",
+      "image": "https://walkerlifestyle.com/wp-content/uploads/2025/01/564-1-scaled-700x700.jpg"
+  },
+  {
+      "id": 7,
+      "product_code": "P007",
+      "product_name": "Formal Leather Shoes",
+      "price": 99.99,
+      "sizes": ["7", "8", "9", "10"],
+      "origin": "Italy",
+      "color": "Brown",
+      "weight": "870g",
+      "upper_material": "Genuine Leather",
+      "insole_material": "Foam",
+      "sole": "Leather",
+      "image": "https://walkerlifestyle.com/wp-content/uploads/2025/01/564-1-scaled-700x700.jpg"
+  },
+  {
+      "id": 8,
+      "product_code": "P008",
+      "product_name": "Trail Running Shoes",
+      "price": 65.99,
+      "sizes": ["8", "9", "10", "11"],
+      "origin": "Canada",
+      "color": "Green",
+      "weight": "780g",
+      "upper_material": "Synthetic",
+      "insole_material": "EVA",
+      "sole": "Rubber",
+      "image": "https://walkerlifestyle.com/wp-content/uploads/2025/01/564-1-scaled-700x700.jpg"
+  },
+  {
+      "id": 9,
+      "product_code": "P009",
+      "product_name": "Slip-On Loafers",
+      "price": 74.99,
+      "sizes": ["6", "7", "8", "9"],
+      "origin": "Spain",
+      "color": "Gray",
+      "weight": "880g",
+      "upper_material": "Suede",
+      "insole_material": "Foam",
+      "sole": "TPR",
+      "image": "https://walkerlifestyle.com/wp-content/uploads/2025/01/564-1-scaled-700x700.jpg"
+  },
+  {
+      "id": 10,
+      "product_code": "P010",
+      "product_name": "Hiking Boots",
+      "price": 110.99,
+      "sizes": ["8", "9", "10", "11", "12"],
+      "origin": "USA",
+      "color": "Brown",
+      "weight": "1.2kg",
+      "upper_material": "Leather",
+      "insole_material": "Memory Foam",
+      "sole": "Rubber",
+      "image": "https://walkerlifestyle.com/wp-content/uploads/2025/01/564-1-scaled-700x700.jpg"
+  }
+]

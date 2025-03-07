@@ -67,11 +67,11 @@ export default function ProductCard({ image, product_code, product_name, price, 
       </CardContent>
 
       {/* Add to Cart Button will always be aligned */}
-      <CardFooter className="p-3 mt-auto">
+      {/* <CardFooter className="p-3 mt-auto">
         <Button className="w-full flex items-center gap-1 text-sm p-2">
           <ShoppingCart size={16} /> Add to Cart
         </Button>
-      </CardFooter>
+      </CardFooter> */}
     </Card>
 
 
