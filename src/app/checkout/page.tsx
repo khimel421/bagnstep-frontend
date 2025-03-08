@@ -7,12 +7,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import { toast } from "sonner"; // ✅ Import Sonner Toast
+import { Label } from "@/components/ui/label"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+
 
 interface CartItem {
   id: number;
   name: string;
   price: number;
-  image: string ;
+  image: string;
   quantity: number;
   size?: string | null | undefined;
 }
@@ -21,13 +24,15 @@ export default function CheckoutPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { cart, clearCart } = useCart();
-
+  const [selectedValue, setSelectedValue] = useState("70"); // ✅ State to store selected value
   const productId = searchParams.get("product");
   const selectedSize = searchParams.get("size");
   const quantity = Number(searchParams.get("quantity") || 1);
 
-  console.log('selected size :', typeof(selectedSize))
-  const [selectedProducts, setSelectedProducts] = useState<CartItem []>([]);
+  console.log(selectedValue)
+
+  console.log('selected size :', typeof (selectedSize))
+  const [selectedProducts, setSelectedProducts] = useState<CartItem[]>([]);
 
   useEffect(() => {
     async function fetchProductIfNeeded() {
@@ -38,7 +43,7 @@ export default function CheckoutPage() {
           try {
             const response = await fetch("/products.json");
             const data = await response.json();
-            product = data.find((p : CartItem ) => p.id.toString() === productId);
+            product = data.find((p: CartItem) => p.id.toString() === productId);
           } catch (error) {
             console.error("Error fetching product:", error);
           }
@@ -110,13 +115,41 @@ export default function CheckoutPage() {
                   <p className="font-semibold">{product.name}</p>
                   {product.size && <p className="text-gray-600">Size: {product.size}</p>}
                   <p className="text-gray-600">Quantity: {product.quantity}</p>
-                  <p className="font-semibold text-lg">${(product.price * product.quantity).toFixed(2)}</p>
+                  <p className="font-semibold text-lg">{(product.price * product.quantity).toFixed(2)}৳</p>
                 </div>
               </div>
             ))
           ) : (
             <p>No products selected</p>
           )}
+          {/*  Total Price ............ */}
+          <p className="flex justify-between font-semibold mt-4 border-b pb-4">
+            <span className="font-semibold">Sub total: </span>
+            {selectedProducts.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2)}৳
+          </p>
+
+          {/* Shipping cost */}
+          <div className="flex justify-between font-semibold mt-4 border-b pb-4">
+            <span className="font-semibold">Shipping: </span>
+            <RadioGroup defaultValue="70" onValueChange={(value) => { setSelectedValue(value) }}>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="70" id="option-one" />
+                <Label htmlFor="70">Inside Dhaka : <span className="font-semibold">70৳ </span> </Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="130" id="option-two" />
+                <Label htmlFor="option-two">Outside Dhaka: <span className="font-semibold">130.00৳ </span></Label>
+              </div>
+            </RadioGroup>
+          </div>
+
+          {/* Total price with delivery cost ............ */}
+          <div>
+            <p className="flex justify-between font-semibold mt-4 border-b pb-4">
+              <span className="font-semibold">Sub total: </span>
+              {selectedProducts.reduce((total, item) => total + item.price * item.quantity, Number(selectedValue)).toFixed(2)}৳
+            </p>
+          </div>
         </div>
 
         <div className="border rounded-lg p-6">
