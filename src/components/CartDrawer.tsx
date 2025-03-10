@@ -1,16 +1,16 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import {  useEffect, useRef } from "react";
 import { useCart } from "@/context/CartContext";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { motion, AnimatePresence } from "framer-motion";
+import { Sheet, SheetContent, SheetHeader, SheetTitle} from "@/components/ui/sheet";
+
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart, Trash, Minus, Plus } from "lucide-react";
+import { ShoppingCart, Minus, Plus } from "lucide-react";
 
 export default function CartDrawer({ isCartOpen, setCartOpen }: { isCartOpen: boolean; setCartOpen: (open: boolean) => void }) {
-  const { cart, updateQuantity, removeFromCart } = useCart();
+  const { cart, updateQuantity } = useCart();
 
   const prevCartLength = useRef(cart.length);
 
@@ -28,12 +28,6 @@ export default function CartDrawer({ isCartOpen, setCartOpen }: { isCartOpen: bo
     }
     prevCartLength.current = cart.length;
   }, [cart.length, setCartOpen]);
-
-  // ✅ Framer Motion Animation Variants
-  const drawerVariants = {
-    hidden: { x: "100%" },
-    visible: { x: 0, transition: { type: "spring", stiffness: 300, damping: 30 } },
-  };
 
   return (
     <Sheet open={isCartOpen} onOpenChange={setCartOpen}>

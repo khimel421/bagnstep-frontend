@@ -17,7 +17,7 @@ import { useState } from "react";
 
 export default function BottomNavbar() {
   const [open, setOpen] = useState(false);
-  const { cart, removeFromCart, clearCart, updateQuantity } = useCart();
+  const { cart, updateQuantity } = useCart();
   const closeMenu = () => setOpen(false);
 
   // Calculate total cart items
