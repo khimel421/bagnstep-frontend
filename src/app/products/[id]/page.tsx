@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import Image from "next/image";
+
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, Minus, Plus } from "lucide-react";
 import ProductImageSlider from "@/components/ProductImageSlider";
@@ -10,7 +10,7 @@ import { motion } from "motion/react";
 import Breadcrumb from "@/components/Breadcrumb";
 import { useCart } from "@/context/CartContext";
 import { toast } from "sonner";
-import Link from "next/link";
+
 
 interface Product {
   id: number;
@@ -69,16 +69,6 @@ export default function ProductDetailPage() {
 
   const { product_name, price, image, id } = product;
 
-  // Handle "Buy Now" Click
-  const handleBuyNow = () => {
-    if (!selectedSize) {
-      toast('size is not selected');
-      return;
-    }
-
-    // ✅ Redirect to checkout page with selected product details
-    router.push(`/checkout`);
-  };
 
   // Increase Quantity
   const increaseQuantity = () => setQuantity((prev) => prev + 1);

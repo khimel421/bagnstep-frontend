@@ -3,7 +3,7 @@ import products from "@/data/products.json";
 export default function Products() {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-2 max-w-5xl mx-auto">
-      {products.map(({ product_code, product_name, price, color, origin, image, sizes,id}) => (
+      {products.map(({ product_code, product_name, price,  image, sizes,id}) => (
         <ProductCard
           key={id}
           product_code={product_code}

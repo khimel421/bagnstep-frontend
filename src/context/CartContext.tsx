@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, useRef } from "react";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 
 interface CartItem {
   id: number;
@@ -50,11 +50,19 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     prevCartLength.current = cart.length;
   }, [cart]);
 
-  // Persistence
   useEffect(() => {
-    const storedCart = localStorage.getItem("cart");
-    storedCart && setCart(JSON.parse(storedCart));
+    if (typeof window !== "undefined") { // Ensure we are on the client-side
+      const storedCart = localStorage.getItem("cart");
+      if (storedCart) {
+        try {
+          setCart(JSON.parse(storedCart)); // Safely parse JSON
+        } catch (error) {
+          console.error("Failed to parse cart from localStorage", error);
+        }
+      }
+    }
   }, []);
+  
 
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));

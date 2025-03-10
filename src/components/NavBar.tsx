@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import {  useState } from "react";
 import Link from "next/link";
 import { Menu, ShoppingCart } from "lucide-react";
 import Image from "next/image";
@@ -12,25 +12,14 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { useCart } from "@/context/CartContext"; // ✅ Import cart context
-import { Button } from "./ui/button";
 import CartDrawer from "./CartDrawer";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
-  const { cart, updateQuantity } = useCart(); // ✅ Get cart from context
-
-  // Calculate total items in cart
-  const cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
-
-  // Calculate total price
-  const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
-
+  const { cart } = useCart(); // ✅ Get cart from context
+ 
   const closeMenu = () => setOpen(false);
-
-  const closeCart = () => setCartOpen(false)
-
-
 
   return (
     <nav className="bg-white shadow-md flex items-center">

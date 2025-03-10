@@ -61,7 +61,7 @@ export default function Products() {
       {/* Product List */}
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredProducts.length > 0 ? (
-          filteredProducts.map(({ product_code, product_name, price, color, origin, image, sizes,id }) => (
+          filteredProducts.map(({ product_code, product_name, price,image, sizes,id }) => (
             <ProductCard
               key={product_code}
               product_code={product_code}
