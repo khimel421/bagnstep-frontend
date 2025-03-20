@@ -77,8 +77,8 @@ export default function ProductDetailPage() {
   const decreaseQuantity = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
 
   return (
-    <div className="flex justify-center items-center min-h-screen md:p-6">
-      <div className="mb-14 w-full p-2 md:p-6 rounded-2xl bg-white flex flex-col lg:flex-row justify-center items-center lg:items-start gap-8">
+    <div className="flex justify-center items-center min-h-screen md:p-6 ">
+      <div className=" mb-14 w-full p-2 md:p-6 rounded-2xl bg-white flex flex-col lg:flex-row justify-center items-center lg:items-start gap-8">
         {/* Product Image Slider */}
         <ProductImageSlider
           product={{
@@ -136,6 +136,7 @@ export default function ProductDetailPage() {
           <div className="flex gap-4">
             {/* Add to Cart Button */}
             <Button
+            variant={"custom"}
               onClick={() => {
                 if (!selectedSize) {
                   toast.warning("Please select a size before adding to cart!"); // ✅ Show alert if no size is selected
@@ -151,7 +152,7 @@ export default function ProductDetailPage() {
                 });
               }}
               size="lg"
-              className={`w-full mt-6 flex items-center gap-2 ${!selectedSize ? "bg-gray-400 cursor-not-allowed" : "bg-black hover:bg-gray-900"
+              className={`w-full mt-6 flex items-center gap-2 ${!selectedSize ? "bg-gray-400 cursor-not-allowed" : ""
                 }`}
             // disabled={!selectedSize} // ✅ Disable button if no size is selected
             >
@@ -165,9 +166,10 @@ export default function ProductDetailPage() {
               transition={{ duration: 0.5 }}
             >
               <Button
+                variant={"custom"}
                 size="lg"
                 className={`w-full mt-6 flex items-center gap-2 
-                ${!selectedSize ? "bg-gray-400 cursor-not-allowed" : "bg-black hover:bg-blue-700 text-white"}`}
+                ${!selectedSize ? "bg-gray-400 cursor-not-allowed" : ""}`}
                 onClick={() => {
                   if (!selectedSize) {
                     toast.warning("Size Not Selected", {
