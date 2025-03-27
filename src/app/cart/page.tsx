@@ -17,6 +17,10 @@ import {
 export default function CartPage() {
   const { cart, removeFromCart, updateQuantity, clearCart } = useCart();
 
+  console.log(cart)
+
+
+
   // Calculate total price
   const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
@@ -66,7 +70,7 @@ export default function CartPage() {
                       </TableCell>
 
                       {/* Price */}
-                      <TableCell className="">${item.price.toFixed(2)}</TableCell>
+                    <TableCell>${Number(item.price).toFixed(2)}</TableCell>
 
                       {/* Quantity */}
                       <TableCell>
@@ -160,9 +164,9 @@ export default function CartPage() {
                         {item.size && (
                           <p className="text-gray-500 text-sm font-semibold">Size: {item.size}</p>
                         )}
-                        <p className="md:hidden text-sm font-semibold">
+                        {/* <p className="md:hidden text-sm font-semibold">
                           Price :  ${(item.price).toFixed(2)}
-                        </p>
+                        </p> */}
 
                         {item.quantity > 1 && (
                           <p className="md:hidden text-sm font-semibold">
@@ -202,9 +206,9 @@ export default function CartPage() {
 
                     {/* Remove Button (Mobile) */}
                     <Button
-                      variant="ghost"
+                      variant="destructive"
                       size="icon"
-                      className="md:hidden"
+                      className="md:hidden my-auto"
                       onClick={() => removeFromCart(item.id)}
                     >
                       <Trash size={16} />
@@ -221,12 +225,12 @@ export default function CartPage() {
               <h3 className="text-lg md:text-xl font-semibold">Cart Summary</h3>
               <p className="text-base md:text-lg font-semibold">Total: ${totalPrice.toFixed(2)}</p>
 
-              <Button onClick={clearCart} variant="outline" className="w-full">
+              <Button onClick={clearCart}  className="w-full">
                 Clear Cart
               </Button>
 
               <Link href="/checkout">
-                <Button className="w-full text-white">Proceed to Checkout</Button>
+                <Button variant={"custom"} className="w-full text-white">Proceed to Checkout</Button>
               </Link>
             </div>
           </div>

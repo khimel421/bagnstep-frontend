@@ -4,7 +4,7 @@ import { createContext, useContext, useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
 
 interface CartItem {
-  id: number;
+  id: string; // ✅ Ensuring id is a string to match Prisma schema (UUID)
   name: string;
   price: number;
   image: string;
@@ -17,8 +17,8 @@ interface CartContextType {
   isCartOpen: boolean;
   setCartOpen: (isOpen: boolean) => void;
   addToCart: (item: CartItem) => void;
-  removeFromCart: (id: number) => void;
-  updateQuantity: (id: number, quantity: number) => void;
+  removeFromCart: (id: string) => void;
+  updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
 }
 
@@ -50,53 +50,54 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     prevCartLength.current = cart.length;
   }, [cart]);
 
+  // Load cart from localStorage on mount
   useEffect(() => {
-    if (typeof window !== "undefined") { // Ensure we are on the client-side
-      const storedCart = localStorage.getItem("cart");
-      if (storedCart) {
-        try {
-          setCart(JSON.parse(storedCart)); // Safely parse JSON
-        } catch (error) {
-          console.error("Failed to parse cart from localStorage", error);
-        }
+    if (typeof window !== "undefined") {
+      try {
+        const storedCart = localStorage.getItem("cart");
+        if (storedCart) setCart(JSON.parse(storedCart));
+      } catch (error) {
+        console.error("Failed to parse cart from localStorage", error);
       }
     }
   }, []);
-  
 
+  // Save cart to localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
+    if (typeof window !== "undefined") {
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
   }, [cart]);
 
   const addToCart = (item: CartItem) => {
-    setCart(prev => {
-      const existing = prev.find(i => 
-        i.id === item.id && i.size === item.size
+    if (item.quantity < 1) return;
+
+    setCart((prev) => {
+      const existingItem = prev.find(
+        (i) => i.id === item.id && i.size === item.size
       );
-      
-      return existing
-        ? prev.map(i =>
-            i.id === item.id && i.size === item.size
-              ? { ...i, quantity: i.quantity + item.quantity }
-              : i
-          )
-        : [...prev, item];
+
+      return existingItem
+        ? prev.map((i) =>
+          i.id === item.id && i.size === item.size
+            ? { ...i, quantity: i.quantity + item.quantity, price: Number(item.price) }
+            : i
+        )
+        : [...prev, { ...item, price: Number(item.price) }];
     });
 
-    toast.success("Product added to cart")
-
-
-    // ✅ Dispatch a custom event to open the cart
+    toast.success("Product added to cart");
     document.dispatchEvent(new Event("cartUpdated"));
   };
 
-  const removeFromCart = (id: number) => {
-    setCart(prev => prev.filter(item => item.id !== id));
+
+  const removeFromCart = (id: string) => {
+    setCart((prev) => prev.filter((item) => item.id !== id));
   };
 
-  const updateQuantity = (id: number, quantity: number) => {
-    setCart(prev =>
-      prev.map(item =>
+  const updateQuantity = (id: string, quantity: number) => {
+    setCart((prev) =>
+      prev.map((item) =>
         item.id === id ? { ...item, quantity: Math.max(1, quantity) } : item
       )
     );
@@ -116,7 +117,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         addToCart,
         removeFromCart,
         updateQuantity,
-        clearCart
+        clearCart,
       }}
     >
       {children}

@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, Minus, Plus } from "lucide-react";
 import ProductImageSlider from "@/components/ProductImageSlider";
@@ -11,93 +10,73 @@ import Breadcrumb from "@/components/Breadcrumb";
 import { useCart } from "@/context/CartContext";
 import { toast } from "sonner";
 
+interface ProductSize {
+  id: string;
+  size: string;
+  stock: number;
+}
 
 interface Product {
-  id: number;
-  product_code: string;
-  product_name: string;
+  id: string;
+  name: string;
+  description?: string;
   price: number;
-  sizes: string[];
-  image: string;
-  description: string;
-  origin: string;
-  color: string;
-  upper_material: string;
-  insole_material: string;
-  sole: string;
+  stock: number;
+  category: string;
+  images: string[]; // Images now correctly handled as an array
+  sizes: ProductSize[];
 }
 
 export default function ProductDetailPage() {
   const { id: product_id } = useParams();
   const router = useRouter();
-  const productId = Number(product_id);
+  const productId = String(product_id);
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
-  const [selectedSize, setSelectedSize] = useState<string | undefined>(undefined);
-  const [quantity, setQuantity] = useState(1); // ✅ Added quantity state
-  const [shake, setShake] = useState(false);
+  const [selectedSize, setSelectedSize] = useState<ProductSize | null>(null);
+  const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await fetch("/products.json"); // Fetching from public folder
-        const data: Product[] = await response.json();
-        const foundProduct = data.find((p) => p.id === productId);
-        setProduct(foundProduct || null);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${productId}`);
+        if (!response.ok) throw new Error("Failed to fetch product");
+  
+        const data: Product = await response.json();
+  
+        // Ensure images are an array
+        if (!Array.isArray(data.images)) {
+          console.warn("Images are not an array. Check API response format.");
+          data.images = [];
+        }
+  
+        setProduct(data);
       } catch (error) {
         console.error("Error fetching product:", error);
+        toast.error("Product not found or API error.");
       } finally {
         setLoading(false);
       }
     };
-
-    fetchProduct();
+  
+    if (productId) fetchProduct();
   }, [productId]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setShake(true);
-      setTimeout(() => setShake(false), 500);
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, []);
+  
 
   if (loading) return <p className="text-center mt-10">Loading...</p>;
   if (!product) return <p className="text-center mt-10">Product not found</p>;
 
-  const { product_name, price, image, id } = product;
-
-
-  // Increase Quantity
-  const increaseQuantity = () => setQuantity((prev) => prev + 1);
-
-  // Decrease Quantity (Ensures min is 1)
-  const decreaseQuantity = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
-
   return (
     <div className="flex justify-center items-center min-h-screen md:p-6 ">
-      <div className=" mb-14 w-full p-2 md:p-6 rounded-2xl bg-white flex flex-col lg:flex-row justify-center items-center lg:items-start gap-8">
-        {/* Product Image Slider */}
-        <ProductImageSlider
-          product={{
-            product_name: product.product_name,
-            images: [
-              "https://walkerlifestyle.com/wp-content/uploads/2025/01/581-6-scaled-700x700.jpg",
-              "https://walkerlifestyle.com/wp-content/uploads/2025/01/580-2-scaled-700x700.jpg",
-              "https://walkerlifestyle.com/wp-content/uploads/2025/01/1-1-scaled-700x700.jpg",
-              "https://walkerlifestyle.com/wp-content/uploads/2025/01/578-3-scaled-700x700.jpg",
-            ],
-          }}
-        />
+      <div className="mb-14 w-full p-2 md:p-6 rounded-2xl bg-white flex flex-col lg:flex-row justify-center items-center lg:items-start gap-8">
+        {/* Product Image */}
+        <ProductImageSlider product={{ product_name: product.name, images: product.images }} />
 
         {/* Product Details */}
         <div className="p-4 flex flex-col">
           <Breadcrumb />
-          <h1 className="text-2xl font-bold mb-2">
-            Product code: {product.product_code} {product.product_name}
-          </h1>
+          <h1 className="text-2xl font-bold mb-2">{product.name}</h1>
           <p className="text-gray-600 mb-4">{product.description}</p>
           <p className="text-3xl font-bold">${product.price}</p>
 
@@ -107,14 +86,18 @@ export default function ProductDetailPage() {
             <div className="flex gap-2 mt-2">
               {product.sizes.map((size) => (
                 <button
-                  key={size}
-                  className={`px-3 py-1 border rounded-md text-xl transition-all duration-200 ${selectedSize === size
-                    ? "bg-black text-white border-black"
-                    : "hover:bg-gray-200"
-                    }`}
+                  key={size.id}
+                  className={`px-3 py-1 border rounded-md text-xl transition-all duration-200 ${
+                    selectedSize?.id === size.id
+                      ? "bg-black text-white border-black"
+                      : size.stock > 0
+                      ? "hover:bg-gray-200"
+                      : "opacity-50 cursor-not-allowed"
+                  }`}
+                  disabled={size.stock === 0}
                   onClick={() => setSelectedSize(size)}
                 >
-                  {size}
+                  {size.size} {size.stock === 0 && "(Out of Stock)"}
                 </button>
               ))}
             </div>
@@ -122,12 +105,26 @@ export default function ProductDetailPage() {
 
           {/* Quantity Selector */}
           <div className="flex items-center justify-start mt-4 gap-3">
-            <label className="font-semibold text-xl" htmlFor="">Quantity : </label>
-            <Button variant="outline" size="icon" onClick={decreaseQuantity} className="w-8 h-8">
+            <label className="font-semibold text-xl">Quantity: </label>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}
+              className="w-8 h-8"
+            >
               <Minus size={16} />
             </Button>
             <span className="text-lg font-semibold">{quantity}</span>
-            <Button variant="outline" size="icon" onClick={increaseQuantity} className="w-8 h-8">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => {
+                if (selectedSize && quantity < selectedSize.stock) {
+                  setQuantity((prev) => prev + 1);
+                }
+              }}
+              className="w-8 h-8"
+            >
               <Plus size={16} />
             </Button>
           </div>
@@ -136,40 +133,41 @@ export default function ProductDetailPage() {
           <div className="flex gap-4">
             {/* Add to Cart Button */}
             <Button
-            variant={"custom"}
+              variant="custom"
               onClick={() => {
                 if (!selectedSize) {
-                  toast.warning("Please select a size before adding to cart!"); // ✅ Show alert if no size is selected
+                  toast.warning("Please select a size before adding to cart!");
+                  return;
+                }
+                if (quantity > selectedSize.stock) {
+                  toast.error("Not enough stock available.");
                   return;
                 }
                 addToCart({
-                  id,
-                  name: product_name,
-                  price,
-                  image,
-                  size: selectedSize,
-                  quantity, // ✅ Include quantity
+                  id: product.id,
+                  name: product.name,
+                  price: product.price,
+                  image: product.images[0],
+                  size: selectedSize.size,
+                  quantity,
                 });
               }}
               size="lg"
-              className={`w-full mt-6 flex items-center gap-2 ${!selectedSize ? "bg-gray-400 cursor-not-allowed" : ""
-                }`}
-            // disabled={!selectedSize} // ✅ Disable button if no size is selected
+              className={`w-full mt-6 flex items-center gap-2 ${
+                !selectedSize ? "bg-gray-400 cursor-not-allowed" : ""
+              }`}
             >
               <ShoppingCart size={16} /> ADD {quantity} TO CART
             </Button>
 
             {/* Buy Now Button */}
-            <motion.div
-              className="w-full"
-              animate={shake ? { x: [-8, 8, -5, 5, 0] } : {}}
-              transition={{ duration: 0.5 }}
-            >
+            <motion.div className="w-full">
               <Button
-                variant={"custom"}
+                variant="custom"
                 size="lg"
-                className={`w-full mt-6 flex items-center gap-2 
-                ${!selectedSize ? "bg-gray-400 cursor-not-allowed" : ""}`}
+                className={`w-full mt-6 flex items-center gap-2 ${
+                  !selectedSize ? "bg-gray-400 cursor-not-allowed" : ""
+                }`}
                 onClick={() => {
                   if (!selectedSize) {
                     toast.warning("Size Not Selected", {
@@ -177,7 +175,9 @@ export default function ProductDetailPage() {
                     });
                     return;
                   }
-                  router.push(`/checkout?product=${id}&size=${selectedSize}&quantity=${quantity}`);
+                  router.push(
+                    `/checkout?product=${product.id}&size=${selectedSize.size}&quantity=${quantity}`
+                  );
                 }}
               >
                 BUY NOW
@@ -188,19 +188,10 @@ export default function ProductDetailPage() {
           {/* Additional Details */}
           <div className="mt-3 space-y-1 text-sm text-gray-700">
             <p className="text-lg">
-              <span className="font-semibold md:text-lg">Origin:</span> {product.origin}
+              <span className="font-semibold">Category:</span> {product.category}
             </p>
             <p className="text-lg">
-              <span className="font-semibold">Color:</span> {product.color}
-            </p>
-            <p className="text-lg">
-              <span className="font-semibold">Upper Material:</span> {product.upper_material}
-            </p>
-            <p className="text-lg">
-              <span className="font-semibold">Insole Material:</span> {product.insole_material}
-            </p>
-            <p className="text-lg">
-              <span className="font-semibold">Sole:</span> {product.sole}
+              <span className="font-semibold">Detail:</span> {product.description} 
             </p>
           </div>
         </div>

@@ -5,10 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 export default function page() {
   return (
     <div className="">
-
+            
       <div className="flex-1">
         {/* <Navbar /> */}
-        <div className="grid grid-cols-3 gap-6 mt-6">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 mt-6 ">
           <Card>
             <CardHeader>
               <CardTitle>Total Orders</CardTitle>
