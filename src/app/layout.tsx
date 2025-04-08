@@ -3,9 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import ClientLayout from "@/components/ClientLayout";
-require("dotenv").config();
-
-// Import client component
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,11 +23,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-
         <CartProvider>
-          <ClientLayout>{children}</ClientLayout> {/* Use the client component here */}
+          <ClientLayout>{children}</ClientLayout>
         </CartProvider>
-
       </body>
     </html>
   );

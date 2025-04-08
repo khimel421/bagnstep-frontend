@@ -167,7 +167,7 @@ export default function EditProductForm() {
                 <div className="flex gap-2 flex-wrap">
                     {newImages.map((file, index) => (
                         <div key={index} className="relative">
-                            <img src={URL.createObjectURL(file)} alt="New Product" className="w-16 h-16 rounded" />
+                            <Image src={URL.createObjectURL(file)} alt="New Product" className="w-16 h-16 rounded" />
                             <button
                                 type="button"
                                 className="absolute top-0 right-0 bg-red-500 text-white p-1 text-xs rounded"

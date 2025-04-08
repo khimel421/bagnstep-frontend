@@ -23,11 +23,13 @@ interface ProductProps {
 
 export default function ProductCard({ images = [], name = "", price = 0, sizes = [], id }: ProductProps) {
   // 🛑 Prevent rendering if there are no available sizes
+
+  const [selectedSize, setSelectedSize] = useState<string>("");
   if (!sizes || sizes.length === 0) return null;
 
   console.log(id)
 
-  const [selectedSize, setSelectedSize] = useState<string>("");
+
 
   // ✅ Use fallback image if images array is empty
   const validImage = images.length > 0 ? images[0] : "/fallback-image.jpg";

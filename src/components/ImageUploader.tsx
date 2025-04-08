@@ -4,6 +4,7 @@ import { useState, useCallback, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { Card } from "@/components/ui/card";
 import { X } from "lucide-react";
+import Image from "next/image";
 
 type UploadedImage = {
   file: File;
@@ -62,7 +63,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onImagesSelected , resetT
           <div className="flex flex-wrap gap-5 mt-4">
             {images.map((img, index) => (
               <div key={index} className="relative">
-                <img
+                <Image
                   src={img.preview}
                   alt={`Preview ${index}`}
                   className="w-16 h-16 object-cover rounded-md border"

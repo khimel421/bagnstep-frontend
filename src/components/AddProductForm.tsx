@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/select";
 import ImageUploader from "./ImageUploader";
 import axios from "axios";
-import { Toaster } from "@/components/ui/sonner"
 import { toast } from "sonner";
 
 export default function AddProductForm() {

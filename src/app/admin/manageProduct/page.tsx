@@ -1,7 +1,6 @@
 "use client";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -13,18 +12,32 @@ import {
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { PlusCircle, Trash2, Pencil, Plus } from "lucide-react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import AddProductForm from "@/components/AddProductForm";
-import EditProductForm from "@/components/EditProductForm";
+import { Trash2, Pencil, Plus } from "lucide-react";
+import { Card,CardContent } from "@/components/ui/card";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import Link from "next/link";
+import Image from "next/image";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+interface Size {
+  size: string;
+  stock: number;
+}
+
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  images: string[] | string;
+  sizes: Size[];
+}
+
 
 
 export default function ProductsPage() {
-  const [products, setProducts] = useState([]);
-  const [editingProduct, setEditingProduct] = useState(null);
+  const [products, setProducts] = useState<Product[]>([]);
+
+
 
   useEffect(() => {
     fetchProducts();
@@ -59,9 +72,9 @@ export default function ProductsPage() {
     <div className="space-y-6 z-0 mt-10">
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-24">
-        {products.map((product: any) => (
+        {products.map((product: Product) => (
           <Card key={product.id} className="p-4">
-            {/* Product Image */}
+
             <div className="flex justify-center">
               {product.images ? (
                 (() => {
@@ -70,7 +83,7 @@ export default function ProductsPage() {
                       ? product.images
                       : JSON.parse(product.images);
                     return imagesArray.length > 0 ? (
-                      <img
+                      <Image
                         src={imagesArray[0]}
                         alt={product.name}
                         className="w-24 h-24 object-cover rounded"
@@ -78,7 +91,7 @@ export default function ProductsPage() {
                     ) : (
                       <span>No Image</span>
                     );
-                  } catch (error) {
+                  } catch{
                     console.error("Error parsing images:", product.images);
                     return <span>Invalid Image Data</span>;
                   }
