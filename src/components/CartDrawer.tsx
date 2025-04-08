@@ -97,7 +97,7 @@ export default function CartDrawer({ isCartOpen, setCartOpen }: { isCartOpen: bo
                       </Button>
                     </Link>
                     <Link href="/checkout">
-                      <Button onClick={() => setCartOpen(false)} className="w-full text-white">CHECKOUT</Button>
+                      <Button onClick={() => setCartOpen(false)} className="w-full ">CHECKOUT</Button>
                     </Link>
                   </div>
                 </div>

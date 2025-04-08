@@ -1,81 +1,79 @@
-'use client'
+'use client';
 import { useState } from "react";
 import Image from "next/image";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Link from "next/link";
+
+interface Size {
+  id: string;
+  productId: string;
+  size: string;
+  stock: number;
+}
 
 interface ProductProps {
   id: number;
-  image: string;
-  title: string;
-  price: number;
-  product_code: string;
-  product_name: string;
-  sizes: string[];
+  name:string;
+  images?: string[];
+  title?: string;
+  price?: number;
+
+  sizes?: Size[];
 }
 
+export default function ProductCard({ images = [], name = "", price = 0, sizes = [], id }: ProductProps) {
+  // 🛑 Prevent rendering if there are no available sizes
 
-export default function ProductCard({ image, product_code, product_name, price, sizes, id }: ProductProps) {
+  const [selectedSize, setSelectedSize] = useState<string>("");
+  if (!sizes || sizes.length === 0) return null;
 
-  const [selectedSize, setSelectedSize] = useState<string>("40");
+  console.log(id)
+
+
+
+  // ✅ Use fallback image if images array is empty
+  const validImage = images.length > 0 ? images[0] : "/fallback-image.jpg";
 
   return (
-
-
     <Card className="min-w-44 shadow-md border border-gray-200 flex flex-col">
+
       <Link href={`/products/${id}`}>
         <CardHeader className="p-3">
           <Image
-            src={image}
-            alt={'shoe'}
+            src={validImage}
+            alt={"product"}
             width={200}
-            height={150}
-            className="rounded-md object-cover w-full"
+            height={2}
+            className="rounded-md object-cover w-full h-64"
           />
         </CardHeader>
       </Link>
 
-      {/* Ensuring all cards have the same height */}
       <CardContent className="p-3 min-h-[120px] flex flex-col justify-between">
         <Link href={`/products/${id}`}>
-          <CardTitle className="text-sm font-semibold text-center">
-            Product code: {product_code} {product_name}
-          </CardTitle>
+          <p className="text-sm font-semibold text-center">{name}</p>
         </Link>
-        <Link href={`/products/{id}`}>
-          <p className="text-lg font-bold mt-1 text-center">${price}</p>
-        </Link>
+        <p className="text-lg font-bold mt-1 text-center">${price}</p>
 
         {/* Shoe Size Selection */}
         <div className="mt-3 flex-grow">
           <div className="flex mt-1 flex-wrap gap-1 justify-center">
-            {sizes.map((size) => (
+            {sizes.map((sizeObj, idx) => (
               <button
-                key={size}
-                className={`w-8 h-8 text-xs font-semibold rounded-md border transition-all ${selectedSize === size
-                  ? "bg-black text-white border-black"
-                  : "bg-gray-200 text-gray-700 border-gray-300 hover:bg-gray-300"
-                  }`}
-                onClick={() => setSelectedSize(size)}
+                key={idx}
+                className={`w-8 h-8 text-xs font-semibold rounded-md border transition-all ${
+                  selectedSize === sizeObj.size
+                    ? "bg-black text-white border-black"
+                    : "bg-gray-200 text-gray-700 border-gray-300 hover:bg-gray-300"
+                }`}
+                onClick={() => setSelectedSize(sizeObj.size)}
               >
-                {size}
+                {sizeObj.size}
               </button>
             ))}
           </div>
         </div>
       </CardContent>
-
-      {/* Add to Cart Button will always be aligned */}
-      {/* <CardFooter className="p-3 mt-auto">
-        <Button className="w-full flex items-center gap-1 text-sm p-2">
-          <ShoppingCart size={16} /> Add to Cart
-        </Button>
-      </CardFooter> */}
     </Card>
-
-
-
-
   );
 }
-

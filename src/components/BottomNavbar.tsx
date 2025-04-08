@@ -93,7 +93,7 @@ export default function BottomNavbar() {
                           VIEW CART
                         </Button></Link>
                       <Link href="/checkout">
-                        <Button className="w-full text-white">
+                        <Button onClick={closeMenu} className="w-full text-white">
                           CHECKOUT
                         </Button>
                       </Link>

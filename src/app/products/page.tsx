@@ -1,84 +1,83 @@
 "use client";
 
-import { useState } from "react";
-import { Slider } from "@/components/ui/slider"; // Import ShadCN Slider
+import { useEffect, useState } from "react";
 import ProductCard from "@/components/ProductCard";
-import products from "@/data/products.json";
+
+// Define Product Type
+interface Size {
+  id: string;
+  productId: string;
+  size: string;
+  stock: number;
+}
+
+interface Product {
+  id: number;
+  name:string;
+  images: string[];
+  title: string;
+  price: number;
+  product_name: string;
+  sizes: Size[];  // ✅ Now it correctly expects an array of size objects
+}
+
 
 export default function Products() {
-  // Set initial price range (adjust min & max based on your products)
-  const [priceRange, setPriceRange] = useState([10, 200]);
-  const [selectedSize, setSelectedSize] = useState<string | null>(null); // Store selected shoe size
+  // State to store products fetched from backend
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Extract unique shoe sizes from the product list
-  const uniqueSizes = Array.from(
-    new Set(products.flatMap((product) => product.sizes))
-  );
+  // Fetch products from backend
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/admin/products");
+        if (!response.ok) throw new Error("Failed to fetch products");
 
-  // Filter products based on price and selected shoe size
-  const filteredProducts = products.filter(
-    (product) =>
-      product.price >= priceRange[0] &&
-      product.price <= priceRange[1] &&
-      (!selectedSize || product.sizes.includes(selectedSize)) // Size filter
-  );
+        const data: Product[] = await response.json();
+        console.log("Fetched Products:", data); // 🐛 Debugging log
+        setProducts(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "An unknown error occurred");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  console.log(products)
+
+
 
   return (
     <div className="max-w-5xl mx-auto p-4">
-      {/* Price Range Slider */}
-      <div className="mb-6">
-        <label className="block text-lg font-medium mb-2">
-          Price Range: ${priceRange[0]} - ${priceRange[1]}
-        </label>
-        <Slider
-          min={10}
-          max={200}
-          step={10}
-          defaultValue={[10, 200]}
-          value={priceRange}
-          onValueChange={setPriceRange} // Updates price range dynamically
-        />
-      </div>
-
-      {/* Shoe Size Filter */}
-      <div className="mb-6">
-        <label className="block text-lg font-medium mb-2">Select Shoe Size:</label>
-        <div className="flex gap-2 flex-wrap">
-          {uniqueSizes.map((size) => (
-            <button
-              key={size}
-              className={`px-4 py-2 border rounded ${
-                selectedSize === size ? "bg-blue-500 text-white" : "bg-gray-200"
-              }`}
-              onClick={() => setSelectedSize(size === selectedSize ? null : size)} // Toggle size
-            >
-              {size}
-            </button>
-          ))}
-        </div>
-      </div>
-
       {/* Product List */}
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {filteredProducts.length > 0 ? (
-          filteredProducts.map(({ product_code, product_name, price,image, sizes,id }) => (
-            <ProductCard
-              key={product_code}
-              product_code={product_code}
-              product_name={product_name}
-              image={image}
-              title={product_name}
-              sizes={sizes}
-              price={price}
-              id={id}
-            />
-          ))
-        ) : (
-          <p className="text-center text-gray-500 col-span-4">
-            No products found in this price range and size.
-          </p>
-        )}
-      </div>
+      {loading ? (
+        <p className="text-center text-gray-500">Loading products...</p>
+      ) : error ? (
+        <p className="text-center text-red-500">Error: {error}</p>
+      ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {products.length > 0 ? (
+            products.map(({ id, name, price, images, sizes  }) => (
+              <ProductCard
+                key={id} // ✅ Unique Key
+                id={id}
+                name={name}
+                images={images}
+                title={name}
+                sizes={sizes}
+                price={price}
+              />
+            ))
+          ) : (
+            <p className="text-center text-gray-500 col-span-4">No products available.</p>
+          )}
+        </div>
+      )}
     </div>
   );
 }

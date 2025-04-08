@@ -22,7 +22,7 @@ export default function Navbar() {
   const closeMenu = () => setOpen(false);
 
   return (
-    <nav className="bg-white shadow-md flex items-center">
+    <nav className="shadow-md flex items-center bg-[#FF6B00] sticky">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="flex justify-between h-16 items-center">
 
@@ -33,11 +33,11 @@ export default function Navbar() {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex space-x-6">
-            <Link href="/" className="text-gray-700 hover:text-gray-900 font-bold">HOME</Link>
-            <Link href="/products" className="text-gray-700 hover:text-gray-900 font-bold">ALL PRODUCTS</Link>
-            <Link href="/services" className="text-gray-700 hover:text-gray-900 font-bold">PREMIUM QUALITY</Link>
-            <Link href="/contact" className="text-gray-700 hover:text-gray-900 font-bold">DISCOUNT</Link>
-            <Link href="/contact" className="text-gray-700 hover:text-gray-900 font-bold">SIZE CHART</Link>
+            <Link href="/" className="text-white hover:text-gray-900 font-bold">HOME</Link>
+            <Link href="/products" className="text-white hover:text-gray-900 font-bold">ALL PRODUCTS</Link>
+            <Link href="/services" className="text-white hover:text-gray-900 font-bold">PREMIUM QUALITY</Link>
+            <Link href="/contact" className="text-white hover:text-gray-900 font-bold">DISCOUNT</Link>
+            <Link href="/contact" className="text-white hover:text-gray-900 font-bold">SIZE CHART</Link>
 
             <div className="relative">
               <button onClick={() => setCartOpen(true)} className="relative">

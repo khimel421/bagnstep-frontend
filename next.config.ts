@@ -6,6 +6,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "walkerlifestyle.com",
       },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com", // ✅ Added Cloudinary hostname
+      },
     ],
   },
 };
