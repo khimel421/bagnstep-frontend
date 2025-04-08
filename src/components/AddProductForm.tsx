@@ -13,6 +13,8 @@ import {
 } from "@/components/ui/select";
 import ImageUploader from "./ImageUploader";
 import axios from "axios";
+import { Toaster } from "@/components/ui/sonner"
+import { toast } from "sonner";
 
 export default function AddProductForm() {
   const [name, setName] = useState("");
@@ -71,9 +73,18 @@ export default function AddProductForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
+    if (selectedImages.length === 0) {
+      toast.warning('Image is not selected')
+      return;
+    }
+  
     const imageUrls = await handleImageUpload();
-
+    if (imageUrls.length === 0) {
+      alert("Image upload failed. Please try again.");
+      return;
+    }
+  
     const productData = {
       name,
       description,
@@ -85,14 +96,14 @@ export default function AddProductForm() {
         : [],
       stock: category === "Shoes" ? undefined : parseInt(stock, 10),
     };
-
+  
     await fetch("http://localhost:5000/api/admin/products", {
       method: "POST",
       body: JSON.stringify(productData),
       headers: { "Content-Type": "application/json" },
     });
-
-
+  
+    // Reset form fields
     setName("");
     setDescription("");
     setPrice("");
@@ -106,9 +117,11 @@ export default function AddProductForm() {
     ]);
     setSelectedImages([]);
     setResetTrigger(true);
-
+    toast.success('Product has been added')
+  
     setTimeout(() => setResetTrigger(false), 100);
   };
+  
 
   return (
     <form
@@ -178,7 +191,7 @@ export default function AddProductForm() {
       {/* ✅ Image Upload */}
       <ImageUploader onImagesSelected={setSelectedImages} resetTrigger={resetTrigger} />
 
-      <Button type="submit" disabled={uploading}>
+      <Button type="submit" disabled={uploading} variant={'custom'}>
         {uploading ? "Uploading..." : "Add Product"}
       </Button>
     </form>

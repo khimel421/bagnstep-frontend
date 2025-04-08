@@ -15,11 +15,13 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        {!isAdminRoute && <Navbar />}
-        <main>{children}</main>
-        <Toaster position="top-center" />
-        {!isAdminRoute && <BottomNavbar />}
-        {!isAdminRoute && <Footer />}
+        <div className="flex flex-col min-h-screen">
+          {!isAdminRoute && <Navbar />}
+          <main className="flex-grow">{children}</main>
+          <Toaster position="top-center" />
+          {!isAdminRoute && <BottomNavbar />}
+          {!isAdminRoute && <Footer />}
+        </div>
       </QueryClientProvider>
 
     </>

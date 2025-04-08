@@ -48,8 +48,6 @@ export default function Products() {
     fetchProducts();
   }, []);
 
-  console.log(products[0]?.name)
-
   return (
     <div className="max-w-5xl mx-auto p-4">
       {/* Product List */}
@@ -65,7 +63,6 @@ export default function Products() {
                 key={id} // ✅ Unique Key
                 id={id}
                 name={name}
-                product_name={name}
                 images={images}
                 title={name}
                 sizes={sizes}

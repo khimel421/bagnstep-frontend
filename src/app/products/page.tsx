@@ -50,6 +50,8 @@ export default function Products() {
 
   console.log(products)
 
+
+
   return (
     <div className="max-w-5xl mx-auto p-4">
       {/* Product List */}
@@ -64,8 +66,7 @@ export default function Products() {
               <ProductCard
                 key={id} // ✅ Unique Key
                 id={id}
-
-                product_name={name}
+                name={name}
                 images={images}
                 title={name}
                 sizes={sizes}

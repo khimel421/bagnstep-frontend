@@ -5,7 +5,8 @@ import { useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
-
+import { X } from "lucide-react";
+import { Image } from "antd";
 interface Product {
     id: string;
     name: string;
@@ -134,30 +135,32 @@ export default function EditProductForm() {
 
     return (
         <>
-            <h1 className="text-center font-bold text-4xl my-4">Update Product</h1>
-            <form onSubmit={handleUpdate} className="flex flex-col gap-4 mb-4 py-12">
-                <label className="text-lg font-semibold" htmlFor="">Name : </label>
-                <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Product Name" />
-                <label className="text-lg font-semibold" htmlFor="">Price : </label>
-                <Input type="number" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Price" />
+            <h1 className="text-center font-bold text-4xl my-8">Update Product</h1>
 
+
+            <form onSubmit={handleUpdate} className="flex flex-col gap-4 mb-4 pb-20">
                 {/* ✅ Existing Images Preview with Remove Option */}
                 <label className="text-lg font-semibold" htmlFor="">Images : </label>
-                <div className="flex gap-2 flex-wrap">
-                    
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 ">
+
                     {existingImages.map((img, index) => (
-                        <div key={index} className="relative">
-                            <img src={img} alt="Product" className="w-16 h-16 rounded" />
+                        <div key={index} className="relative border-2 border-black p-2 rounded-lg">
+                            <Image src={img} alt="Product" className=" lg:w-[200px]  rounded object-cover" />
                             <button
                                 type="button"
                                 className="absolute top-0 right-0 bg-red-500 text-white p-1 text-xs rounded"
                                 onClick={() => handleRemoveExistingImage(img)}
                             >
-                                Remove
+                                <X />
                             </button>
                         </div>
                     ))}
                 </div>
+                <label className="text-lg font-semibold" htmlFor="">Name : </label>
+                <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Product Name" />
+                <label className="text-lg font-semibold" htmlFor="">Price : </label>
+                <Input type="number" value={price} onChange={(e) => setPrice(e.target.value)} placeholder="Price" />
+
 
                 {/* ✅ Upload New Images */}
                 <input type="file" accept="image/*" multiple onChange={handleFileChange} />
@@ -178,7 +181,7 @@ export default function EditProductForm() {
 
                 {/* ✅ Sizes Management */}
                 <div>
-                <label className="text-lg font-semibold" htmlFor="">Images : </label>
+                    <label className="text-lg font-semibold" htmlFor=""> </label>
 
                     {sizes.map((size, index) => (
                         <div key={index} className="flex gap-2 mt-2">

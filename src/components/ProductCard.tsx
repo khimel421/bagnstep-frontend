@@ -17,7 +17,7 @@ interface ProductProps {
   images?: string[];
   title?: string;
   price?: number;
-  product_name?: string;
+
   sizes?: Size[];
 }
 
@@ -25,7 +25,7 @@ export default function ProductCard({ images = [], name = "", price = 0, sizes =
   // 🛑 Prevent rendering if there are no available sizes
   if (!sizes || sizes.length === 0) return null;
 
-  console.log(name)
+  console.log(id)
 
   const [selectedSize, setSelectedSize] = useState<string>("");
 
@@ -34,6 +34,7 @@ export default function ProductCard({ images = [], name = "", price = 0, sizes =
 
   return (
     <Card className="min-w-44 shadow-md border border-gray-200 flex flex-col">
+
       <Link href={`/products/${id}`}>
         <CardHeader className="p-3">
           <Image

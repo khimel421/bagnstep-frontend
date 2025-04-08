@@ -13,7 +13,7 @@ import {
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { PlusCircle, Trash2, Pencil } from "lucide-react";
+import { PlusCircle, Trash2, Pencil, Plus } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import AddProductForm from "@/components/AddProductForm";
 import EditProductForm from "@/components/EditProductForm";
@@ -40,6 +40,20 @@ export default function ProductsPage() {
     await fetch(`${API_URL}/products/${id}`, { method: "DELETE" });
     fetchProducts();
   };
+
+  if (products.length === 0) {
+    return (
+      <div className="mt-24 flex flex-col gap-8 justify-center items-center">
+        <h1 className="text-center text-xl font-semibold">No Product availabel</h1>
+
+        <Link href={'/admin/addProduct'} className="">
+          <Button variant={"custom"}>Add product <Plus /></Button>
+        </Link>
+
+
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-6 z-0 mt-10">
@@ -105,10 +119,10 @@ export default function ProductsPage() {
             </CardContent>
 
             {/* Actions */}
-            <div className="flex justify-end items-center gap-4 mt-4 mr-8">
+            <div className="flex justify-center  lg:justify-end items-center gap-4 mt-4">
               <Link href={`/admin/manageProduct/${product.id}`}>
                 <Button
-                className="flex items-center gap-2   py-2 px-3  rounded-lg"
+                  className="flex items-center gap-2   py-2 px-3  rounded-lg"
                 >
                   <Pencil size={16} /> Update
                 </Button>

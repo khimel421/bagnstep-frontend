@@ -34,7 +34,7 @@ export default function AdminBottomNavbar() {
         {/* Add Product Button - Centered */}
         <Link
           href="/admin/addProduct"
-          className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg transition-all flex items-center justify-center"
+          className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-[#FF6B00] hover:bg-blue-700 text-white p-3 rounded-full shadow-lg transition-all flex items-center justify-center"
         >
           <PlusCircle className="w-7 h-7" />
         </Link>
