@@ -13,5 +13,8 @@ export default function CustomerPage() {
     getCustomers().then(setData).catch(console.error);
   }, []);
 
-  return <DataTable columns={columns} data={data} />;
+  return <div className="mt-10">
+    <h1 className="text-2xl font-bold py-2">Customer History</h1>
+    <DataTable columns={columns} data={data} />
+  </div>;
 }

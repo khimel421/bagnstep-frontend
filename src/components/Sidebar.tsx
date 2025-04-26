@@ -1,4 +1,4 @@
-import { LayoutDashboard, Package, ShoppingCart, Users, BarChart,  Plus, Bell } from "lucide-react";
+import { LayoutDashboard, Package, ShoppingCart, Users, Plus,  } from "lucide-react";
 import Link from "next/link";
 
 const sidebarItems = [
@@ -7,8 +7,8 @@ const sidebarItems = [
   { name: "Add product", icon: <Plus />, href: "/admin/addProduct" },
   { name: "Orders", icon: <ShoppingCart />, href: "/admin/orders" },
   { name: "Customers", icon: <Users />, href: "/admin/customers" },
-  { name: "Reports", icon: <BarChart />, href: "/admin/reports" },
-  { name: "Notification", icon: <Bell />, href: "/admin/settings" },
+  // { name: "Reports", icon: <BarChart />, href: "/admin/reports" },
+  // { name: "Notification", icon: <Bell />, href: "/admin/settings" },
 ];
 
 export default function Sidebar() {

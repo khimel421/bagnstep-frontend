@@ -16,6 +16,7 @@ export type Size = {
 export interface Product {
     id: string;
     name: string;
+    productCode: string;
     description?: string;
     price: number;
     stock: number;
@@ -28,6 +29,7 @@ export interface Product {
   export type ProductCardProps = {
     id: string;
     name: string;
+    productCode: string;
     images: string[];
     price: number;
     category: string;

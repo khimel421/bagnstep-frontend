@@ -104,6 +104,7 @@ export default function ProductsPage() {
                 key={product.id}
                 id={product.id}
                 name={product.name}
+                productCode={product.productCode}
                 images={product.images}
                 price={product.price}
                 category={product.category}

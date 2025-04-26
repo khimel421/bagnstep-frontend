@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { 
-  Home, Package, ShoppingCart, Users, BarChart, Settings, PlusCircle 
+  Home, Package, ShoppingCart, Users,  PlusCircle 
 } from "lucide-react";
 
 const adminLinks = [
@@ -12,8 +12,8 @@ const adminLinks = [
   { name: "Products", href: "/admin/manageProduct", icon: Package },
   { name: "Orders", href: "/admin/orders", icon: ShoppingCart },
   { name: "Customers", href: "/admin/customers", icon: Users },
-  { name: "Reports", href: "/admin/reports", icon: BarChart },
-  { name: "Settings", href: "/admin/settings", icon: Settings },
+  // { name: "Reports", href: "/admin/reports", icon: BarChart },
+  // { name: "Settings", href: "/admin/settings", icon: Settings },
 ];
 
 export default function AdminBottomNavbar() {

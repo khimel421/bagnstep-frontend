@@ -2,12 +2,15 @@
 
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Loader2, Bell} from "lucide-react";
+import { Loader2, Bell } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import clsx from "clsx";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useRouter } from "next/router";
+import Link from "next/link";
+
 
 type Order = {
     id: string;
@@ -33,6 +36,8 @@ type Order = {
 };
 
 const getStatusBadgeClass = (status: string) => {
+
+
     return clsx(
         "text-xs font-semibold px-2 py-0.5 rounded-full capitalize",
         {
@@ -63,8 +68,11 @@ export default function NotificationBar() {
     }, []);
 
     const notificationList = (
-        <div className="space-y-4 max-h-[300px] overflow-y-auto pr-2 w-[280px] sm:w-auto">
+
+        <div className="space-y-4 max-h-[300px] overflow-y-auto w-[280px] sm:w-auto">
             {orders.map((order) => (
+
+
                 <div
                     key={order.id}
                     className="bg-muted p-3 rounded-lg shadow-sm border border-border text-sm"
@@ -101,6 +109,12 @@ export default function NotificationBar() {
                     <div className="mt-2 text-right font-bold text-primary text-sm sm:text-base">
                         ৳{order.totalAmount}
                     </div>
+
+                    <Link href={"/orders"}>
+                        <Button >View orders</Button>
+                    </Link>
+
+
                 </div>
             ))}
         </div>
@@ -126,7 +140,9 @@ export default function NotificationBar() {
                     <DropdownMenuTrigger asChild>
                         <Button variant="outline" size="icon" className="relative">
                             <Bell className="h-5 w-5" />
-                            {orders.length > 0 && (
+
+
+                            {orders.length > 0 && orders[0].status === "pending" && (
                                 <Badge
                                     className="absolute -top-1 -right-1 rounded-full text-[10px] px-1.5 py-0.5"
                                     variant="destructive"
@@ -136,8 +152,8 @@ export default function NotificationBar() {
                             )}
                         </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-[320px] max-h-[400px] overflow-y-auto">
-                        {orders.length === 0 ? (
+                    <DropdownMenuContent align="center" className="w-full max-h-[400px] overflow-y-auto">
+                        {orders.length === 0 || orders[0].status === "shipped" ? (
                             <p className="text-muted-foreground text-sm p-2">No new orders</p>
                         ) : (
                             notificationList

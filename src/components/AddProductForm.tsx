@@ -17,6 +17,7 @@ import { toast } from "sonner";
 
 export default function AddProductForm() {
   const [name, setName] = useState("");
+  const [productCode, setProductCode] = useState(""); // ✅ New state
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [stock, setStock] = useState("");
@@ -33,7 +34,6 @@ export default function AddProductForm() {
   const [uploading, setUploading] = useState(false);
   const [resetTrigger, setResetTrigger] = useState(false);
 
-  // ✅ Handle stock input change for each size
   const handleSizeStockChange = (index: number, value: string) => {
     setSizes((prevSizes) =>
       prevSizes.map((item, i) =>
@@ -42,7 +42,6 @@ export default function AddProductForm() {
     );
   };
 
-  // ✅ Upload images to Cloudinary
   const handleImageUpload = async () => {
     if (selectedImages.length === 0) return [];
 
@@ -72,20 +71,21 @@ export default function AddProductForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     if (selectedImages.length === 0) {
       toast.warning('Image is not selected')
       return;
     }
-  
+
     const imageUrls = await handleImageUpload();
     if (imageUrls.length === 0) {
       alert("Image upload failed. Please try again.");
       return;
     }
-  
+
     const productData = {
       name,
+      productCode, // ✅ Include productCode in data
       description,
       price: parseFloat(price),
       category,
@@ -95,32 +95,34 @@ export default function AddProductForm() {
         : [],
       stock: category === "Shoes" ? undefined : parseInt(stock, 10),
     };
-  
+
     await fetch("http://localhost:5000/api/admin/products", {
       method: "POST",
       body: JSON.stringify(productData),
       headers: { "Content-Type": "application/json" },
     });
-  
+
     // Reset form fields
     setName("");
+    setProductCode(""); // ✅ Reset productCode
     setDescription("");
     setPrice("");
     setStock("");
     setCategory("");
     setSizes([
-      { size: "US 7", stock: "" },
-      { size: "US 8", stock: "" },
-      { size: "US 9", stock: "" },
-      { size: "US 10", stock: "" },
+      { size: "39", stock: "" },
+      { size: "40", stock: "" },
+      { size: "41", stock: "" },
+      { size: "42", stock: "" },
+      { size: "43", stock: "" },
+      { size: "44", stock: "" },
     ]);
     setSelectedImages([]);
     setResetTrigger(true);
     toast.success('Product has been added')
-  
+
     setTimeout(() => setResetTrigger(false), 100);
   };
-  
 
   return (
     <form
@@ -131,6 +133,12 @@ export default function AddProductForm() {
         placeholder="Product Name"
         value={name}
         onChange={(e) => setName(e.target.value)}
+        required
+      />
+      <Input
+        placeholder="Product Code" // ✅ New Input Field
+        value={productCode}
+        onChange={(e) => setProductCode(e.target.value)}
         required
       />
       <Textarea
@@ -146,7 +154,7 @@ export default function AddProductForm() {
         required
       />
 
-      {/* ✅ Select Category */}
+      {/* Category Select */}
       <Select onValueChange={(value) => setCategory(value)}>
         <SelectTrigger className="w-full">
           <SelectValue placeholder="Select Category" />
@@ -158,7 +166,7 @@ export default function AddProductForm() {
         </SelectContent>
       </Select>
 
-      {/* ✅ Shoe Sizes & Stock Inputs */}
+      {/* Sizes */}
       {category === "Shoes" && (
         <div className="grid grid-cols-2 gap-2">
           {sizes.map((item, index) => (
@@ -176,7 +184,7 @@ export default function AddProductForm() {
         </div>
       )}
 
-      {/* ✅ Stock input for Bags & Accessories */}
+      {/* Stock input for others */}
       {category !== "Shoes" && (
         <Input
           placeholder="Stock"
@@ -187,7 +195,7 @@ export default function AddProductForm() {
         />
       )}
 
-      {/* ✅ Image Upload */}
+      {/* Image Upload */}
       <ImageUploader onImagesSelected={setSelectedImages} resetTrigger={resetTrigger} />
 
       <Button type="submit" disabled={uploading} variant={'custom'}>

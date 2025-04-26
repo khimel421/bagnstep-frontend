@@ -42,7 +42,7 @@ export default function AdminDashboardPage() {
           </Card>
           <Card className="cursor-pointer" onClick={() => {router.push('/admin/orders')}}>
             <CardHeader>
-              <CardTitle>New Orders</CardTitle>
+              <CardTitle>Pending Orders</CardTitle>
             </CardHeader>
             <CardContent className="text-lg font-bold"><NotificationBar /></CardContent>
           </Card>
