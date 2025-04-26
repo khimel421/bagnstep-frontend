@@ -69,11 +69,11 @@ export default function CartDrawer({ isCartOpen, setCartOpen }: { isCartOpen: bo
 
                         {/* Quantity Controls */}
                         <div className="flex items-center gap-2">
-                          <Button variant="outline" size="icon" onClick={() => updateQuantity(item.id, item.quantity - 1)} disabled={item.quantity === 1}>
+                          <Button variant="outline" size="icon" onClick={() => updateQuantity(item.id, item.size as string, item.quantity - 1)} disabled={item.quantity === 1}>
                             <Minus size={16} />
                           </Button>
                           <span className="text-sm">{item.quantity}</span>
-                          <Button variant="outline" size="icon" onClick={() => updateQuantity(item.id, item.quantity + 1)}>
+                          <Button variant="outline" size="icon" onClick={() => updateQuantity(item.id,  item.size as string, item.quantity + 1)}>
                             <Plus size={16} />
                           </Button>
                         </div>

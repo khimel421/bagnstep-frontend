@@ -4,21 +4,23 @@ import { createContext, useContext, useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
 
 interface CartItem {
-  id: string; // ✅ Ensuring id is a string to match Prisma schema (UUID)
+  id: string;
   name: string;
   price: number;
   image: string;
   quantity: number;
   size?: string;
+  category: string;
 }
 
 interface CartContextType {
   cart: CartItem[];
   isCartOpen: boolean;
+  isLoading: boolean; // Added loading state
   setCartOpen: (isOpen: boolean) => void;
   addToCart: (item: CartItem) => void;
-  removeFromCart: (id: string) => void;
-  updateQuantity: (id: string, quantity: number) => void;
+  removeFromCart: (id: string, size: string) => void;
+  updateQuantity: (id: string, size: string, quantity: number) => void;
   clearCart: () => void;
 }
 
@@ -33,8 +35,33 @@ export const useCart = () => {
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setCartOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Initial loading state
   const prevCartLength = useRef(0);
   const initialLoad = useRef(true);
+
+  // Load cart from localStorage on mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsLoading(true);
+      try {
+        const storedCart = localStorage.getItem("cart");
+        if (storedCart) {
+          setCart(JSON.parse(storedCart));
+        }
+      } catch (error) {
+        console.error("Failed to parse cart from localStorage", error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  }, []);
+
+  // Save cart to localStorage whenever it changes
+  useEffect(() => {
+    if (typeof window !== "undefined" && !initialLoad.current) {
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
+  }, [cart]);
 
   // Cart length change detection
   useEffect(() => {
@@ -50,62 +77,65 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     prevCartLength.current = cart.length;
   }, [cart]);
 
-  // Load cart from localStorage on mount
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      try {
-        const storedCart = localStorage.getItem("cart");
-        if (storedCart) setCart(JSON.parse(storedCart));
-      } catch (error) {
-        console.error("Failed to parse cart from localStorage", error);
-      }
-    }
-  }, []);
-
-  // Save cart to localStorage whenever it changes
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("cart", JSON.stringify(cart));
-    }
-  }, [cart]);
-
-  const addToCart = (item: CartItem) => {
+  const addToCart = async (item: CartItem) => {
     if (item.quantity < 1) return;
+    
+    setIsLoading(true);
+    try {
+      setCart((prev) => {
+        const existingItem = prev.find(
+          (i) => i.id === item.id && i.size === item.size
+        );
 
-    setCart((prev) => {
-      const existingItem = prev.find(
-        (i) => i.id === item.id && i.size === item.size
+        return existingItem
+          ? prev.map((i) =>
+              i.id === item.id && i.size === item.size
+                ? { ...i, quantity: i.quantity + item.quantity, price: Number(item.price) }
+                : i
+            )
+          : [...prev, { ...item, price: Number(item.price) }];
+      });
+      toast.success("Product added to cart");
+      document.dispatchEvent(new Event("cartUpdated"));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const removeFromCart = async (id: string, size: string) => {
+    setIsLoading(true);
+    try {
+      setCart((prev) => 
+        prev.filter((item) => !(item.id === id && item.size === size))
       );
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-      return existingItem
-        ? prev.map((i) =>
-          i.id === item.id && i.size === item.size
-            ? { ...i, quantity: i.quantity + item.quantity, price: Number(item.price) }
-            : i
+  const updateQuantity = async (id: string, size: string, quantity: number) => {
+    setIsLoading(true);
+    try {
+      setCart((prev) =>
+        prev.map((item) =>
+          item.id === id && item.size === size 
+            ? { ...item, quantity: Math.max(1, quantity) } 
+            : item
         )
-        : [...prev, { ...item, price: Number(item.price) }];
-    });
-
-    toast.success("Product added to cart");
-    document.dispatchEvent(new Event("cartUpdated"));
-  };
-
-
-  const removeFromCart = (id: string) => {
-    setCart((prev) => prev.filter((item) => item.id !== id));
-  };
-
-  const updateQuantity = (id: string, quantity: number) => {
-    setCart((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, quantity: Math.max(1, quantity) } : item
-      )
-    );
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const clearCart = () => {
-    setCart([]);
-    setCartOpen(false);
+    setIsLoading(true);
+    try {
+      setCart([]);
+      setCartOpen(false);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -113,6 +143,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
       value={{
         cart,
         isCartOpen,
+        isLoading, // Expose loading state
         setCartOpen,
         addToCart,
         removeFromCart,

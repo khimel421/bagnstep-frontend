@@ -1,78 +1,73 @@
 'use client';
 import { useState } from "react";
 import Image from "next/image";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Link from "next/link";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { ProductCardProps } from "@/types/product";
 
-interface Size {
-  id: string;
-  productId: string;
-  size: string;
-  stock: number;
-}
-
-interface ProductProps {
-  id: number;
-  name:string;
-  images?: string[];
-  title?: string;
-  price?: number;
-
-  sizes?: Size[];
-}
-
-export default function ProductCard({ images = [], name = "", price = 0, sizes = [], id }: ProductProps) {
-  // 🛑 Prevent rendering if there are no available sizes
-
+export default function ProductCard({
+  images = [],
+  name = "",
+  price = 0,
+  sizes = [],
+  id,
+  category,
+}: ProductCardProps) {
   const [selectedSize, setSelectedSize] = useState<string>("");
+
   if (!sizes || sizes.length === 0) return null;
 
-  console.log(id)
+  const filterSize = sizes.filter((size) => size.stock !== 0)
 
-
-
-  // ✅ Use fallback image if images array is empty
   const validImage = images.length > 0 ? images[0] : "/fallback-image.jpg";
 
   return (
-    <Card className="min-w-44 shadow-md border border-gray-200 flex flex-col">
-
+    <Card className="group hover:shadow-xl transition-all border rounded-2xl overflow-hidden flex flex-col h-full">
       <Link href={`/products/${id}`}>
-        <CardHeader className="p-3">
+        <CardHeader className="p-3 relative">
           <Image
             src={validImage}
-            alt={"product"}
-            width={200}
-            height={2}
-            className="rounded-md object-cover w-full h-64"
+            alt={name}
+            width={300}
+            height={300}
+            className="w-full h-64 object-cover rounded-xl transition-transform duration-300 group-hover:scale-105"
           />
+          <Badge className="absolute top-3 left-3 bg-green-500 text-white">New</Badge>
         </CardHeader>
       </Link>
 
-      <CardContent className="p-3 min-h-[120px] flex flex-col justify-between">
+      <CardContent className="p-4 flex flex-col gap-2 flex-grow">
         <Link href={`/products/${id}`}>
-          <p className="text-sm font-semibold text-center">{name}</p>
+          <h3 className="text-sm font-bold  text-center text-gray-800 line-clamp-2 hover:underline min-h-[42px]">
+            {name}
+          </h3>
         </Link>
-        <p className="text-lg font-bold mt-1 text-center">${price}</p>
 
-        {/* Shoe Size Selection */}
-        <div className="mt-3 flex-grow">
-          <div className="flex mt-1 flex-wrap gap-1 justify-center">
-            {sizes.map((sizeObj, idx) => (
-              <button
+        <p className="text-center text-lg font-semibold text-black">৳{price}</p>
+
+        {(category as string).toLowerCase() === "shoes" && (
+          <div className="flex justify-center gap-2 flex-wrap mt-2 min-h-[40px]">
+            {filterSize.map((sizeObj, idx) => (            
+              <Button
                 key={idx}
-                className={`w-8 h-8 text-xs font-semibold rounded-md border transition-all ${
-                  selectedSize === sizeObj.size
-                    ? "bg-black text-white border-black"
-                    : "bg-gray-200 text-gray-700 border-gray-300 hover:bg-gray-300"
-                }`}
+                variant={selectedSize === sizeObj.size ? "default" : "custom"}
+                size="sm"
+                className="px-3 py-1 text-xs rounded-md"
                 onClick={() => setSelectedSize(sizeObj.size)}
               >
                 {sizeObj.size}
-              </button>
+              </Button>
             ))}
           </div>
-        </div>
+        )}
+{/* 
+        <div className="mt-auto pt-3">
+          <Button className="w-full" variant="secondary">
+            Add to Cart
+          </Button>
+        </div> */}
       </CardContent>
     </Card>
   );

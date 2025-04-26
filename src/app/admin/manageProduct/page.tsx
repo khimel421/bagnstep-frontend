@@ -17,21 +17,8 @@ import { Card,CardContent } from "@/components/ui/card";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import Link from "next/link";
 import Image from "next/image";
+import { Product } from "@/types/product";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
-interface Size {
-  size: string;
-  stock: number;
-}
-
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  images: string[] | string;
-  sizes: Size[];
-}
-
 
 
 export default function ProductsPage() {
@@ -49,7 +36,7 @@ export default function ProductsPage() {
     setProducts(data);
   };
 
-  const deleteProduct = async (id: number) => {
+  const deleteProduct = async (id: string) => {
     await fetch(`${API_URL}/products/${id}`, { method: "DELETE" });
     fetchProducts();
   };
@@ -85,6 +72,8 @@ export default function ProductsPage() {
                     return imagesArray.length > 0 ? (
                       <Image
                         src={imagesArray[0]}
+                        width={200}
+                        height={200}
                         alt={product.name}
                         className="w-24 h-24 object-cover rounded"
                       />
