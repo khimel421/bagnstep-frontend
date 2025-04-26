@@ -7,13 +7,8 @@ import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { X } from "lucide-react";
 import { Image } from "antd";
-interface Product {
-    id: string;
-    name: string;
-    price: number;
-    images: string[];
-    sizes: { size: string; stock: number }[];
-}
+import { Product } from "@/types/product";
+
 
 export default function EditProductForm() {
     const { slug } = useParams(); // ✅ Fetch product ID from URL params

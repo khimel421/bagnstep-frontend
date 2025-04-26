@@ -27,7 +27,7 @@ export default function ProductImageSlider({ product }: { product: Product }) {
   };
 
   return (
-    <div className="w-full max-w-lg md:p-4 rounded-2xl">
+    <div className="w-full lg:max-w-lg md:p-4 rounded-2xl">
       {/* Swiper Image Display */}
       <Swiper
         onSwiper={(swiperInstance) => (swiperRef.current = swiperInstance)} // ✅ Proper way to get Swiper instance
@@ -45,7 +45,7 @@ export default function ProductImageSlider({ product }: { product: Product }) {
               src={img}
               alt={`Product image ${index + 1}`}
               className="rounded-lg object-cover"
-              preview={false} // ✅ Prevents unwanted zoom issues
+              preview={true} // ✅ Prevents unwanted zoom issues
             />
           </SwiperSlide>
         ))}

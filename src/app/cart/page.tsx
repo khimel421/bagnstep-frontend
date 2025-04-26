@@ -14,8 +14,19 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import { FaWhatsapp } from "react-icons/fa";
+import AnimatedLoader from "@/components/AnimatedLoader";
+import { useState } from "react";
+
+
 export default function CartPage() {
-  const { cart, removeFromCart, updateQuantity, clearCart } = useCart();
+   const [showLoader,setShowLoader] = useState(true);
+  const { cart, removeFromCart, updateQuantity , isLoading } = useCart();
+
+  const phone = "8801836282169";
+  const message = encodeURIComponent("Hi, I'm interested in your shoes!");
+  const whatsappUrl = `https://wa.me/${phone}?text=${message}`;
+
 
   console.log(cart)
 
@@ -23,6 +34,10 @@ export default function CartPage() {
 
   // Calculate total price
   const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+
+  if(isLoading){
+    return <AnimatedLoader onFinish={() => setShowLoader(false)} />
+  }
 
   return (
     <>
@@ -70,7 +85,7 @@ export default function CartPage() {
                       </TableCell>
 
                       {/* Price */}
-                    <TableCell>${Number(item.price).toFixed(2)}</TableCell>
+                      <TableCell>${Number(item.price).toFixed(2)}</TableCell>
 
                       {/* Quantity */}
                       <TableCell>
@@ -78,7 +93,7 @@ export default function CartPage() {
                           <Button
 
                             size="icon"
-                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                            onClick={() => updateQuantity(item.id, item.size as string, item.quantity - 1)}
                             disabled={item.quantity === 1}
                           >
                             <Minus size={16} />
@@ -87,7 +102,7 @@ export default function CartPage() {
                           <Button
 
                             size="icon"
-                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                            onClick={() => updateQuantity(item.id, item.size as string, item.quantity + 1)}
                           >
                             <Plus size={16} />
                           </Button>
@@ -96,12 +111,12 @@ export default function CartPage() {
 
                       {/* Subtotal */}
                       <TableCell className="font-semibold">
-                        ${(item.price * item.quantity).toFixed(2)}
+                        ৳{(item.price * item.quantity).toFixed(2)}
                       </TableCell>
 
                       {/* Remove Button */}
                       <TableCell className="text-center">
-                        <Button size="icon" onClick={() => removeFromCart(item.id)}>
+                        <Button size="icon" variant={"destructive"} onClick={() => removeFromCart(item.id, item.size as string)}>
                           <Trash size={16} />
                         </Button>
                       </TableCell>
@@ -115,14 +130,20 @@ export default function CartPage() {
             <div className="border-2 p-6 flex flex-col gap-4 rounded-md shadow-md">
               <h3 className="text-xl font-semibold">Cart Summary</h3>
               <p className="text-lg font-semibold">Total: ${totalPrice.toFixed(2)}</p>
-
-              <Button onClick={clearCart} variant={'outline'} >
+{/* 
+              <Button onClick={clearCart} variant={'default'} >
                 Clear Cart
-              </Button>
+              </Button> */}
 
               <Link href="/checkout">
-                <Button className="w-full text-white">
+                <Button variant={'custom'} className="w-full text-white">
                   Proceed to Checkout
+                </Button>
+              </Link>
+
+              <Link href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+                <Button variant={'whatsapp'} className="w-full text-white">
+                  WhatsApp <FaWhatsapp/>
                 </Button>
               </Link>
             </div>
@@ -184,7 +205,7 @@ export default function CartPage() {
                           <Button
                             size="icon"
                             className="h-8 w-8"
-                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                            onClick={() => updateQuantity(item.id, item.size as string, item.quantity - 1)}
                             disabled={item.quantity === 1}
                           >
                             <Minus size={14} />
@@ -193,7 +214,7 @@ export default function CartPage() {
                           <Button
                             size="icon"
                             className="h-8 w-8"
-                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                            onClick={() => updateQuantity(item.id, item.size as string, item.quantity + 1)}
                           >
                             <Plus size={14} />
                           </Button>
@@ -208,8 +229,8 @@ export default function CartPage() {
                     <Button
                       variant="destructive"
                       size="icon"
-                      className="md:hidden my-auto"
-                      onClick={() => removeFromCart(item.id)}
+                      className="md:hidden my-auto "
+                      onClick={() => removeFromCart(item.id, item.size as string)}
                     >
                       <Trash size={16} />
                     </Button>
@@ -223,14 +244,20 @@ export default function CartPage() {
             {/* Cart Summary */}
             <div className="border-2 p-4 md:p-6 flex flex-col gap-4 rounded-md shadow-md h-fit">
               <h3 className="text-lg md:text-xl font-semibold">Cart Summary</h3>
-              <p className="text-base md:text-lg font-semibold">Total: ${totalPrice.toFixed(2)}</p>
+              <p className="text-lg md:text-xl font-semibold">Total: ৳{totalPrice.toFixed(2)}</p>
 
-              <Button onClick={clearCart}  className="w-full">
+              {/* <Button onClick={clearCart} className="w-full">
                 Clear Cart
-              </Button>
+              </Button> */}
 
               <Link href="/checkout">
                 <Button variant={"custom"} className="w-full text-white">Proceed to Checkout</Button>
+              </Link>
+
+              <Link href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+                <Button variant={'whatsapp'} className="w-full text-white">
+                  WhatsApp <FaWhatsapp/>
+                </Button>
               </Link>
             </div>
           </div>

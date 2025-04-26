@@ -32,7 +32,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-6">
+          <div className="hidden lg:flex space-x-6">
             <Link href="/" className="text-white hover:text-gray-900 font-bold">HOME</Link>
             <Link href="/products" className="text-white hover:text-gray-900 font-bold">ALL PRODUCTS</Link>
             <Link href="/services" className="text-white hover:text-gray-900 font-bold">PREMIUM QUALITY</Link>
@@ -56,7 +56,7 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Menu */}
-          <div className="md:hidden flex items-center space-x-4">
+          <div className="lg:hidden flex items-center space-x-4">
             <Sheet open={open} onOpenChange={setOpen}>
               <SheetTrigger>
                 <Menu size={24} className="text-gray-700" />

@@ -64,6 +64,8 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onImagesSelected , resetT
             {images.map((img, index) => (
               <div key={index} className="relative">
                 <Image
+                width={100}
+                height={100}
                   src={img.preview}
                   alt={`Preview ${index}`}
                   className="w-16 h-16 object-cover rounded-md border"

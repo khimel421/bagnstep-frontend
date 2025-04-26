@@ -1,79 +1,90 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useProducts } from "@/api/products";
 import ProductCard from "@/components/ProductCard";
-
-// Define Product Type
-interface Size {
-  id: string;
-  productId: string;
-  size: string;
-  stock: number;
-}
-
-interface Product {
-  id: number;
-  name: string;
-  images: string[];
-  title: string;
-  price: number;
-  product_name: string;
-  sizes: Size[];  // ✅ Now it correctly expects an array of size objects
-}
-
+import { useState, useEffect } from "react";
+import { VelocityScroll } from "./magicui/scroll-based-velocity";
+import AnimatedLoader from "./AnimatedLoader";
 
 export default function Products() {
-  // State to store products fetched from backend
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [showLoader, setShowLoader] = useState(true);
+  const { data: products = [], isLoading, isError } = useProducts();
 
-  // Fetch products from backend
+  // Hide loader after animation AND data is loaded
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch("http://localhost:5000/api/admin/products");
-        if (!response.ok) throw new Error("Failed to fetch products");
+    if (!isLoading && !isError) {
+      const timeout = setTimeout(() => {
+        setShowLoader(false);
+      }, 3000); // sync with AnimatedLoader duration
+      return () => clearTimeout(timeout);
+    }
+  }, [isLoading, isError]);
 
-        const data: Product[] = await response.json();
-        console.log("Fetched Products:", data); // 🐛 Debugging log
-        setProducts(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "An unknown error occurred");
-      } finally {
-        setLoading(false);
-      }
-    };
+  if (showLoader || isLoading) {
+    return (
+      <div className="p-4">
+        <AnimatedLoader onFinish={() => setShowLoader(false)} />
+      </div>
+    );
+  }
 
-    fetchProducts();
-  }, []);
+  if (isError) {
+    return <div className="p-4 text-red-500">Failed to load products.</div>;
+  }
+
+  // Group products by category
+  const shoes = products.filter((p) => p.category?.toLowerCase() === "shoes");
+  const bags = products.filter((p) => p.category?.toLowerCase() === "bags");
 
   return (
-    <div className="max-w-5xl mx-auto p-4">
-      {/* Product List */}
-      {loading ? (
-        <p className="text-center text-gray-500">Loading products...</p>
-      ) : error ? (
-        <p className="text-center text-red-500">Error: {error}</p>
-      ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {products.length > 0 ? (
-            products.map(({ id, name, price, images, sizes  }) => (
+    <div className="p-4 space-y-10">
+      {/* Shoes Section */}
+      <div className="max-w-6xl mx-auto">
+        <h2 className="text-3xl font-bold mb-4 italic">Shoes</h2>
+        {shoes.length > 0 ? (
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {shoes.map(({ id, name, price, images, sizes, category }) => (
               <ProductCard
-                key={id} // ✅ Unique Key
+                key={id}
                 id={id}
                 name={name}
                 images={images}
-                title={name}
                 sizes={sizes}
                 price={price}
+                category={category}
               />
-            ))
-          ) : (
-            <p className="text-center text-gray-500 col-span-4">No products available.</p>
-          )}
-        </div>
-      )}
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-500">No shoes available.</p>
+        )}
+      </div>
+
+      <div className="">
+        <VelocityScroll>BagNStep</VelocityScroll>
+      </div>
+
+      {/* Bags Section */}
+      <div className="max-w-6xl mx-auto">
+        <h2 className="text-3xl font-bold mb-4 italic">Bags</h2>
+        {bags.length > 0 ? (
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {bags.map(({ id, name, price, images, sizes, category }) => (
+              <ProductCard
+                key={id}
+                id={id}
+                name={name}
+                images={images}
+                sizes={sizes}
+                price={price}
+                category={category}
+              />
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-500">No bags available.</p>
+        )}
+      </div>
     </div>
   );
 }
