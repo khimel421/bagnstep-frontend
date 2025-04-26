@@ -10,6 +10,7 @@ import { ProductCardProps } from "@/types/product";
 export default function ProductCard({
   images = [],
   name = "",
+  productCode = "",
   price = 0,
   sizes = [],
   id,
@@ -39,17 +40,9 @@ export default function ProductCard({
       </Link>
 
       <CardContent className="p-4 flex flex-col gap-2 flex-grow">
-        <Link href={`/products/${id}`}>
-          <h3 className="text-sm font-bold  text-center text-gray-800 line-clamp-2 hover:underline min-h-[42px]">
-            {name}
-          </h3>
-        </Link>
-
-        <p className="text-center text-lg font-semibold text-black">৳{price}</p>
-
         {(category as string).toLowerCase() === "shoes" && (
           <div className="flex justify-center gap-2 flex-wrap mt-2 min-h-[40px]">
-            {filterSize.map((sizeObj, idx) => (            
+            {filterSize.map((sizeObj, idx) => (
               <Button
                 key={idx}
                 variant={selectedSize === sizeObj.size ? "default" : "custom"}
@@ -62,12 +55,26 @@ export default function ProductCard({
             ))}
           </div>
         )}
-{/* 
+        {/* 
         <div className="mt-auto pt-3">
           <Button className="w-full" variant="secondary">
             Add to Cart
           </Button>
         </div> */}
+
+        {/* <Link href={`/products/${id}`}>
+          <h3 className="text-xl font-medium  text-center text-gray-800 line-clamp-2  min-h-[42px]">
+            Product name : {name}
+          </h3>
+        </Link> */}
+
+        <Link href={`/products/${id}`}>
+          <h3 className="text-xl font-medium  text-center text-gray-800 line-clamp-2  ">
+            Product code : {productCode} 
+          </h3>
+        </Link>
+
+        <p className="text-center text-lg font-semibold text-black">৳{price}</p>
       </CardContent>
     </Card>
   );

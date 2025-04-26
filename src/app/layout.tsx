@@ -3,7 +3,14 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import ClientLayout from "@/components/ClientLayout";
+import { Lato } from 'next/font/google'
 
+
+const lato = Lato({
+  subsets: ['latin'], 
+  weight: ['400', '700'], // 400 = normal, 700 = bold
+  display: 'swap', // for better UX
+})
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,7 +30,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased lato.classname`}>
         <CartProvider>
           <ClientLayout>{children}</ClientLayout>
         </CartProvider>

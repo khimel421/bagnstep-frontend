@@ -35,9 +35,9 @@ export default function Navbar() {
           <div className="hidden lg:flex space-x-6">
             <Link href="/" className="text-white hover:text-gray-900 font-bold">HOME</Link>
             <Link href="/products" className="text-white hover:text-gray-900 font-bold">ALL PRODUCTS</Link>
-            <Link href="/services" className="text-white hover:text-gray-900 font-bold">PREMIUM QUALITY</Link>
-            <Link href="/contact" className="text-white hover:text-gray-900 font-bold">DISCOUNT</Link>
-            <Link href="/contact" className="text-white hover:text-gray-900 font-bold">SIZE CHART</Link>
+            {/* <Link href="/services" className="text-white hover:text-gray-900 font-bold">PREMIUM QUALITY</Link>
+            <Link href="/contact" className="text-white hover:text-gray-900 font-bold">DISCOUNT</Link> */}
+            <Link href="/sizechart" className="text-white hover:text-gray-900 font-bold">SIZE CHART</Link>
 
             <div className="relative">
               <button onClick={() => setCartOpen(true)} className="relative">
@@ -68,8 +68,8 @@ export default function Navbar() {
                 <div className="flex flex-col space-y-4 p-4">
                   <Link href="/" className="text-gray-700 hover:text-gray-900 font-bold" onClick={closeMenu}>HOME</Link>
                   <Link href="/products" className="text-gray-700 hover:text-gray-900 font-bold" onClick={closeMenu}>ALL PRODUCTS</Link>
-                  <Link href="/services" className="text-gray-700 hover:text-gray-900 font-bold" onClick={closeMenu}>PREMIUM QUALITY</Link>
-                  <Link href="/contact" className="text-gray-700 hover:text-gray-900 font-bold" onClick={closeMenu}>DISCOUNT</Link>
+                  {/* <Link href="/services" className="text-gray-700 hover:text-gray-900 font-bold" onClick={closeMenu}>PREMIUM QUALITY</Link>
+                  <Link href="/contact" className="text-gray-700 hover:text-gray-900 font-bold" onClick={closeMenu}>DISCOUNT</Link> */}
                   <Link href="/contact" className="text-gray-700 hover:text-gray-900 font-bold" onClick={closeMenu}>SIZE CHART</Link>
                 </div>
               </SheetContent>

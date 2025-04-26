@@ -92,7 +92,7 @@ export default function ProductsPage() {
 
             {/* Product Details */}
             <CardContent className="mt-4">
-              <h3 className="text-lg font-semibold text-center">{product.name}</h3>
+              <h3 className="text-lg font-semibold text-center">{product.productCode}</h3>
               <p className="text-gray-600 text-center">Price: ${product.price}</p>
 
               <div className="mt-2 overflow-hidden">
