@@ -32,7 +32,7 @@ export default function ProductFilters({
       categories: selectedCategories,
       priceRange,
     });
-  }, [selectedSizes, selectedCategories, priceRange,onChange]);
+  }, [selectedSizes, selectedCategories, priceRange,]);
 
   const minPrice = initialPriceRange[0];
   const maxPrice = initialPriceRange[1];

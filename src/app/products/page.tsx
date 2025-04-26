@@ -49,7 +49,7 @@ export default function ProductsPage() {
     });
   }, [products, filters, hasUserFiltered]);
 
-  console.log('filtered products : ', filteredProducts)
+
 
   const handleFilterChange = (newFilters: typeof filters) => {
     setFilters(newFilters);
