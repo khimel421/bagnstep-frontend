@@ -25,7 +25,7 @@ export default function EditProductForm() {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/admin/products/${slug}`);
+                const response = await axios.get(`${process.env.NEXT_PRIVATE_API_URL}/products/${slug}`);
                 const productData = response.data;
                 setProduct(productData);
                 setName(productData.name);
@@ -109,7 +109,7 @@ export default function EditProductForm() {
         const updatedImages = [...existingImages, ...imageUrls];
 
         try {
-            await axios.put(`http://localhost:5000/api/admin/products/${slug}`, {
+            await axios.put(`${process.env.NEXT_PRIVATE_API_URL}/products/${slug}`, {
                 name,
                 price: parseFloat(price),
                 images: updatedImages,
