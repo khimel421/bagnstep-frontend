@@ -96,7 +96,7 @@ export default function AddProductForm() {
       stock: category === "Shoes" ? undefined : parseInt(stock, 10),
     };
 
-    await fetch(`${process.env.NEXT_PRIVATE_API_URL}/products`, {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`, {
       method: "POST",
       body: JSON.stringify(productData),
       headers: { "Content-Type": "application/json" },

@@ -76,6 +76,8 @@ export const columns = (
         >
           <Image
             src={item.product.images[0]}
+            width={100}
+            height={100}
             alt={item.product.name}
             className="w-14 h-14 object-cover rounded-md border"
           />
