@@ -70,7 +70,7 @@ export default function Navbar() {
                   <Link href="/products" className="text-gray-700 hover:text-gray-900 font-bold" onClick={closeMenu}>ALL PRODUCTS</Link>
                   {/* <Link href="/services" className="text-gray-700 hover:text-gray-900 font-bold" onClick={closeMenu}>PREMIUM QUALITY</Link>
                   <Link href="/contact" className="text-gray-700 hover:text-gray-900 font-bold" onClick={closeMenu}>DISCOUNT</Link> */}
-                  <Link href="/contact" className="text-gray-700 hover:text-gray-900 font-bold" onClick={closeMenu}>SIZE CHART</Link>
+                  <Link href="/sizechart" className="text-gray-700 hover:text-gray-900 font-bold" onClick={closeMenu}>SIZE CHART</Link>
                 </div>
               </SheetContent>
             </Sheet>
