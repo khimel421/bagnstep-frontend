@@ -206,7 +206,7 @@ export default function ProductDetailPage() {
         </div>
       </div>
       <VelocityScroll>BagNStep</VelocityScroll>
-      <RelatedProducts fetchUrl={`${process.env.NEXT_PRIVATE_API_URL}/products/related?category=${product.category}&exclude=${product.id}`} />
+      <RelatedProducts fetchUrl={`${process.env.NEXT_PUBLIC_API_URL}/products/related?category=${product.category}&exclude=${product.id}`} />
     </>
   );
 }
