@@ -27,7 +27,7 @@ export default function ProductCard({
   return (
     <Card className="group hover:shadow-xl transition-all border rounded-2xl overflow-hidden flex flex-col h-full">
       <Link href={`/products/${id}`}>
-        <CardHeader className="p-3 relative">
+        <CardHeader className=" relative">
           <Image
             src={validImage}
             alt={name}
@@ -41,7 +41,7 @@ export default function ProductCard({
 
       <CardContent className="p-4 flex flex-col gap-2 flex-grow">
         {(category as string).toLowerCase() === "shoes" && (
-          <div className="flex justify-center gap-2 flex-wrap mt-2 min-h-[40px]">
+          <div className="sm:flex justify-center  gap-2 flex-wrap mt-2 min-h-[40px] hidden">
             {filterSize.map((sizeObj, idx) => (
               <Button
                 key={idx}
@@ -69,12 +69,12 @@ export default function ProductCard({
         </Link> */}
 
         <Link href={`/products/${id}`}>
-          <h3 className="text-xl font-medium  text-center text-gray-800 line-clamp-2  ">
+          <h3 className="text-md sm:text-xl  font-bold  text-center text-gray-800 line-clamp-2  ">
             Product code : {productCode} 
           </h3>
         </Link>
 
-        <p className="text-center text-lg font-semibold text-black">৳{price}</p>
+        <p className="text-center text-lg font-semibold text-orange-400">৳{price}</p>
       </CardContent>
     </Card>
   );
