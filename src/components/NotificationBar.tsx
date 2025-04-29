@@ -55,7 +55,7 @@ export default function NotificationBar() {
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const res = await axios.get("http://localhost:5000/api/admin/orders/latest");
+                const res = await axios.get(`${process.env.NEXT_PRIVATE_API_URL}/orders/latest`);
                 setOrders(res.data);
             } catch (err) {
                 console.error("Failed to fetch orders:", err);

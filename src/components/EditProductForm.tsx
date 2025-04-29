@@ -93,7 +93,7 @@ export default function EditProductForm({
     const imageUrls = await handleImageUpload();
     const updatedImages = [...existingImages, ...imageUrls];
 
-    await fetch(`http://localhost:5000/api/admin/products/${product.id}`, {
+    await fetch(`${process.env.NEXT_PRIVATE_API_URL}/products/${product.id}`, {
       method: "PUT",
       body: JSON.stringify({
         name,
