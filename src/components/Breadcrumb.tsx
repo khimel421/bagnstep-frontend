@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation'; // ✅ usePathname for App Router (app/)
 
 export default function Breadcrumb() {
-  const pathname = usePathname(); // ✅ Works in App Router (useRouter() doesn't)
+  const pathname = usePathname(); 
   const pathSegments = pathname.split('/').filter(segment => segment);
 
   return (

@@ -9,7 +9,7 @@ import { motion } from "motion/react";
 import Breadcrumb from "@/components/Breadcrumb";
 import { useCart } from "@/context/CartContext";
 import { toast } from "sonner";
-import { Product, ProductSize } from "@/types/product";
+import { Product, ProductSize } from "@/types/types";
 import RelatedProducts from "@/components/RelatedProducts";
 import { VelocityScroll } from "@/components/magicui/scroll-based-velocity";
 import { Dots_v2 } from "@/components/Dots_v2";
@@ -58,7 +58,7 @@ export default function ProductDetailPage() {
     if (productId) fetchProduct();
   }, [productId]);
 
-  if (loading) return <Dots_v2/>;
+  if (loading) return <Dots_v2 />;
   if (!product) return <p className="text-center mt-10">Product not found</p>;
 
   const isShoes = product.category.toLowerCase() === "shoes";
@@ -66,9 +66,9 @@ export default function ProductDetailPage() {
 
   return (
     <>
-      
+
       <div className="flex justify-center">
-        
+
         <div className=" w-full  rounded-2xl bg-white flex flex-col lg:flex-row justify-center items-center lg:items-start gap-8">
           <ProductImageSlider product={{ product_name: product.name, images: product.images }} />
 
@@ -83,24 +83,28 @@ export default function ProductDetailPage() {
               <div className="mt-4">
                 <p className="font-semibold text-xl">Select Size:</p>
                 <div className="flex gap-2 mt-2">
-                  {product.sizes.map((size) => (
-                    <button
-                      key={size.id}
-                      className={`px-3 py-1 border rounded-md text-xl transition-all duration-200 ${selectedSize?.id === size.id
-                        ? "bg-black text-white border-black"
-                        : size.stock > 0
-                          ? "hover:bg-gray-200"
-                          : "opacity-50 cursor-not-allowed"
-                        }`}
-                      disabled={size.stock === 0}
-                      onClick={() => { noStock(size, size.stock) }}
-                    >
-                      {size.size}
-                    </button>
-                  ))}
+                  {product.sizes
+                    .slice()
+                    .sort((a, b) => Number(a.size) - Number(b.size))
+                    .map((size) => (
+                      <button
+                        key={size.id}
+                        className={`px-3 py-1 border rounded-md text-xl transition-all duration-200 ${selectedSize?.id === size.id
+                            ? "bg-black text-white border-black"
+                            : size.stock > 0
+                              ? "hover:bg-gray-200"
+                              : "opacity-50 cursor-not-allowed"
+                          }`}
+                        disabled={size.stock === 0}
+                        onClick={() => noStock(size, size.stock)}
+                      >
+                        {size.size}
+                      </button>
+                    ))}
                 </div>
               </div>
             )}
+
 
             {/* Quantity Selector */}
             <div className="flex items-center justify-start mt-4 gap-3">

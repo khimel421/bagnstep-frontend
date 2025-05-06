@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Order } from "@/types/product";
+import { Order } from "@/types/types";
 
 export const columns: ColumnDef<Order>[] = [
   {
