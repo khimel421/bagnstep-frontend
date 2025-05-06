@@ -1,6 +1,11 @@
+import axios from "axios";
+
 export const getCustomers = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/customers`);
-    if (!res.ok) throw new Error("Failed to fetch customers");
-    return res.json();
-  };
-  
+  try {
+    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/customers`);
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch customers", error);
+    throw new Error("Failed to fetch customers");
+  }
+};

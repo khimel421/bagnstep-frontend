@@ -32,7 +32,6 @@ function ViewItemsButton({ orderId }: { orderId: string }) {
   const router = useRouter();
   return (
     <Button
-      variant="outline"
       size="sm"
       onClick={() => router.push(`/admin/orders/${orderId}`)}
     >

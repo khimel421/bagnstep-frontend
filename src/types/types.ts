@@ -101,4 +101,5 @@ export interface Product {
     orderCount: number
     createdAt: Date
     lastOrderDate?: Date
+    orders:[]
   }
