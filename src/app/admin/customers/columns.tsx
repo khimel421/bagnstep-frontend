@@ -3,7 +3,19 @@ import { format } from "date-fns";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Order, OrderItem } from "@/types/types";
+import { useRouter } from "next/navigation";
 
+function ViewItemsButton({ id }: { id: string }) {
+  const router = useRouter();
+  return (
+    <Button
+      size="sm"
+      onClick={() => router.push(`/admin/customers/${id}`)}
+    >
+      View Items
+    </Button>
+  );
+}
 
 export const columns: ColumnDef<any>[] = [
   {
@@ -34,7 +46,7 @@ export const columns: ColumnDef<any>[] = [
       return (
         <Popover>
           <PopoverTrigger asChild>
-            <Button variant="outline" size="sm">View Orders</Button>
+            <ViewItemsButton id={row.original.id}></ViewItemsButton>
           </PopoverTrigger>
           <PopoverContent className="w-96 p-4 max-h-96 overflow-y-auto space-y-4">
             {orders.map((order: Order) => (

@@ -17,6 +17,7 @@ export default function OrderPage({ params }: { params: Promise<{ id: string }> 
       try {
         const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/orders/${id}`);
         setOrder(response.data);
+        console.log(response.data)
       } catch (err) {
         console.error('Error fetching order:', err);
         setError('Failed to load order details');
