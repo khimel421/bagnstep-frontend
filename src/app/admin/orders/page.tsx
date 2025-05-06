@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
-import { Order } from "@/types/product";
+import { Order } from "@/types/types";
 
 import { columns } from "./columns";
 import { Button } from "@/components/ui/button";
@@ -39,7 +39,7 @@ export default function OrdersPage() {
   }, [page, fetchOrders]); // Now stable
 
   return (
-    <div className="p-6 space-y-4">
+    <div className="lg:p-6 space-y-4">
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-bold">Order Management</h2>
         <Button onClick={fetchOrders} disabled={loading}>

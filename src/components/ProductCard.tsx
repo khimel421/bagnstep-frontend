@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ProductCardProps } from "@/types/product";
+import { ProductCardProps } from "@/types/types";
 
 export default function ProductCard({
   images = [],
@@ -41,20 +41,23 @@ export default function ProductCard({
 
       <CardContent className="p-4 flex flex-col gap-2 flex-grow">
         {(category as string).toLowerCase() === "shoes" && (
-          <div className="sm:flex justify-center  gap-2 flex-wrap mt-2 min-h-[40px] hidden">
-            {filterSize.map((sizeObj, idx) => (
-              <Button
-                key={idx}
-                variant={selectedSize === sizeObj.size ? "default" : "custom"}
-                size="sm"
-                className="px-3 py-1 text-xs rounded-md"
-                onClick={() => setSelectedSize(sizeObj.size)}
-              >
-                {sizeObj.size}
-              </Button>
-            ))}
+          <div className="sm:flex justify-center gap-2 flex-wrap mt-2 min-h-[40px] hidden">
+            {[...filterSize]
+              .sort((a, b) => Number(a.size) - Number(b.size)) // 🔁 Sort numerically
+              .map((sizeObj, idx) => (
+                <Button
+                  key={idx}
+                  variant={selectedSize === sizeObj.size ? "default" : "custom"}
+                  size="sm"
+                  className="px-3 py-1 text-xs rounded-md"
+                  onClick={() => setSelectedSize(sizeObj.size)}
+                >
+                  {sizeObj.size}
+                </Button>
+              ))}
           </div>
         )}
+
         {/* 
         <div className="mt-auto pt-3">
           <Button className="w-full" variant="secondary">
@@ -70,7 +73,7 @@ export default function ProductCard({
 
         <Link href={`/products/${id}`}>
           <h3 className="text-md sm:text-xl  font-bold  text-center text-gray-800 line-clamp-2  ">
-            Product code : {productCode} 
+            Product code : {productCode}
           </h3>
         </Link>
 

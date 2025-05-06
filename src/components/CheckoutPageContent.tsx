@@ -9,7 +9,7 @@ import Image from "next/image";
 import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { CartItem } from "@/types/product";
+import { CartItem } from "@/types/types";
 
 import { Dots_v2 } from "./Dots_v2";
 

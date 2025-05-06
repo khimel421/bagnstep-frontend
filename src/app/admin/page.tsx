@@ -8,6 +8,7 @@ import NotificationBar from "@/components/NotificationBar";
 export default function AdminDashboardPage() {
 
   const router = useRouter();
+  
 
   useEffect(() => {
     const token = localStorage.getItem("admin-token");

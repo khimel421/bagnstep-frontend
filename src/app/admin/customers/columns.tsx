@@ -2,7 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
-import { Order, OrderItem } from "@/types/product";
+import { Order, OrderItem } from "@/types/types";
 
 
 export const columns: ColumnDef<any>[] = [

@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { OrderItem } from "@/types/product";
+import { OrderItem } from "@/types/types";
 import Image from "next/image";
 
 interface OrderItemListProps {

@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { X } from "lucide-react";
 import { Image } from "antd";
-import { Product } from "@/types/product";
+import { Product } from "@/types/types";
 
 
 export default function EditProductForm() {

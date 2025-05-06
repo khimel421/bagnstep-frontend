@@ -55,8 +55,9 @@ export interface Product {
     quantity: number;
     price: number;
     product: {
-      id: string;
+      id?: string;
       name: string;
+      productCode: string;
       images: string[];
     };
     productSize?: {
@@ -64,16 +65,32 @@ export interface Product {
     };
   };
   
-  export type Order = {
+  export interface Order {
     id: string;
     status: string;
     totalAmount: number;
+    note?: string;
     createdAt: string;
     customer: {
       name: string;
+      phone: string;
+      address?: string;
     };
-    items: OrderItem[];
-  };
+    items: {
+      id: string;
+
+      quantity: number;
+      price: number;
+      product: {
+        name: string;
+        productCode: string;
+        images: string[];
+      };
+      productSize: {
+        size: string;
+      };
+    }[];
+  }
   
 
   export type Customer = {
