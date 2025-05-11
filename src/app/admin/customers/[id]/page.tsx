@@ -53,7 +53,7 @@ export default function Page() {
                   className="flex justify-between items-start border-b pb-2 last:border-none"
                 >
                   <div>
-                    <p className="font-semibold">{item.product.name}</p>
+                    <p className="font-semibold">{item.product.productCode}</p>
                     <p className="text-sm text-muted-foreground">
                       Size: {item.productSize?.size ?? "N/A"}
                     </p>

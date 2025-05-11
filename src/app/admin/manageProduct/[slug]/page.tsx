@@ -21,11 +21,13 @@ export default function EditProductForm() {
     const [newImages, setNewImages] = useState<File[]>([]);
     const [uploading, setUploading] = useState(false);
 
+    console.log(slug)
+
     // ✅ Fetch product details when component mounts
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`${process.env.NEXT_PRIVATE_API_URL}/products/${slug}`);
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/products/${slug}`);
                 const productData = response.data;
                 setProduct(productData);
                 setName(productData.name);

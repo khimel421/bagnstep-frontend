@@ -5,19 +5,24 @@ import axios from 'axios';
 import { toast } from 'sonner';
 import { Order } from '@/types/types';
 import Image from 'next/image';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export default function OrderPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
+  const [updating, setUpdating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [status, setStatus] = useState<string>('pending');
 
   useEffect(() => {
     const fetchOrder = async () => {
       try {
         const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/orders/${id}`);
         setOrder(response.data);
-        console.log(response.data)
+        setStatus(response.data.status);
       } catch (err) {
         console.error('Error fetching order:', err);
         setError('Failed to load order details');
@@ -30,6 +35,25 @@ export default function OrderPage({ params }: { params: Promise<{ id: string }> 
     fetchOrder();
   }, [id]);
 
+  const handleStatusUpdate = async () => {
+    if (!order) return;
+
+    try {
+      setUpdating(true);
+      const response = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/orders/${order.id}/status`, {
+        status,
+      });
+
+      setOrder((prev) => prev ? { ...prev, status } : prev);
+      toast.success('Order status updated successfully!');
+    } catch (error) {
+      console.error('Update failed:', error);
+      toast.error('Failed to update status');
+    } finally {
+      setUpdating(false);
+    }
+  };
+
   if (loading) return <div className="text-center py-20">Loading order details...</div>;
   if (error) return <div className="text-center text-red-500">{error}</div>;
   if (!order) return <div className="text-center">Order not found</div>;
@@ -38,7 +62,7 @@ export default function OrderPage({ params }: { params: Promise<{ id: string }> 
     <div className="p-6 max-w-5xl mx-auto my-10 bg-white shadow rounded-xl">
       <h1 className="text-3xl font-bold mb-8 text-center">Order #{order.id}</h1>
 
-      {/* Customer Information */}
+      {/* Customer Info */}
       <div className="mb-8">
         <h2 className="text-xl font-semibold mb-4 border-b pb-2">Customer Information</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
@@ -48,7 +72,7 @@ export default function OrderPage({ params }: { params: Promise<{ id: string }> 
         </div>
       </div>
 
-      {/* Ordered Items */}
+      {/* Items */}
       <div className="mb-8">
         <h2 className="text-xl font-semibold mb-4 border-b pb-2">Ordered Items</h2>
         <div className="space-y-4">
@@ -79,24 +103,31 @@ export default function OrderPage({ params }: { params: Promise<{ id: string }> 
         </div>
       </div>
 
-      {/* Order Summary */}
+      {/* Order Summary + Update Status */}
       <div>
         <h2 className="text-xl font-semibold mb-4 border-b pb-2">Order Summary</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
-          <p>
-            <span className="font-medium">Status:</span>{' '}
-            <span
-              className={`inline-block px-2 py-1 rounded text-white text-sm ${
-                order.status === 'pending'
-                  ? 'bg-yellow-500'
-                  : order.status === 'completed'
-                  ? 'bg-green-600'
-                  : 'bg-gray-500'
-              }`}
+          <div>
+            <Label>Status</Label>
+            <Select value={status} onValueChange={(value) => setStatus(value)}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="pending">Pending</SelectItem>
+                <SelectItem value="processing">Processing</SelectItem>
+                <SelectItem value="completed">Completed</SelectItem>
+                <SelectItem value="cancelled">Cancelled</SelectItem>
+              </SelectContent>
+            </Select>
+            <Button
+              onClick={handleStatusUpdate}
+              className="mt-2"
+              disabled={updating}
             >
-              {order.status}
-            </span>
-          </p>
+              {updating ? 'Updating...' : 'Update Status'}
+            </Button>
+          </div>
           <p><span className="font-medium">Total:</span> ৳{Number(order.totalAmount).toFixed(2)}</p>
           <p><span className="font-medium">Note:</span> {order.note || 'N/A'}</p>
           <p><span className="font-medium">Date:</span> {new Date(order.createdAt).toLocaleString()}</p>
