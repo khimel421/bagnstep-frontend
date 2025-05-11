@@ -1,6 +1,5 @@
 "use client";
 
-import { useOrders } from "@/hooks/useOrders";
 import { Order } from "@/types/types";
 import { useRouter } from "next/navigation";
 import {
@@ -13,14 +12,18 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 
-const SimpleTable = () => {
+interface SimpleTableProps {
+  orders: Order[];
+  onDelete?: (id: string) => void; // optional if you want to pass delete logic
+}
+
+const SimpleTable = ({ orders, onDelete }: SimpleTableProps) => {
   const router = useRouter();
-  const { orders, loading, error, deleteOrder } = useOrders();
 
   const handleDelete = (id: string) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this order?");
-    if (confirmDelete) {
-      deleteOrder(id);
+    if (confirmDelete && onDelete) {
+      onDelete(id);
     }
   };
 
@@ -36,7 +39,7 @@ const SimpleTable = () => {
   };
 
   return (
-    <div className="rounded-md border overflow-x-auto">
+    <div className="rounded-md border overflow-x-auto hidden md:block">
       <Table>
         <TableHeader>
           <TableRow>

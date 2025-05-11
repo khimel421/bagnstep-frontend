@@ -1,46 +1,40 @@
-"use client"
+"use client";
+import { useState } from "react";
 import SimpleTable from "@/components/NewOrderTable";
+import OrderCardList from "@/components/OrderCard";
 import { useOrders } from "@/hooks/useOrders";
 import { Order } from "@/types/types";
-import React, { useEffect, useState } from "react";
- // Import the SimpleTable component
-
 
 const OrdersPage: React.FC = () => {
-  // Sample orders data
-  const { orders, fetchOrders  } = useOrders();
+  const { orders } = useOrders();
+  const [searchQuery, setSearchQuery] = useState("");
 
-
-  // Fetch orders from an API on component mount
-  // useEffect(() => {
-  //   const fetchOrders = async () => {
-  //     try {
-  //       // Replace this with your actual API URL
-  //       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders`);
-        
-  //       // Check if the response is OK
-  //       if (!response.ok) {
-  //         throw new Error("Failed to fetch orders");
-  //       }
-
-  //       const data = await response.json();
-  //       setOrders(data.orders); // Set orders state with the fetched data
-  //     } catch (error: any) {
-  //       setError(error.message); // Set error state if there's an error
-  //     } finally {
-  //       setLoading(false); // Set loading to false once the request is completed
-  //     }
-  //   };
-
-  //   fetchOrders();
-  // }, []);
-
-  console.log(orders)
+  const filteredOrders = orders.filter((order: Order) => {
+    const name = order.customer.name?.toLowerCase() || "";
+    const phone = order.customer.phone || "";
+    return (
+      name.includes(searchQuery.toLowerCase()) ||
+      phone.includes(searchQuery)
+    );
+  });
 
   return (
-    <div className="p-4">
-      <h1 className="text-xl font-bold mb-4">Order List</h1>
-      <SimpleTable  />
+    <div className="p-4 mt-8">
+      <h1 className="text-4xl font-bold mb-4 cal-sans text-center">Order List</h1>
+
+      <input
+        type="text"
+        placeholder="Search by customer name or phone"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className="mb-6 px-3 py-2 border rounded-md w-full"
+      />
+
+      <div className="hidden md:block">
+        <SimpleTable orders={filteredOrders}  />
+      </div>
+
+      <OrderCardList orders={filteredOrders} />
     </div>
   );
 };
