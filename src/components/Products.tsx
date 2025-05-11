@@ -1,6 +1,6 @@
 "use client";
 
-import { useProducts } from "@/api/products";
+import { useProducts } from "@/hooks/products";
 import ProductCard from "@/components/ProductCard";
 import { useState, useEffect } from "react";
 import { VelocityScroll } from "./magicui/scroll-based-velocity";

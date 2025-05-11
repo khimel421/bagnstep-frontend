@@ -3,7 +3,7 @@ import { useState, useMemo } from "react";
 
 import ProductFilters from "@/components/productFilters";
 import ProductCard from "@/components/ProductCard";
-import { useProducts } from "@/api/products";
+import { useProducts } from "@/hooks/products";
 import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Filter } from "lucide-react";

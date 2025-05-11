@@ -134,7 +134,7 @@ export default function ProductsPage() {
             </CardContent>
 
             <div className="flex justify-center lg:justify-end items-center gap-4 mt-4">
-              <Link href={`/admin/manageProduct/${product.id}`}>
+              <Link href={`./manageProduct/${product.id}`}>
                 <Button className="flex items-center gap-2 py-2 px-3 rounded-lg">
                   <Pencil size={16} /> Update
                 </Button>
