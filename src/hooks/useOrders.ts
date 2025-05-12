@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Order } from "@/types/types";
 
-const API_URL = "http://localhost:5000/api/admin/orders";
+
 
 export const useOrders = () => {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -13,7 +13,7 @@ export const useOrders = () => {
   const fetchOrders = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(API_URL);
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/orders`);
       setOrders(response.data.orders);
     } catch (err: any) {
       setError(err.message || "Failed to fetch orders.");
@@ -38,7 +38,7 @@ export const useOrders = () => {
   const createOrder = async (newOrder: Partial<Order>) => {
     try {
       setLoading(true);
-      const response = await axios.post<Order>(API_URL, newOrder);
+      const response = await axios.post<Order>(`${process.env.NEXT_PUBLIC_API_URL}/orders`, newOrder);
       setOrders((prev) => [...prev, response.data]);
       return response.data;
     } catch (err: any) {
@@ -52,7 +52,7 @@ export const useOrders = () => {
   const updateOrder = async (id: string, updatedFields: Partial<Order>) => {
     try {
       setLoading(true);
-      const response = await axios.put<Order>(`${API_URL}/${id}`, updatedFields);
+      const response = await axios.put<Order>(`${process.env.NEXT_PUBLIC_API_URL}/orders/${id}`, updatedFields);
       setOrders((prev) =>
         prev.map((order) => (order.id === id ? response.data : order))
       );
@@ -68,7 +68,7 @@ export const useOrders = () => {
   const deleteOrder = async (id: string) => {
     try {
       setLoading(true);
-      await axios.delete(`${API_URL}/${id}`);
+      await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/orders/${id}`);
       setOrders((prev) => prev.filter((order) => order.id !== id));
     } catch (err: any) {
       setError(err.message || "Failed to delete order.");
