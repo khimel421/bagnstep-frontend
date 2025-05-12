@@ -2,12 +2,10 @@ import Link from "next/link";
 import { Facebook, Instagram, Locate, Phone, Store, Twitter } from "lucide-react";
 import { Button } from "./ui/button";
 import { FaFacebook, FaWhatsapp } from "react-icons/fa";
+import ShopLocation from "./ShopLocation";
+import ContactPhone from "./ContactPhone";
 
 export default function Footer() {
-
-  const phone = "8801836282169";
-  const message = encodeURIComponent("Hi, I'm interested in your shoes!");
-  const whatsappUrl = `https://wa.me/${phone}?text=${message}`;
 
   return (
     <footer className="bg-black text-white py-10  w-full">
@@ -20,18 +18,7 @@ export default function Footer() {
             <p className="text-gray-400">
               Premium quality shoes and fashion accessories for the modern lifestyle.
             </p>
-            <div className="flex gap-2 mt-2">
-              <Link href={"https://www.facebook.com/profile.php?id=100094382247247"} target="_blank" rel="noopener noreferrer">
-                <Button variant={'facebook'} className="w-full text-white">
-                  Facebook <FaFacebook />
-                </Button>
-              </Link>
-              <Link href={whatsappUrl} target="_blank" rel="noopener noreferrer">
-                <Button variant={'whatsapp'} className="w-full text-white">
-                  WhatsApp <FaWhatsapp />
-                </Button>
-              </Link>
-            </div>
+
           </div>
 
           {/* Column 2: Quick Links */}
@@ -45,17 +32,17 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div>
-            <h3 className="text-lg font-bold mb-4 flex items-center gap-2 "> <Phone /> CALL US </h3>
-            <p className="ml-2">+880 1836-282169</p>
-          </div>
-
-
+          <ContactPhone/>
 
           <div>
             <h3 className="text-lg font-bold mb-4 flex items-center gap-2 "> <Store />  Shop  </h3>
-            <p className="ml-2">House No:12/12, Road No:02, Nobinogor Housing Mohammadpur Dhaka 1207, Dhaka, Bangladesh</p>
+            <p className="ml-2 cal-sans">House No:12/12, Road No:02, Nobinogor Housing Mohammadpur Dhaka 1207, Dhaka, Bangladesh</p>
           </div>
+
+        </div>
+
+        <div>
+          <ShopLocation />
         </div>
 
 
