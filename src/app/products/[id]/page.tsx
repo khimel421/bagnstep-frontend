@@ -74,7 +74,7 @@ export default function ProductDetailPage() {
 
           <div className="p-4 flex flex-col">
             <Breadcrumb />
-            <h1 className="text-2xl font-bold mb-2">{product.name}</h1>
+            <h1 className="text-2xl font-bold mb-2">{product.productCode}</h1>
             <p className="text-gray-600 mb-4">{product.description}</p>
             <p className="text-3xl font-bold">${product.price}</p>
 
