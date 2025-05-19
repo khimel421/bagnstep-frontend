@@ -11,7 +11,7 @@ export default function AdminLoginPage() {
     const {setIsAuthenticated } = useAuth();
 
   const handleLogin = async () => {
-    const response = await fetch(`${process.env.NEXT_PRIVATE_API_URL}/login`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

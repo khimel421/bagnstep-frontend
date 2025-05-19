@@ -10,15 +10,12 @@ import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { CartItem } from "@/types/types";
-
 import { Dots_v2 } from "./Dots_v2";
-
 
 export default function CheckoutPageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { cart, clearCart } = useCart();
-
 
   const productId = searchParams.get("product");
   const selectedSize = searchParams.get("size");
@@ -43,12 +40,9 @@ export default function CheckoutPageContent() {
 
       let products: CartItem[] = [];
 
-      // If coming from direct product link
       if (productId) {
-        // First check cart
         let product = cart.find((item) => item.id === productId);
 
-        // If not in cart, fetch from API
         if (!product) {
           try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${productId}`);
@@ -61,7 +55,7 @@ export default function CheckoutPageContent() {
                 image: data.images[0],
                 quantity: quantity,
                 size: selectedSize || "Default",
-                category: data.category
+                category: data.category,
               };
             }
           } catch (error) {
@@ -72,15 +66,14 @@ export default function CheckoutPageContent() {
         if (product) {
           products = [{
             ...product,
-            productId: product.id, // ✅ Add this line
+            productId: product.id,
             size: product.category?.toLowerCase() === "shoes" ? selectedSize : "Default"
           }];
         }
       } else {
-        // Use cart items
         products = cart.map(item => ({
           ...item,
-          productId: item.id, // ✅ Add this line
+          productId: item.id,
           size: item.category?.toLowerCase() === "shoes" ? item.size : "Default"
         }));
       }
@@ -117,24 +110,33 @@ export default function CheckoutPageContent() {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: formData.name,
           phone: formData.mobile,
           address: formData.address,
           note: formData.note,
-          items: selectedProducts,
+          shippingCost: 0, // 👈 Add this if needed
+          items: selectedProducts.map((item) => ({
+            productId: item.productId,
+            size: item.size,
+            quantity: item.quantity,
+            price: item.price,
+          })),
         }),
       });
 
       if (response.ok) {
+        const order = await response.json(); // ✅ Get the order data from backend
+
         toast.success("Order Placed Successfully!", {
           description: "We will contact you soon for confirmation.",
         });
+
         clearCart();
-        setTimeout(() => router.push("/"), 2000);
+
+        // ✅ Redirect to receipt page using order ID
+        router.push(`/receipt/${order.id}`);
       } else {
         throw new Error("Failed to place order");
       }
@@ -146,29 +148,12 @@ export default function CheckoutPageContent() {
     }
   };
 
+
   const subTotal = selectedProducts.reduce((total, item) => total + item.price * item.quantity, 0);
   const total = subTotal + Number(selectedShipping);
 
-  if (loading) {
-    return <Dots_v2 />
-      ;
-  }
+  if (loading) return <Dots_v2 />;
 
-  console.log("Final Order Payload:", {
-    name: formData.name,
-    phone: formData.mobile,
-    address: formData.address,
-    note: formData.note,
-    items: selectedProducts.map((item) => ({
-      productId: item.productId,
-      size: item.size,
-      quantity: item.quantity,
-      price: item.price,
-    })),
-  });
-
-
-  console.log(selectedProducts)
   return (
     <div className="max-w-5xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6 text-center">Checkout - Cash on Delivery</h1>
@@ -203,11 +188,7 @@ export default function CheckoutPageContent() {
           ) : (
             <div className="text-center py-8">
               <p className="text-gray-500">No products in your order</p>
-              <Button
-                variant="outline"
-                className="mt-4"
-                onClick={() => router.push("/shop")}
-              >
+              <Button variant="outline" className="mt-4" onClick={() => router.push("/shop")}>
                 Continue Shopping
               </Button>
             </div>
@@ -221,10 +202,7 @@ export default function CheckoutPageContent() {
 
               <div className="mt-4">
                 <h3 className="font-semibold mb-2">Shipping:</h3>
-                <RadioGroup
-                  value={selectedShipping}
-                  onValueChange={setSelectedShipping}
-                >
+                <RadioGroup value={selectedShipping} onValueChange={setSelectedShipping}>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="70" id="inside-dhaka" />
                     <Label htmlFor="inside-dhaka">Inside Dhaka: <span className="font-semibold">70৳</span></Label>
@@ -294,7 +272,7 @@ export default function CheckoutPageContent() {
                 placeholder="Any special instructions?"
                 value={formData.note}
                 onChange={handleChange}
-                className="flex h-20 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex h-20 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
               />
             </div>
 
@@ -302,12 +280,7 @@ export default function CheckoutPageContent() {
               কোন প্রকার এডভান্স পেমেন্ট ছাড়াই সারাদেশে হোম ডেলিভারি। অর্ডার করুন নিশ্চিন্তে!
             </p>
 
-            <Button
-              type="submit"
-              className="w-full"
-              variant="custom"
-              disabled={selectedProducts.length === 0}
-            >
+            <Button type="submit" className="w-full">
               Place Order
             </Button>
           </form>

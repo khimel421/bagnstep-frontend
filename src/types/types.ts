@@ -70,6 +70,7 @@ export interface Product {
     status: string;
     totalAmount: number;
     note?: string;
+    shippingCost: number;
     createdAt: string;
     customer: {
       name: string;

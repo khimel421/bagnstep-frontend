@@ -1,7 +1,5 @@
 import Link from "next/link";
-import { Facebook, Instagram, Locate, Phone, Store, Twitter } from "lucide-react";
-import { Button } from "./ui/button";
-import { FaFacebook, FaWhatsapp } from "react-icons/fa";
+import {  Store} from "lucide-react";
 import ShopLocation from "./ShopLocation";
 import ContactPhone from "./ContactPhone";
 

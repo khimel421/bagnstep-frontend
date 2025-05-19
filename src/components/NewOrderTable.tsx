@@ -14,18 +14,18 @@ import { Button } from "@/components/ui/button";
 
 interface SimpleTableProps {
   orders: Order[];
-  onDelete?: (id: string) => void; // optional if you want to pass delete logic
+  // onDelete?: (id: string) => void; // optional if you want to pass delete logic
 }
 
-const SimpleTable = ({ orders, onDelete }: SimpleTableProps) => {
+const SimpleTable = ({ orders}: SimpleTableProps) => {
   const router = useRouter();
 
-  const handleDelete = (id: string) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this order?");
-    if (confirmDelete && onDelete) {
-      onDelete(id);
-    }
-  };
+  // const handleDelete = (id: string) => {
+  //   const confirmDelete = window.confirm("Are you sure you want to delete this order?");
+  //   if (confirmDelete && onDelete) {
+  //     onDelete(id);
+  //   }
+  // };
 
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
@@ -49,7 +49,7 @@ const SimpleTable = ({ orders, onDelete }: SimpleTableProps) => {
             <TableHead>Total</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Created</TableHead>
-            <TableHead>Actions</TableHead>
+            {/* <TableHead>Actions</TableHead> */}
             <TableHead>View</TableHead>
           </TableRow>
         </TableHeader>
@@ -69,7 +69,7 @@ const SimpleTable = ({ orders, onDelete }: SimpleTableProps) => {
                 </TableCell>
                 <TableCell className="capitalize">{order.status}</TableCell>
                 <TableCell>{formatDate(order.createdAt)}</TableCell>
-                <TableCell>
+                {/* <TableCell>
                   <Button
                     variant="destructive"
                     size="sm"
@@ -77,7 +77,7 @@ const SimpleTable = ({ orders, onDelete }: SimpleTableProps) => {
                   >
                     Delete
                   </Button>
-                </TableCell>
+                </TableCell> */}
                 <TableCell>
                   <Button
                     variant="default"

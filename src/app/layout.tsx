@@ -23,7 +23,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "E-commerce Store",
+  title: "BAGNSTEP",
   description: "Best shoes and bags online",
 };
 
