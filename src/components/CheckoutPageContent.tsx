@@ -136,7 +136,7 @@ export default function CheckoutPageContent() {
         clearCart();
 
         // ✅ Redirect to receipt page using order ID
-        router.push(`/receipt/${order.id}`);
+        // router.push(`/receipt/${order.id}`);
       } else {
         throw new Error("Failed to place order");
       }
