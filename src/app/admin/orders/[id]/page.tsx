@@ -5,7 +5,6 @@ import axios from 'axios';
 import { toast } from 'sonner';
 import { Order } from '@/types/types';
 import Image from 'next/image';
-import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
@@ -13,9 +12,11 @@ export default function OrderPage({ params }: { params: Promise<{ id: string }> 
   const { id } = use(params);
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
-  const [updating, setUpdating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState<string>('pending');
+  const totalQuantity = order?.items?.reduce((acc, item) => acc + item.quantity, 0) || 0;
+  const subTotal = order?.items?.reduce((acc, item) => acc + (item.price * item.quantity), 0) || 0;
+
 
   useEffect(() => {
     const fetchOrder = async () => {
@@ -35,22 +36,39 @@ export default function OrderPage({ params }: { params: Promise<{ id: string }> 
     fetchOrder();
   }, [id]);
 
-  const handleStatusUpdate = async () => {
-    if (!order) return;
+  console.log(order)
 
-    try {
-      setUpdating(true);
-      const response = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/orders/${order.id}/status`, {
-        status,
-      });
+  // Auto-trigger update when status changes
+  useEffect(() => {
+    const updateStatus = async () => {
+      if (!order) return;
+      try {
+        await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/orders/${order.id}/status`, { status });
+        setOrder((prev) => prev ? { ...prev, status } : prev);
+        toast.success('Order status updated successfully!');
+      } catch (error) {
+        console.error('Update failed:', error);
+        toast.error('Failed to update status');
+      }
+    };
 
-      setOrder((prev) => prev ? { ...prev, status } : prev);
-      toast.success('Order status updated successfully!');
-    } catch (error) {
-      console.error('Update failed:', error);
-      toast.error('Failed to update status');
-    } finally {
-      setUpdating(false);
+    if (order && status !== order.status) {
+      updateStatus();
+    }
+  }, [status]);
+
+  const getStatusStyle = (status: string) => {
+    switch (status) {
+      case 'pending':
+        return 'text-yellow-600 bg-yellow-100';
+      case 'processing':
+        return 'text-blue-600 bg-blue-100';
+      case 'completed':
+        return 'text-green-600 bg-green-100';
+      case 'cancelled':
+        return 'text-red-600 bg-red-100';
+      default:
+        return 'text-gray-600 bg-gray-100';
     }
   };
 
@@ -77,6 +95,7 @@ export default function OrderPage({ params }: { params: Promise<{ id: string }> 
         <h2 className="text-xl font-semibold mb-4 border-b pb-2">Ordered Items</h2>
         <div className="space-y-4">
           {order.items?.length > 0 ? (
+
             order.items.map((item) => (
               <div
                 key={item.id}
@@ -103,7 +122,7 @@ export default function OrderPage({ params }: { params: Promise<{ id: string }> 
         </div>
       </div>
 
-      {/* Order Summary + Update Status */}
+      {/* Order Summary */}
       <div>
         <h2 className="text-xl font-semibold mb-4 border-b pb-2">Order Summary</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
@@ -120,17 +139,18 @@ export default function OrderPage({ params }: { params: Promise<{ id: string }> 
                 <SelectItem value="cancelled">Cancelled</SelectItem>
               </SelectContent>
             </Select>
-            <Button
-              onClick={handleStatusUpdate}
-              className="mt-2"
-              disabled={updating}
-            >
-              {updating ? 'Updating...' : 'Update Status'}
-            </Button>
+            <div className={`inline-block px-3 py-1 mt-2 rounded text-sm font-medium ${getStatusStyle(status)}`}>
+              {status.charAt(0).toUpperCase() + status.slice(1)}
+            </div>
           </div>
-          <p><span className="font-medium">Total:</span> ৳{Number(order.totalAmount).toFixed(2)}</p>
+
+          <p><span className="font-medium">Total Quantity:</span> {totalQuantity}</p>
+          <p><span className="font-medium">Subtotal (Products):</span> ৳{subTotal.toFixed(2)}</p>
+          <p><span className="font-medium">Shipping Cost:</span> ৳{Number(order.shippingCost).toFixed(2)}</p>
+          <p><span className="font-medium">Grand Total:</span> ৳{Number(order.totalAmount).toFixed(2)}</p>
           <p><span className="font-medium">Note:</span> {order.note || 'N/A'}</p>
           <p><span className="font-medium">Date:</span> {new Date(order.createdAt).toLocaleString()}</p>
+
         </div>
       </div>
     </div>

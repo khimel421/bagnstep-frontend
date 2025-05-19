@@ -22,7 +22,7 @@ export const useOrders = () => {
     }
   };
 
-  
+
   // Auto refetch every 30 minutes
   useEffect(() => {
     fetchOrders(); // Initial fetch on mount
@@ -64,6 +64,21 @@ export const useOrders = () => {
     }
   };
 
+  // Get a single order by ID
+  const getOrderById = async (id: string): Promise<Order | null> => {
+    try {
+      setLoading(true);
+      const response = await axios.get<Order>(`${process.env.NEXT_PUBLIC_API_URL}/orders/${id}`);
+      return response.data;
+    } catch (err: any) {
+      setError(err.message || "Failed to fetch order.");
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
   // Delete an order
   const deleteOrder = async (id: string) => {
     try {
@@ -89,6 +104,7 @@ export const useOrders = () => {
     fetchOrders,
     createOrder,
     updateOrder,
+    getOrderById,
     deleteOrder,
     setOrders, // exposed if you want to manually update from outside
   };
