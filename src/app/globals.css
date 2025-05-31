@@ -2,16 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+.admin-card{
+  @apply shadow rounded-lg text-center md:text-left py-8 pl-4
+}
+
 
 @import url('https://fonts.googleapis.com/css2?family=Cal+Sans&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 body {
   font-family: "Cal Sans", sans-serif;
 }
 
+.font-inter {
+  font-family: "Inter", sans-serif;
+  font-style: normal;
+}
+
+
 .cal-sans{
   font-family: "Cal Sans", sans-serif;
   font-style: normal;
+  font-weight: 400;
 }
 
 @layer base {

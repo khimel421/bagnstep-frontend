@@ -9,9 +9,9 @@ export default function TopSellingProducts() {
   const { data: topProducts, isLoading } = useTopProducts();
 
   return (
-    <Card className="shadow rounded-xl mt-6 text-center p-2">
+    <Card className="admin-card mt-4">
       <CardHeader>
-        <CardTitle className="mb-4">Top Selling Products</CardTitle>
+        <CardTitle className="mb-4 text-left">Top Selling Products</CardTitle>
       </CardHeader>
       <CardContent>
         {isLoading ? (

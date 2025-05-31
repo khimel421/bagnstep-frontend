@@ -55,7 +55,7 @@ export default function OrderPage({ params }: { params: Promise<{ id: string }> 
     if (order && status !== order.status) {
       updateStatus();
     }
-  }, [status]);
+  }, [status,order]);
 
   const getStatusStyle = (status: string) => {
     switch (status) {

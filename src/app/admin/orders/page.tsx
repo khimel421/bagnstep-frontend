@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import SimpleTable from "@/components/NewOrderTable";
-import OrderCardList from "@/components/OrderCard";
+import OrderCardList from "@/components/admin-components/OrderCard";
 import { useOrders } from "@/hooks/useOrders";
 import { Order } from "@/types/types";
 

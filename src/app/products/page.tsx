@@ -12,6 +12,8 @@ import { Dots_v2 } from "@/components/Dots_v2";
 export default function ProductsPage() {
   const { data: products = [], isLoading, isError } = useProducts();
 
+
+
   const [filters, setFilters] = useState<{
     sizes: string[];
     categories: string[];
