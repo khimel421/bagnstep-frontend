@@ -97,7 +97,7 @@ export default function AdminDashboardPage() {
     <div className="md:p-6 lg:p-8 mb-16">
       <h1 className="text-2xl font-bold">Dashboard</h1>
       <p className="text-lg font-medium text-[#615655]">
-        Welcome back, here's what's happening with your inventory today.
+        Welcome back, heres whats happening with your inventory today.
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4  gap-6 mt-4">
