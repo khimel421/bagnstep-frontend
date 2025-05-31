@@ -6,7 +6,7 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import { Order } from "@/types/types";
 
@@ -18,12 +18,12 @@ export default function OrderCardList({ orders }: OrderCardListProps) {
   const router = useRouter();
 
   return (
-    <div className="space-y-6 md:hidden">
+    <div className="space-y-6 md:hidden ">
       <div className="grid grid-cols-1 gap-4">
         {orders.map((order) => (
-          <Card key={order.id}>
+          <Card key={order.id} className="">
             <CardHeader />
-            <CardContent className="flex flex-col gap-2">
+            <CardContent className="flex flex-col gap-2 p-2">
               <p className="text-base font-semibold">Customer: {order.customer.name}</p>
               <p className="text-sm text-muted-foreground">Phone: {order.customer.phone}</p>
               {order.customer.address && (

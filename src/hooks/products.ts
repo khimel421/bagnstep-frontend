@@ -15,6 +15,13 @@ const fetchOrders = async (): Promise<Order[]> => {
   return response.json();
 };
 
+const fetchLowStock = async (): Promise<Product[]> => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/low-stock`);
+  if (!response.ok) throw new Error("Network response was not ok");
+  return response.json();
+};
+
+
 export const useProducts = () => {
   return useQuery<Product[]>({
     queryKey: ["products"],
@@ -29,3 +36,11 @@ export const useOrders = () => {
   });
   
 };
+
+
+export const useLowStock = () => {
+return useQuery<Product[]>({
+    queryKey: ["products"],
+    queryFn: fetchLowStock,
+  });
+}

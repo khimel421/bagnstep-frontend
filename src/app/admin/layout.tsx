@@ -31,7 +31,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   if (loading) return null;
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-[#f9fafc]">
       {!isLoginPage && (
         <>
           <div className="hidden lg:block">
@@ -47,7 +47,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {!isLoginPage && (
           <Link href={"/"} className="flex justify-center">
             <figure>
-              <Image src="/images/logo.png" width={200} height={100} alt="logo" />
+              {/* <Image src="/images/logo.png" width={200} height={100} alt="logo" /> */}
             </figure>
           </Link>
         )}
