@@ -70,8 +70,8 @@ const SalesChart = () => {
       try {
         const endpoint =
           view === 'weekly'
-            ? 'http://localhost:5000/api/admin/stats/WeeklySales'
-            : 'http://localhost:5000/api/admin/stats/MonthlySales';
+            ? `${process.env.NEXT_PUBLIC_API_URL}/stats/WeeklySales`
+            : `${process.env.NEXT_PUBLIC_API_URL}/stats/MonthlySales`;
 
         const res = await axios.get(endpoint);
 
