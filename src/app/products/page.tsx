@@ -1,5 +1,6 @@
 "use client";
 import { useState, useMemo } from "react";
+import { useCallback } from "react";
 
 import ProductFilters from "@/components/productFilters";
 import ProductCard from "@/components/ProductCard";
@@ -53,10 +54,10 @@ export default function ProductsPage() {
 
 
 
-  const handleFilterChange = (newFilters: typeof filters) => {
-    setFilters(newFilters);
-    setHasUserFiltered(true);
-  };
+const handleFilterChange = useCallback((newFilters: typeof filters) => {
+  setFilters(newFilters);
+  setHasUserFiltered(true);
+}, []);
 
   if (isLoading) return <div className="p-4"><Dots_v2/></div>;
   if (isError) return <div className="p-4 text-red-500">Failed to load products.</div>;
