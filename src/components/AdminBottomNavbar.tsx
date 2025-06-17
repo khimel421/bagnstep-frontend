@@ -4,8 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { 
-  Home, Package, ShoppingCart, Users,  PlusCircle 
+  Home, Package, ShoppingCart, Users,  PlusCircle, 
+  LogOut
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const adminLinks = [
   { name: "Dashboard", href: "/admin", icon: Home },
@@ -18,6 +20,13 @@ const adminLinks = [
 
 export default function AdminBottomNavbar() {
   const pathname = usePathname();
+    const router = useRouter();
+
+    const handleLogout = () => {
+    localStorage.removeItem("admin-token"); // Clear JWT
+    router.push("/admin/login"); // Redirect to login page
+  };
+
 
   return (
     <nav className="z-10 fixed bottom-0 left-0 w-full bg-gray-900 border-t border-gray-800 shadow-md">
@@ -30,6 +39,14 @@ export default function AdminBottomNavbar() {
             </span>
           </Link>
         ))}
+
+        <button
+          onClick={handleLogout}
+          className="flex flex-col items-center gap-1"
+        >
+          <LogOut className="w-5 h-5 text-red-500" />
+          <span className="text-xs text-red-500 font-medium">Logout</span>
+        </button>
 
         {/* Add Product Button - Centered */}
         <Link
