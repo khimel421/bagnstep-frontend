@@ -136,6 +136,7 @@ export default function EditProductForm() {
   return (
     <>
       <h1 className="text-center font-bold text-4xl my-8">Update Product</h1>
+      <h1></h1>
 
       <form onSubmit={handleUpdate} className="flex flex-col gap-4 mb-4 pb-20">
         {/* Existing Images */}
