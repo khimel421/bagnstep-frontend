@@ -19,9 +19,10 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           {!isAdminRoute && <Navbar />}
           <main className="flex-grow">{children}</main>
           <Toaster position="top-center" />
-          {!isAdminRoute && <BottomNavbar />}
-          {!isAdminRoute && <Footer />}
+
         </div>
+        {!isAdminRoute && <BottomNavbar />}
+        {!isAdminRoute && <Footer />}
       </QueryClientProvider>
 
     </>
