@@ -10,6 +10,8 @@ export default function ShopLocation() {
           className="w-full h-full"
           style={{ border: 0 }}
           allowFullScreen
+          width={300}
+          height={300}
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
         ></iframe>
