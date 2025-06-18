@@ -29,6 +29,7 @@ export default function ProductCard({
       <Link href={`/products/${id}`}>
         <CardHeader className=" relative">
           <Image
+            priority
             src={validImage}
             alt={name}
             width={300}
