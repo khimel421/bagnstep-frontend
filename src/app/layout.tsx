@@ -4,7 +4,7 @@ import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import ClientLayout from "@/components/ClientLayout";
 import { Lato } from 'next/font/google'
-
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const lato = Lato({
   subsets: ['latin'], 
@@ -33,6 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased lato.classname`}>
         <CartProvider>
           <ClientLayout>{children}</ClientLayout>
+           <SpeedInsights />
         </CartProvider>
       </body>
     </html>
