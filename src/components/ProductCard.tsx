@@ -30,6 +30,8 @@ export default function ProductCard({
         <CardHeader className=" relative">
           <Image
             priority
+            placeholder="blur"
+            blurDataURL="/249.jpg"
             src={validImage}
             alt={name}
             width={300}
