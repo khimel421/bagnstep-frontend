@@ -201,9 +201,9 @@ export default function ProductDetailPage() {
               <p className="text-lg">
                 <span className="font-semibold">Stock:</span> {isShoes
                   ? selectedSize
-                    ? `${selectedSize.stock} available for size ${selectedSize.size}`
+                    ? `availabel`
                     : "Select a size to see stock"
-                  : `${product.sizes.find(size => size.size === "Default")?.stock || 0} available`}
+                  : ` available`}
               </p>
             </div>
           </div>
