@@ -76,7 +76,7 @@ export default function ProductDetailPage() {
             <Breadcrumb />
             <h1 className="text-2xl font-bold mb-2">{product.productCode}</h1>
             <p className="text-gray-600 mb-4  lg:max-w-96">{product.description}</p>
-            <p className="text-3xl font-bold">${product.price}</p>
+            <p className="text-3xl font-bold">৳ {product.price}</p>
 
             {/* Size Selection - Only for Shoes */}
             {isShoes && (
@@ -201,9 +201,9 @@ export default function ProductDetailPage() {
               <p className="text-lg">
                 <span className="font-semibold">Stock:</span> {isShoes
                   ? selectedSize
-                    ? `${selectedSize.stock} available for size ${selectedSize.size}`
+                    ? `availabel`
                     : "Select a size to see stock"
-                  : `${product.sizes.find(size => size.size === "Default")?.stock || 0} available`}
+                  : ` available`}
               </p>
             </div>
           </div>
