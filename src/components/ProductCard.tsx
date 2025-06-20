@@ -36,7 +36,7 @@ export default function ProductCard({
             alt={name}
             width={300}
             height={300}
-            className="w-full h-64 object-cover rounded-xl transition-transform duration-300 group-hover:scale-105"
+            className="w-full  object-cover rounded-xl transition-transform duration-300 group-hover:scale-105"
           />
           <Badge className="absolute top-3 left-3 bg-green-500 text-white">New</Badge>
         </CardHeader>
