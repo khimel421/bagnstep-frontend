@@ -11,6 +11,15 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { CartItem } from "@/types/types";
 import { Dots_v2 } from "./Dots_v2";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
+import { bangladeshDistricts } from '@/data/district'
 
 export default function CheckoutPageContent() {
   const searchParams = useSearchParams();
@@ -26,9 +35,12 @@ export default function CheckoutPageContent() {
   const [formData, setFormData] = useState({
     name: "",
     mobile: "",
-    address: "",
+    address: "",   // House/Village
+    thana: "",     // Thana/Upazila
+    district: "",  // District
     note: ""
   });
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -100,6 +112,15 @@ export default function CheckoutPageContent() {
       return;
     }
 
+    const fullAddress = [
+      formData.address,
+      formData.thana,
+      formData.district
+    ]
+      .filter(Boolean)
+      .join(", ");
+
+
     if (selectedProducts.length === 0) {
       toast.error("No Products", {
         description: "Your cart is empty.",
@@ -114,7 +135,7 @@ export default function CheckoutPageContent() {
         body: JSON.stringify({
           name: formData.name,
           phone: formData.mobile,
-          address: formData.address,
+          address: fullAddress,
           note: formData.note,
           shippingCost: 0, // 👈 Add this if needed
           items: selectedProducts.map((item) => ({
@@ -226,7 +247,7 @@ export default function CheckoutPageContent() {
           <h2 className="text-xl font-semibold mb-4">Billing & Shipping</h2>
           <form onSubmit={handlePlaceOrder} className="space-y-4">
             <div>
-              <Label htmlFor="name">Full Name *</Label>
+              <Label htmlFor="name">Full Name ( ক্রেতার নাম )*</Label>
               <Input
                 type="text"
                 id="name"
@@ -239,7 +260,7 @@ export default function CheckoutPageContent() {
             </div>
 
             <div>
-              <Label htmlFor="mobile">Mobile Number *</Label>
+              <Label htmlFor="mobile">Mobile Number ( মোবাইল নং ) *</Label>
               <Input
                 type="tel"
                 id="mobile"
@@ -252,16 +273,49 @@ export default function CheckoutPageContent() {
             </div>
 
             <div>
-              <Label htmlFor="address">Delivery Address *</Label>
+              <Label htmlFor="address">Detail Address ( বিস্তারিত ঠিকানা ) *</Label>
               <Input
                 type="text"
                 id="address"
                 name="address"
-                placeholder="Full address with area details"
+                placeholder="House/Road/Village/Area name"
                 value={formData.address}
                 onChange={handleChange}
                 required
               />
+            </div>
+            <div>
+              <Label htmlFor="address">Thana/Upazila (থানা/উপজেলা) *</Label>
+              <Input
+                type="text"
+                id="address"
+                name="thana"
+                placeholder="থানা/উপজেলা"
+                value={formData.thana}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="address">District  ( জেলা ) *</Label>
+              <Select
+                value={formData.district}
+                onValueChange={(value) =>
+                  setFormData((prev) => ({ ...prev, district: value }))
+                }
+              >
+                <SelectTrigger className="">
+                  <SelectValue placeholder="Select an option" />
+                </SelectTrigger>
+                <SelectContent>
+                  {
+                    bangladeshDistricts.map((district, idx) => {
+                      return <SelectItem key={idx} value={district}>{district}</SelectItem>
+                    })
+                  }
+                </SelectContent>
+              </Select>
             </div>
 
             <div>

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart, Minus, Plus } from "lucide-react";
+import { ShoppingCart, Minus, Plus, Check } from "lucide-react";
 import ProductImageSlider from "@/components/ProductImageSlider";
 import { motion } from "motion/react";
 import Breadcrumb from "@/components/Breadcrumb";
@@ -58,6 +58,8 @@ export default function ProductDetailPage() {
     if (productId) fetchProduct();
   }, [productId]);
 
+  console.log(product?.sizes[0].stock)
+
   if (loading) return <Dots_v2 />;
   if (!product) return <p className="text-center mt-10">Product not found</p>;
 
@@ -95,7 +97,7 @@ export default function ProductDetailPage() {
                               ? "hover:bg-gray-200"
                               : "opacity-50 cursor-not-allowed"
                           }`}
-                        disabled={size.stock === 0}
+                        // disabled={size.stock === 0}
                         onClick={() => noStock(size, size.stock)}
                       >
                         {size.size}
@@ -198,13 +200,12 @@ export default function ProductDetailPage() {
               <p className="text-lg">
                 <span className="font-semibold">Category:</span> {product.category}
               </p>
-              <p className="text-lg">
-                <span className="font-semibold">Stock:</span> {isShoes
-                  ? selectedSize
-                    ? `availabel`
-                    : "Select a size to see stock"
-                  : ` available`}
-              </p>
+              <div className="text-lg flex">
+                <span className="font-semibold">Stock:</span>
+                {
+                  isShoes ? selectedSize ? selectedSize.stock > 0 ? <p className="text-green-400 flex ml-2">In Stock <Check /></p> : <p>Out of Stock</p> : " Select a size" : ""
+                }
+              </div>
             </div>
           </div>
         </div>
