@@ -125,6 +125,7 @@ export default function AddProductForm() {
   };
 
   return (
+    
     <form
       onSubmit={handleSubmit}
       className="flex flex-col gap-4 p-4 border rounded-lg bg-white shadow py-20"
