@@ -19,6 +19,7 @@ export interface Product {
     productCode: string;
     description?: string;
     price: number;
+    discountPrice : number;
     stock: number;
     category: string;
     images: string[];
@@ -32,6 +33,7 @@ export interface Product {
     productCode: string;
     images: string[];
     price: number;
+    discountPrice: number;
     category: string;
     sizes: ProductSize[];
   };

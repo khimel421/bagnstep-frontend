@@ -16,7 +16,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import SizeDialog from "@/components/SizeDialog";
 import EditProductDialog from "@/components/EditProductForm";
-import DeleteProductDialog from "@/components/DeleteProductDialog";
+
+import ArchiveProductDialog from "@/components/DeleteProductDialog";
 
 /**
  * Env
@@ -202,11 +203,7 @@ export default function ProductInventoryPage() {
                 <TableCell className="text-right">
 
                   <EditProductDialog product={item} onUpdated={fetchProducts} />
-                  <DeleteProductDialog
-                    productId={item.id}
-                    productName={item.name}
-                    onDeleted={fetchProducts}
-                  />
+                  <ArchiveProductDialog productId={item.id} productName={item.name}/>
                 </TableCell>
               </TableRow>
             ))}
