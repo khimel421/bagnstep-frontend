@@ -25,7 +25,7 @@ export function LettersPullUp({
   const ref = React.useRef(null);
   const isInView = useInView(ref, { once: true });
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center items-center mb-4">
       {splittedText.map((current, i) => (
         <motion.div
           key={i}

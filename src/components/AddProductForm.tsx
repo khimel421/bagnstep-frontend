@@ -20,6 +20,7 @@ export default function AddProductForm() {
   const [productCode, setProductCode] = useState(""); // ✅ New state
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
+  const [discountPrice, setDiscountPrice] = useState("");
   const [stock, setStock] = useState("");
   const [category, setCategory] = useState("");
   const [sizes, setSizes] = useState([
@@ -88,6 +89,8 @@ export default function AddProductForm() {
       productCode, // ✅ Include productCode in data
       description,
       price: parseFloat(price),
+      discountPrice : parseFloat(discountPrice),
+ 
       category,
       images: imageUrls,
       sizes: category === "Shoes"
@@ -107,6 +110,7 @@ export default function AddProductForm() {
     setProductCode(""); // ✅ Reset productCode
     setDescription("");
     setPrice("");
+    setDiscountPrice("");
     setStock("");
     setCategory("");
     setSizes([
@@ -123,6 +127,8 @@ export default function AddProductForm() {
 
     setTimeout(() => setResetTrigger(false), 100);
   };
+
+  console.log(discountPrice)
 
   return (
     
@@ -153,6 +159,13 @@ export default function AddProductForm() {
         value={price}
         onChange={(e) => setPrice(e.target.value)}
         required
+      />
+
+      <Input
+        placeholder="Discount Price"
+        type="number"
+        value={discountPrice}
+        onChange={(e) => setDiscountPrice(e.target.value)}
       />
 
       {/* Category Select */}

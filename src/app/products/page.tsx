@@ -110,6 +110,7 @@ const handleFilterChange = useCallback((newFilters: typeof filters) => {
                 productCode={product.productCode}
                 images={product.images}
                 price={product.price}
+                discountPrice={product.discountPrice}
                 category={product.category}
                 sizes={product.sizes}
               />
