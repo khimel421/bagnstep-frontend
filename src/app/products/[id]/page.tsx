@@ -78,7 +78,15 @@ export default function ProductDetailPage() {
             <Breadcrumb />
             <h1 className="text-2xl font-bold mb-2">{product.productCode}</h1>
             <p className="text-gray-600 mb-4  lg:max-w-96">{product.description}</p>
-            <p className="text-3xl font-bold">৳ {product.price}</p>
+            {product.discountPrice ? (
+              <>
+                <p className="text-lg font-bold line-through">৳ {product.price}</p>
+                <p className="text-3xl font-bold">৳ {product.discountPrice}</p>
+              </>
+            ) : (
+              <p className="text-3xl font-bold">৳ {product.price}</p>
+            )}
+
 
             {/* Size Selection - Only for Shoes */}
             {isShoes && (
@@ -92,10 +100,10 @@ export default function ProductDetailPage() {
                       <button
                         key={size.id}
                         className={`px-3 py-1 border rounded-md text-xl transition-all duration-200 ${selectedSize?.id === size.id
-                            ? "bg-black text-white border-black"
-                            : size.stock > 0
-                              ? "hover:bg-gray-200"
-                              : "opacity-50 cursor-not-allowed"
+                          ? "bg-black text-white border-black"
+                          : size.stock > 0
+                            ? "hover:bg-gray-200"
+                            : "opacity-50 cursor-not-allowed"
                           }`}
                         // disabled={size.stock === 0}
                         onClick={() => noStock(size, size.stock)}
@@ -161,7 +169,7 @@ export default function ProductDetailPage() {
                   addToCart({
                     id: product.id,
                     name: product.name,
-                    price: product.price,
+                    price: product.discountPrice,
                     image: product.images[0],
                     size: isShoes ? selectedSize?.size : "Default",
                     quantity,

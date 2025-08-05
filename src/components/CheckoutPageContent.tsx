@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/select"
 
 import { bangladeshDistricts } from '@/data/district'
+import { redirect } from 'next/navigation'
 
 export default function CheckoutPageContent() {
   const searchParams = useSearchParams();
@@ -137,7 +138,7 @@ export default function CheckoutPageContent() {
           phone: formData.mobile,
           address: fullAddress,
           note: formData.note,
-          shippingCost: 0, // 👈 Add this if needed
+          shippingCost: selectedShipping,
           items: selectedProducts.map((item) => ({
             productId: item.productId,
             size: item.size,
@@ -150,6 +151,10 @@ export default function CheckoutPageContent() {
       if (response.ok) {
         const order = await response.json(); // ✅ Get the order data from backend
 
+     
+        console.log(order)
+        
+
         toast.success("Order Placed Successfully!", {
           description: "We will contact you soon for confirmation.",
         });
@@ -157,6 +162,7 @@ export default function CheckoutPageContent() {
         clearCart();
 
         // ✅ Redirect to receipt page using order ID
+        console.log(order)
         router.push(`/`);
       } else {
         throw new Error("Failed to place order");
