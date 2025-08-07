@@ -169,7 +169,7 @@ export default function ProductDetailPage() {
                   addToCart({
                     id: product.id,
                     name: product.name,
-                    price: product.discountPrice,
+                    price: product.discountPrice ?? product.price,
                     image: product.images[0],
                     size: isShoes ? selectedSize?.size : "Default",
                     quantity,

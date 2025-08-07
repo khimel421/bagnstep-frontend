@@ -9,7 +9,7 @@ import Image from "next/image";
 import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { CartItem } from "@/types/types";
+
 import { Dots_v2 } from "./Dots_v2";
 import {
   Select,
@@ -20,7 +20,10 @@ import {
 } from "@/components/ui/select"
 
 import { bangladeshDistricts } from '@/data/district'
-import { redirect } from 'next/navigation'
+import { CartItems } from "@/types/types";
+
+
+
 
 export default function CheckoutPageContent() {
   const searchParams = useSearchParams();
@@ -31,7 +34,7 @@ export default function CheckoutPageContent() {
   const selectedSize = searchParams.get("size");
   const quantity = Number(searchParams.get("quantity")) || 1;
 
-  const [selectedProducts, setSelectedProducts] = useState<CartItem[]>([]);
+  const [selectedProducts, setSelectedProducts] = useState<CartItems[]>([]);
   const [selectedShipping, setSelectedShipping] = useState("70");
   const [formData, setFormData] = useState({
     name: "",
@@ -51,7 +54,7 @@ export default function CheckoutPageContent() {
         return;
       }
 
-      let products: CartItem[] = [];
+      let products: CartItems[] = [];
 
       if (productId) {
         let product = cart.find((item) => item.id === productId);
@@ -61,7 +64,9 @@ export default function CheckoutPageContent() {
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${productId}`);
             if (response.ok) {
               const data = await response.json();
-              product = {
+              console.log("data : ",data);
+              
+               product = {
                 id: data.id,
                 name: data.name,
                 price: data.price,
@@ -143,7 +148,7 @@ export default function CheckoutPageContent() {
             productId: item.productId,
             size: item.size,
             quantity: item.quantity,
-            price: item.price,
+            price: item.discountPrice ?? item.price,
           })),
         }),
       });
@@ -176,7 +181,11 @@ export default function CheckoutPageContent() {
   };
 
 
-  const subTotal = selectedProducts.reduce((total, item) => total + item.price * item.quantity, 0);
+ const subTotal = selectedProducts.reduce(
+  (total, item) => total + (item.discountPrice ?? item.price) * item.quantity,
+  0
+);
+
   const total = subTotal + Number(selectedShipping);
 
   if (loading) return <Dots_v2 />;
@@ -207,7 +216,10 @@ export default function CheckoutPageContent() {
                       <p className="text-gray-600">Size: {product.size}</p>
                     )}
                     <p className="text-gray-600">Quantity: {product.quantity}</p>
-                    <p className="font-semibold text-lg">৳{(product.price * product.quantity).toFixed(2)}</p>
+                    <p className="font-semibold text-lg">
+  ৳{((product.discountPrice ?? product.price) * product.quantity).toFixed(2)}
+</p>
+
                   </div>
                 </div>
               ))}

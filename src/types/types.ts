@@ -19,7 +19,7 @@ export interface Product {
     productCode: string;
     description?: string;
     price: number;
-    discountPrice : number;
+    discountPrice ?: number;
     stock: number;
     category: string;
     images: string[];
@@ -33,17 +33,18 @@ export interface Product {
     productCode: string;
     images: string[];
     price: number;
-    discountPrice: number;
+    discountPrice?: number;
     category: string;
     sizes: ProductSize[];
   };
 
   //cart item props
 
-  export interface CartItem {
+  export interface CartItems {
     id: string;
     name: string;
     price: number;
+    discountPrice?: number;
     image: string;
     quantity: number;
     size?: string | null;
@@ -56,6 +57,7 @@ export interface Product {
     id: string;
     quantity: number;
     price: number;
+    discountPrice: number;
     product: {
       id?: string;
       name: string;
@@ -84,6 +86,7 @@ export interface Product {
 
       quantity: number;
       price: number;
+      discountPrice: number;
       product: {
         name: string;
         productCode: string;
