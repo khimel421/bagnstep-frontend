@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/select"
 
 import { bangladeshDistricts } from '@/data/district'
-import { CartItems } from "@/types/types";
+import { CartItem } from "@/types/types";
 
 
 
@@ -34,7 +34,7 @@ export default function CheckoutPageContent() {
   const selectedSize = searchParams.get("size");
   const quantity = Number(searchParams.get("quantity")) || 1;
 
-  const [selectedProducts, setSelectedProducts] = useState<CartItems[]>([]);
+  const [selectedProducts, setSelectedProducts] = useState<CartItem[]>([]);
   const [selectedShipping, setSelectedShipping] = useState("70");
   const [formData, setFormData] = useState({
     name: "",
@@ -47,61 +47,62 @@ export default function CheckoutPageContent() {
 
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function fetchProductIfNeeded() {
-      if (cart.length === 0 && !productId) {
-        setLoading(false);
-        return;
-      }
-
-      let products: CartItems[] = [];
-
-      if (productId) {
-        let product = cart.find((item) => item.id === productId);
-
-        if (!product) {
-          try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${productId}`);
-            if (response.ok) {
-              const data = await response.json();
-              console.log("data : ",data);
-              
-               product = {
-                id: data.id,
-                name: data.name,
-                price: data.price,
-                image: data.images[0],
-                quantity: quantity,
-                size: selectedSize || "Default",
-                category: data.category,
-              };
-            }
-          } catch (error) {
-            console.error("Error fetching product:", error);
-          }
-        }
-
-        if (product) {
-          products = [{
-            ...product,
-            productId: product.id,
-            size: product.category?.toLowerCase() === "shoes" ? selectedSize : "Default"
-          }];
-        }
-      } else {
-        products = cart.map(item => ({
-          ...item,
-          productId: item.id,
-          size: item.category?.toLowerCase() === "shoes" ? item.size : "Default"
-        }));
-      }
-
-      setSelectedProducts(products);
+useEffect(() => {
+  async function fetchProductIfNeeded() {
+    if (cart.length === 0 && !productId) {
       setLoading(false);
+      return;
     }
 
-    fetchProductIfNeeded();
-  }, [productId, cart, selectedSize, quantity]);
+    let products: CartItem[] = [];
+
+    if (productId) {
+      let product = cart.find((item) => item.id === productId);
+
+      if (!product) {
+        try {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${productId}`);
+          if (response.ok) {
+            const data = await response.json();
+            console.log("data : ", data);
+
+            product = {
+              id: data.id,
+              name: data.name,
+              price: data.discountPrice ?? data.price,
+              image: data.images[0],
+              quantity: quantity, // Make sure quantity is defined
+              size: selectedSize ?? "Default",
+              category: data.category,
+            }
+          }
+        } catch (error) {
+          console.error("Error fetching product:", error);
+        }
+      }
+
+      if (product) {
+        products = [{
+          ...product,
+          productId: product.id,
+          size: product.category?.toLowerCase() === "shoes" ? selectedSize : "Default"
+        }];
+      }
+    } else {
+      products = cart.map(item => ({
+        ...item,
+        productId: item.id,
+        size: item.category?.toLowerCase() === "shoes" ? item.size : "Default"
+      }));
+    }
+
+    setSelectedProducts(products);
+    setLoading(false);
+  }
+
+  fetchProductIfNeeded();
+}, [productId, cart, selectedSize, quantity]);
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -156,9 +157,9 @@ export default function CheckoutPageContent() {
       if (response.ok) {
         const order = await response.json(); // ✅ Get the order data from backend
 
-     
+
         console.log(order)
-        
+
 
         toast.success("Order Placed Successfully!", {
           description: "We will contact you soon for confirmation.",
@@ -181,14 +182,16 @@ export default function CheckoutPageContent() {
   };
 
 
- const subTotal = selectedProducts.reduce(
-  (total, item) => total + (item.discountPrice ?? item.price) * item.quantity,
-  0
-);
+  const subTotal = selectedProducts.reduce(
+    (total, item) => total + (item.discountPrice ?? item.price) * item.quantity,
+    0
+  );
 
   const total = subTotal + Number(selectedShipping);
 
   if (loading) return <Dots_v2 />;
+
+  console.log(selectedProducts[0].discountPrice)
 
   return (
     <div className="max-w-5xl mx-auto p-6">
@@ -217,8 +220,8 @@ export default function CheckoutPageContent() {
                     )}
                     <p className="text-gray-600">Quantity: {product.quantity}</p>
                     <p className="font-semibold text-lg">
-  ৳{((product.discountPrice ?? product.price) * product.quantity).toFixed(2)}
-</p>
+                      ৳{((product?.discountPrice ?? product.price) * product.quantity).toFixed(2)}
+                    </p>
 
                   </div>
                 </div>
