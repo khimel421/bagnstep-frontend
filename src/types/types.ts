@@ -40,7 +40,7 @@ export interface Product {
 
   //cart item props
 
-  export interface CartItem {
+  export interface CartItems {
     id: string;
     name: string;
     price: number;
@@ -57,7 +57,7 @@ export interface Product {
     id: string;
     quantity: number;
     price: number;
-    discountPrice?: number;
+    discountPrice: number;
     product: {
       id?: string;
       name: string;

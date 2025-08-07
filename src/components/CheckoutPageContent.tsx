@@ -9,7 +9,7 @@ import Image from "next/image";
 import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { CartItem } from "@/types/types";
+
 import { Dots_v2 } from "./Dots_v2";
 import {
   Select,
@@ -20,8 +20,10 @@ import {
 } from "@/components/ui/select"
 
 import { bangladeshDistricts } from '@/data/district'
-import { redirect } from 'next/navigation'
-import { CloudCog } from "lucide-react";
+import { CartItems } from "@/types/types";
+
+
+
 
 export default function CheckoutPageContent() {
   const searchParams = useSearchParams();
@@ -32,7 +34,7 @@ export default function CheckoutPageContent() {
   const selectedSize = searchParams.get("size");
   const quantity = Number(searchParams.get("quantity")) || 1;
 
-  const [selectedProducts, setSelectedProducts] = useState<CartItem[]>([]);
+  const [selectedProducts, setSelectedProducts] = useState<CartItems[]>([]);
   const [selectedShipping, setSelectedShipping] = useState("70");
   const [formData, setFormData] = useState({
     name: "",
@@ -52,7 +54,7 @@ export default function CheckoutPageContent() {
         return;
       }
 
-      let products: CartItem[] = [];
+      let products: CartItems[] = [];
 
       if (productId) {
         let product = cart.find((item) => item.id === productId);
@@ -64,11 +66,10 @@ export default function CheckoutPageContent() {
               const data = await response.json();
               console.log("data : ",data);
               
-              product = {
+               product = {
                 id: data.id,
                 name: data.name,
                 price: data.price,
-                discountPrice: data.discountPrice,
                 image: data.images[0],
                 quantity: quantity,
                 size: selectedSize || "Default",
