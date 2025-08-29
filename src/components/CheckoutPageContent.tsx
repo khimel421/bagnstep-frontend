@@ -9,7 +9,7 @@ import Image from "next/image";
 import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { CartItem } from "@/types/types";
+
 import { Dots_v2 } from "./Dots_v2";
 import {
   Select,
@@ -20,7 +20,10 @@ import {
 } from "@/components/ui/select"
 
 import { bangladeshDistricts } from '@/data/district'
-import { redirect } from 'next/navigation'
+import { CartItem } from "@/types/types";
+
+
+
 
 export default function CheckoutPageContent() {
   const searchParams = useSearchParams();
@@ -44,59 +47,62 @@ export default function CheckoutPageContent() {
 
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function fetchProductIfNeeded() {
-      if (cart.length === 0 && !productId) {
-        setLoading(false);
-        return;
-      }
-
-      let products: CartItem[] = [];
-
-      if (productId) {
-        let product = cart.find((item) => item.id === productId);
-
-        if (!product) {
-          try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${productId}`);
-            if (response.ok) {
-              const data = await response.json();
-              product = {
-                id: data.id,
-                name: data.name,
-                price: data.price,
-                image: data.images[0],
-                quantity: quantity,
-                size: selectedSize || "Default",
-                category: data.category,
-              };
-            }
-          } catch (error) {
-            console.error("Error fetching product:", error);
-          }
-        }
-
-        if (product) {
-          products = [{
-            ...product,
-            productId: product.id,
-            size: product.category?.toLowerCase() === "shoes" ? selectedSize : "Default"
-          }];
-        }
-      } else {
-        products = cart.map(item => ({
-          ...item,
-          productId: item.id,
-          size: item.category?.toLowerCase() === "shoes" ? item.size : "Default"
-        }));
-      }
-
-      setSelectedProducts(products);
+useEffect(() => {
+  async function fetchProductIfNeeded() {
+    if (cart.length === 0 && !productId) {
       setLoading(false);
+      return;
     }
 
-    fetchProductIfNeeded();
-  }, [productId, cart, selectedSize, quantity]);
+    let products: CartItem[] = [];
+
+    if (productId) {
+      let product = cart.find((item) => item.id === productId);
+
+      if (!product) {
+        try {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${productId}`);
+          if (response.ok) {
+            const data = await response.json();
+            console.log("data : ", data);
+
+            product = {
+              id: data.id,
+              name: data.name,
+              price: data.discountPrice ?? data.price,
+              image: data.images[0],
+              quantity: quantity, // Make sure quantity is defined
+              size: selectedSize ?? "Default",
+              category: data.category,
+            }
+          }
+        } catch (error) {
+          console.error("Error fetching product:", error);
+        }
+      }
+
+      if (product) {
+        products = [{
+          ...product,
+          productId: product.id,
+          size: product.category?.toLowerCase() === "shoes" ? selectedSize : "Default"
+        }];
+      }
+    } else {
+      products = cart.map(item => ({
+        ...item,
+        productId: item.id,
+        size: item.category?.toLowerCase() === "shoes" ? item.size : "Default"
+      }));
+    }
+
+    setSelectedProducts(products);
+    setLoading(false);
+  }
+
+  fetchProductIfNeeded();
+}, [productId, cart, selectedSize, quantity]);
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -143,7 +149,7 @@ export default function CheckoutPageContent() {
             productId: item.productId,
             size: item.size,
             quantity: item.quantity,
-            price: item.price,
+            price: item.discountPrice ?? item.price,
           })),
         }),
       });
@@ -176,10 +182,16 @@ export default function CheckoutPageContent() {
   };
 
 
-  const subTotal = selectedProducts.reduce((total, item) => total + item.price * item.quantity, 0);
+  const subTotal = selectedProducts.reduce(
+    (total, item) => total + (item.discountPrice ?? item.price) * item.quantity,
+    0
+  );
+
   const total = subTotal + Number(selectedShipping);
 
   if (loading) return <Dots_v2 />;
+
+  console.log(selectedProducts[0].discountPrice)
 
   return (
     <div className="max-w-5xl mx-auto p-6">
@@ -207,7 +219,10 @@ export default function CheckoutPageContent() {
                       <p className="text-gray-600">Size: {product.size}</p>
                     )}
                     <p className="text-gray-600">Quantity: {product.quantity}</p>
-                    <p className="font-semibold text-lg">৳{(product.price * product.quantity).toFixed(2)}</p>
+                    <p className="font-semibold text-lg">
+                      ৳{((product?.discountPrice ?? product.price) * product.quantity).toFixed(2)}
+                    </p>
+
                   </div>
                 </div>
               ))}

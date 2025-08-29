@@ -18,6 +18,7 @@ import SizeDialog from "@/components/SizeDialog";
 import EditProductDialog from "@/components/EditProductForm";
 
 import ArchiveProductDialog from "@/components/DeleteProductDialog";
+import DeleteProductDialog from "@/components/DeleteProductDialog";
 
 /**
  * Env
@@ -203,7 +204,11 @@ export default function ProductInventoryPage() {
                 <TableCell className="text-right">
 
                   <EditProductDialog product={item} onUpdated={fetchProducts} />
-                  <ArchiveProductDialog productId={item.id} productName={item.name}/>
+                  <DeleteProductDialog
+                    productId={item.id}
+                    productName={item.name}
+                    onDeleted={fetchProducts}
+                  />
                 </TableCell>
               </TableRow>
             ))}
