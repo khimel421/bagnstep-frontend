@@ -152,7 +152,7 @@ export default function CheckoutPageContent() {
         const order = await response.json(); // ✅ Get the order data from backend
 
      
-        console.log(order)
+ 
         
 
         toast.success("Order Placed Successfully!", {
@@ -162,8 +162,8 @@ export default function CheckoutPageContent() {
         clearCart();
 
         // ✅ Redirect to receipt page using order ID
-        console.log(order)
-        router.push(`/`);
+        console.log(order.order.id)
+        router.push(`/order-confirmation/${order.order.id}`);
       } else {
         throw new Error("Failed to place order");
       }
