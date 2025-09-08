@@ -88,21 +88,23 @@ export default function ProductCard({
           </Link>
 
           {/* Size picker (only for shoes & if stock) */}
-          {(category as string).toLowerCase() === 'shoes' && !isOutOfStock && (
-            <div className="no-scrollbar -mx-1 flex gap-2 overflow-x-auto sm:grid sm:grid-cols-4 sm:overflow-visible">
+          {/* Size picker (only for shoes & if stock) */}
+          {(category as string).toLowerCase() === "shoes" && !isOutOfStock && (
+            <div className="   text-center grid grid-cols-3 gap-2">
               {availableSizes.map((sizeObj) => (
-                <Button
+                <div
                   key={sizeObj.size}
-                  variant={selectedSize === sizeObj.size ? 'default' : 'outline'}
-                  size="sm"
-                  className="min-w-[50px] flex-shrink-0 rounded-md px-3 py-1 text-xs"
+                  // variant={selectedSize === sizeObj.size ? "default" : "outline"}
+                  // size="sm"
+                  className={` border lato-bold py-2 cursor-pointer rounded-md`}
                   onClick={() => setSelectedSize(sizeObj.size)}
                 >
                   {sizeObj.size}
-                </Button>
+                </div>
               ))}
             </div>
           )}
+
 
           {/* Prices */}
           <div className="mt-auto flex items-center justify-center gap-2">
