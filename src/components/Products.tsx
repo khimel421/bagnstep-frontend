@@ -42,7 +42,7 @@ export default function Products() {
       <div className="max-w-6xl mx-auto">
         <h2 className="text-3xl font-bold mb-4 italic">Shoes</h2>
         {shoes.length > 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
             {shoes.map(({ id, name, price, discountPrice , images, sizes, category, productCode }) => (
               <ProductCard
                 key={id}
@@ -67,10 +67,10 @@ export default function Products() {
       </div>
 
       {/* Bags Section */}
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-6xl mx-auto ">
         <h2 className="text-3xl font-bold mb-4 italic">Bags</h2>
         {bags.length > 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ">
             {bags.map(({ id, name, price, discountPrice, images, sizes, category, productCode }) => (
               <ProductCard
                 key={id}
