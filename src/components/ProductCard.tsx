@@ -52,9 +52,9 @@ export default function ProductCard({
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
       className="h-full"
     >
-      <Card className="group relative flex h-full flex-col overflow-hidden rounded-2xl border bg-white">
+      <Card className="group relative flex h-full flex-col overflow-hidden  bg-white rounded-none p-1 ">
         {/* -------------- Image -------------- */}
-        <Link href={`/products/${id}`} className="relative aspect-[4/3] w-full overflow-hidden">
+        <Link href={`/products/${id}`} className="relative aspect-[8/9] w-full overflow-hidden">
           <Image
             src={coverImage}
             alt={name}
@@ -67,7 +67,7 @@ export default function ProductCard({
           />
 
           {discountPercent > 0 && (
-            <Badge className="absolute left-3 top-3 bg-red-500 text-white shadow-md">
+            <Badge className="absolute left-3 top-3 bg-orange-500 text-white shadow-md">
               -{discountPercent}%
             </Badge>
           )}
@@ -79,24 +79,24 @@ export default function ProductCard({
         </Link>
 
         {/* -------------- Content -------------- */}
-        <CardContent className="flex flex-grow flex-col gap-3 p-4">
+        <CardContent className="flex flex-grow flex-col gap-3 ">
           {/* Product title */}
           <Link href={`/products/${id}`}>   {/* re‑use same link for SEO */}
-            <h3 className="line-clamp-2 text-center text-sm font-semibold text-gray-800 sm:text-base">
+            {/* <h3 className="line-clamp-2 text-center text-sm font-semibold text-gray-800 sm:text-base">
               Code: {productCode}
-            </h3>
+            </h3> */}
           </Link>
 
           {/* Size picker (only for shoes & if stock) */}
           {/* Size picker (only for shoes & if stock) */}
           {(category as string).toLowerCase() === "shoes" && !isOutOfStock && (
-            <div className="   text-center grid grid-cols-3 gap-2">
+            <div className="   text-center grid grid-cols-6  gap-1 ">
               {availableSizes.map((sizeObj) => (
                 <div
                   key={sizeObj.size}
                   // variant={selectedSize === sizeObj.size ? "default" : "outline"}
                   // size="sm"
-                  className={` border lato-bold py-2 cursor-pointer rounded-md`}
+                  className={` border lato-bold text-sm  cursor-pointer rounded-md `}
                   onClick={() => setSelectedSize(sizeObj.size)}
                 >
                   {sizeObj.size}
@@ -110,11 +110,11 @@ export default function ProductCard({
           <div className="mt-auto flex items-center justify-center gap-2">
             {discountPrice ? (
               <>
-                <span className="text-md font-medium text-gray-400 line-through">৳{price}</span>
-                <span className="text-xl font-bold text-green-600">৳{discountPrice}</span>
+                <span className="text-sm font-medium text-gray-400 line-through">৳{price}</span>
+                <span className="text-sm font-bold text-orange-500">৳{discountPrice}</span>
               </>
             ) : (
-              <span className="text-lg font-semibold text-orange-500">৳{price}</span>
+              <span className="text-sm font-semibold text-orange-500">৳{price}</span>
             )}
           </div>
         </CardContent>
