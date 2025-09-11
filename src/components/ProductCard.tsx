@@ -82,9 +82,7 @@ export default function ProductCard({
         <CardContent className="flex flex-grow flex-col gap-3 ">
           {/* Product title */}
           <Link href={`/products/${id}`}>   {/* re‑use same link for SEO */}
-            {/* <h3 className="line-clamp-2 text-center text-sm font-semibold text-gray-800 sm:text-base">
-              Code: {productCode}
-            </h3> */}
+
           </Link>
 
           {/* Size picker (only for shoes & if stock) */}
@@ -104,6 +102,13 @@ export default function ProductCard({
               ))}
             </div>
           )}
+          
+          {(category as string).toLowerCase() === "shoes" && (
+            <h3 className="line-clamp-2 text-center text-sm  text-gray-800 sm:text-base">
+              Comfort Fit Running Shoes - Code: {productCode}
+            </h3>
+          )}
+
 
 
           {/* Prices */}
