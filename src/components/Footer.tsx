@@ -34,7 +34,7 @@ export default function Footer() {
 
           <div>
             <h3 className="text-lg font-bold mb-4 flex items-center gap-2 "> <Store />  Shop  </h3>
-            <p className="ml-2 cal-sans">House No:12/12, Road No:02, Nobinogor Housing Mohammadpur Dhaka 1207, Dhaka, Bangladesh</p>
+            <p className="ml-2 cal-sans">👉অফিস ঠিকানা। রোড#৪ হাউজ #৬৩ নবীনগর হাউজিং,ঢাকা উদ্যান, মোহাম্মাদপুর ঢাকা। চন্দ্রিমা কাচা বাজারের  ঠিক বিপরী</p>
           </div>
 
         </div>
