@@ -81,13 +81,11 @@ export default function ProductCard({
         {/* -------------- Content -------------- */}
         <CardContent className="flex flex-grow flex-col gap-3 ">
           {/* Product title */}
-          <Link href={`/products/${id}`}>   {/* re‑use same link for SEO */}
 
-          </Link>
 
           {/* Size picker (only for shoes & if stock) */}
           {/* Size picker (only for shoes & if stock) */}
-          {(category as string).toLowerCase() === "shoes" && !isOutOfStock && (
+          {/* {(category as string).toLowerCase() === "shoes" && !isOutOfStock && (
             <div className="   text-center grid grid-cols-6  gap-1 ">
               {availableSizes.map((sizeObj) => (
                 <div
@@ -101,13 +99,9 @@ export default function ProductCard({
                 </div>
               ))}
             </div>
-          )}
-          
-          {(category as string).toLowerCase() === "shoes" && (
-            <h3 className="line-clamp-2 text-center text-sm  text-gray-800 sm:text-base">
-              Comfort Fit Running Shoes - Code: {productCode}
-            </h3>
-          )}
+          )} */}
+
+
 
 
 
@@ -122,6 +116,16 @@ export default function ProductCard({
               <span className="text-sm font-semibold text-orange-500">৳{price}</span>
             )}
           </div>
+
+          {(category as string).toLowerCase() === "shoes" && (
+            <h3 className="line-clamp-2 text-center text-sm  text-gray-800 sm:text-base">
+              Comfort Fit Running Shoes - Code: {productCode}
+            </h3>
+          )}
+          <Link className="w-full" href={`/products/${id}`}>   {/* re‑use same link for SEO */}
+            <Button className="w-full" variant={'custom'}>Order now</Button>
+          </Link>
+
         </CardContent>
       </Card>
     </motion.div>
