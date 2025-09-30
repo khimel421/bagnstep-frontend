@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { X, SquarePen } from "lucide-react";
 import type { Product } from "@/types/types";
 import { Textarea } from "./ui/textarea";
+import { toast } from "sonner";
 
 /**
  * Props for EditProductDialog
@@ -37,6 +38,7 @@ export default function EditProductDialog({ product, onUpdated }: EditProductDia
    * ───────────────────────────────────────────*/
   const [name, setName] = useState(product.name);
   const [price, setPrice] = useState(String(product.price));
+  const [discountPrice, setDiscountPrice] = useState(String(product.discountPrice));
   const [description, setDescription] = useState(product.description)
   const [sizes, setSizes] = useState<{ size: string; stock: string }[]>(
     product.sizes.map((s) => ({ size: s.size, stock: String(s.stock) }))
@@ -46,6 +48,8 @@ export default function EditProductDialog({ product, onUpdated }: EditProductDia
   const [newImages, setNewImages] = useState<File[]>([]);
   const [uploading, setUploading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+
+
 
   /* ────────────────────────────────────────────
    * Derived helpers
@@ -132,6 +136,7 @@ export default function EditProductDialog({ product, onUpdated }: EditProductDia
     const payload = {
       name,
       price: Number.parseFloat(price),
+      discountPrice : Number.parseFloat(discountPrice),
       description,
       images,
       removedImages,
@@ -140,6 +145,7 @@ export default function EditProductDialog({ product, onUpdated }: EditProductDia
 
     try {
       await axios.put(`${process.env.NEXT_PUBLIC_API_URL}/products/${product.id}`, payload);
+      toast.success("Product updated successfully!");
       onUpdated?.();
     } catch (err) {
       console.error("Product update failed", err);
@@ -184,6 +190,17 @@ export default function EditProductDialog({ product, onUpdated }: EditProductDia
               value={price}
               onChange={(e) => setPrice(e.target.value)}
               required
+            />
+          </div>
+
+          {/*Discount Price */}
+          <div className="space-y-2">
+            <label className="font-medium">Discount Price</label>
+            <Input
+              type="number"
+              step="0.01"
+              value={discountPrice}
+              onChange={(e) => setDiscountPrice(e.target.value)}
             />
           </div>
 
