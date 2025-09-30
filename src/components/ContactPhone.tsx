@@ -6,10 +6,11 @@ import { FaFacebook, FaWhatsapp } from "react-icons/fa";
 
 export default function ContactPhone() {
   const [copied, setCopied] = useState(false);
-  const phoneNumber = "+8801836282169";
+  const phoneNumber = "01345834990";
+  const phoneNumberTwo = "01345834989";
 
   
-  const phone = "8801836282169";
+  const phone = "01345834990";
   const message = encodeURIComponent("Hi, I'm interested in your shoes!");
   const whatsappUrl = `https://wa.me/${phone}?text=${message}`;
 
@@ -31,8 +32,15 @@ export default function ContactPhone() {
           href={`tel:${phoneNumber}`}
           className=" hover:underline flex items-center gap-1"
         >
-          <PhoneCall size={16} />
+  
           {phoneNumber}
+        </a>
+        <a
+          href={`tel:${phoneNumber}`}
+          className=" hover:underline flex items-center gap-1"
+        >
+ 
+          {phoneNumberTwo}
         </a>
 
         <div className="flex gap-2 mt-2">
