@@ -190,7 +190,7 @@ export default function ProductDetailPage() {
                   className="w-full mt-6 flex items-center gap-2"
                   onClick={() => {
                     if (isShoes && !selectedSize) {
-                      toast.warning("Please select a size before proceeding.");
+                      toast.warning("এগিয়ে যাওয়ার আগে একটি সাইজ নির্বাচন করুন।");
                       return;
                     }
                     router.push(
