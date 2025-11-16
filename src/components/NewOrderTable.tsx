@@ -17,7 +17,7 @@ interface SimpleTableProps {
   // onDelete?: (id: string) => void; // optional if you want to pass delete logic
 }
 
-const SimpleTable = ({ orders}: SimpleTableProps) => {
+const SimpleTable = () => {
   const router = useRouter();
 
   // const handleDelete = (id: string) => {
