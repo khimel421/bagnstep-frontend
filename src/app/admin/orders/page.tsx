@@ -6,7 +6,7 @@ import { useOrders } from "@/hooks/useOrders";
 import { Order } from "@/types/types";
 
 const OrdersPage: React.FC = () => {
-  const { orders } = useOrders();
+const { orders, page, setPage, totalPages, loading } = useOrders();
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredOrders = orders.filter((order: Order) => {
@@ -31,7 +31,7 @@ const OrdersPage: React.FC = () => {
       />
 
       <div className="hidden md:block">
-        <SimpleTable orders={filteredOrders}  />
+        <SimpleTable  />
       </div>
 
       <OrderCardList orders={filteredOrders} />

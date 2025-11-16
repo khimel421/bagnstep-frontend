@@ -8,13 +8,44 @@ export const useOrders = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState<number>(1);
+  const [pageSize, setPageSize] = useState<number>(10);
+  const [totalPages, setTotalPages] = useState<number>(1);
+
 
   // Fetch all orders
-  const fetchOrders = async () => {
+  const fetchOrders = async (params?: {
+    page?: number;
+    pageSize?: number;
+    status?: string;
+    search?: string;
+    startDate?: string;
+    endDate?: string;
+  }) => {
     try {
       setLoading(true);
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/orders`);
+
+
+
+
+      const query = new URLSearchParams({
+
+        page: String(params?.page || 1),
+        pageSize: String(params?.pageSize || 10),
+        ...(params?.status ? { status: params.status } : {}),
+        ...(params?.search ? { search: params.search } : {}),
+        ...(params?.startDate ? { startDate: params.startDate } : {}),
+        ...(params?.endDate ? { endDate: params.endDate } : {}),
+      });
+
+      console.log(query)
+
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/orders?${query.toString()}`
+      );
+
       setOrders(response.data.orders);
+      setTotalPages(response.data.totalPages || 1);
     } catch (err: any) {
       setError(err.message || "Failed to fetch orders.");
     } finally {
@@ -24,15 +55,11 @@ export const useOrders = () => {
 
 
   // Auto refetch every 30 minutes
+  // Fetch when page changes immediately
   useEffect(() => {
-    fetchOrders(); // Initial fetch on mount
+    fetchOrders({ page, pageSize });
+  }, [page, pageSize]);
 
-    const interval = setInterval(() => {
-      fetchOrders();
-    }, 30 * 60 * 1000); // 30 minutes = 1800000 ms
-
-    return () => clearInterval(interval); // Clean up interval on unmount
-  }, []);
 
   // Create a new order
   const createOrder = async (newOrder: Partial<Order>) => {
@@ -101,11 +128,17 @@ export const useOrders = () => {
     orders,
     loading,
     error,
+    page,
+    setPage,
+    pageSize,
+    setPageSize,
+    totalPages,
     fetchOrders,
     createOrder,
     updateOrder,
     getOrderById,
     deleteOrder,
-    setOrders, // exposed if you want to manually update from outside
+    setOrders,
   };
+
 };

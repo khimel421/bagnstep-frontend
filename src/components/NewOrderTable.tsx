@@ -1,6 +1,6 @@
 "use client";
 
-import { Order } from "@/types/types";
+import { useOrders } from "@/hooks/useOrders";
 import { useRouter } from "next/navigation";
 import {
   Table,
@@ -11,21 +11,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 
-interface SimpleTableProps {
-  orders: Order[];
-  // onDelete?: (id: string) => void; // optional if you want to pass delete logic
-}
-
-const SimpleTable = ({ orders}: SimpleTableProps) => {
+const SimpleTable = () => {
   const router = useRouter();
+  const { orders, loading, page, setPage, totalPages } = useOrders();
 
-  // const handleDelete = (id: string) => {
-  //   const confirmDelete = window.confirm("Are you sure you want to delete this order?");
-  //   if (confirmDelete && onDelete) {
-  //     onDelete(id);
-  //   }
-  // };
+  console.log(orders)
+  console.log(page)
 
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
@@ -39,65 +32,90 @@ const SimpleTable = ({ orders}: SimpleTableProps) => {
   };
 
   return (
-    <div className="rounded-md border overflow-x-auto hidden md:block">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Order ID</TableHead>
-            <TableHead>Customer</TableHead>
-            <TableHead>Phone</TableHead>
-            <TableHead>Total</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Created</TableHead>
-            {/* <TableHead>Actions</TableHead> */}
-            <TableHead>View</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {orders.length > 0 ? (
-            orders.map((order) => (
-              <TableRow key={order.id}>
-                <TableCell>{order.id.slice(0, 8)}...</TableCell>
-                <TableCell>{order.customer?.name || "N/A"}</TableCell>
-                <TableCell>{order.customer?.phone || "N/A"}</TableCell>
-                <TableCell>
-                  {Number(order.totalAmount).toLocaleString("en-BD", {
-                    style: "currency",
-                    currency: "BDT",
-                    minimumFractionDigits: 0,
-                  })}
-                </TableCell>
-                <TableCell className="capitalize">{order.status}</TableCell>
-                <TableCell>{formatDate(order.createdAt)}</TableCell>
-                {/* <TableCell>
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={() => handleDelete(order.id)}
-                  >
-                    Delete
-                  </Button>
-                </TableCell> */}
-                <TableCell>
-                  <Button
-                    variant="default"
-                    size="sm"
-                    onClick={() => router.push(`./orders/${order.id}`)}
-                  >
-                    View
-                  </Button>
+    <div className="space-y-4">
+      <div className="rounded-md border overflow-x-auto hidden md:block">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Order ID</TableHead>
+              <TableHead>Customer</TableHead>
+              <TableHead>Phone</TableHead>
+              <TableHead>Total</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Created</TableHead>
+              <TableHead>View</TableHead>
+            </TableRow>
+          </TableHeader>
+
+          <TableBody>
+            {loading ? (
+              <TableRow>
+                <TableCell colSpan={7} className="text-center py-6">
+                  <Loader2 className="animate-spin inline-block mr-2" />
+                  Loading orders...
                 </TableCell>
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={8} className="text-center py-4">
-                No orders found.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+            ) : orders.length > 0 ? (
+              orders.map((order) => (
+                <TableRow key={order.id}>
+                  <TableCell>{order.id.slice(0, 8)}...</TableCell>
+                  <TableCell>{order.customer?.name || "N/A"}</TableCell>
+                  <TableCell>{order.customer?.phone || "N/A"}</TableCell>
+                  <TableCell>
+                    {Number(order.totalAmount).toLocaleString("en-BD", {
+                      style: "currency",
+                      currency: "BDT",
+                      minimumFractionDigits: 0,
+                    })}
+                  </TableCell>
+                  <TableCell className="capitalize">{order.status}</TableCell>
+                  <TableCell>{formatDate(order.createdAt)}</TableCell>
+                  <TableCell>
+                    <Button
+                      variant="default"
+                      size="sm"
+                      onClick={() => router.push(`./orders/${order.id}`)}
+                    >
+                      View
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={7} className="text-center py-4">
+                  No orders found.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+
+      {/* Pagination Controls */}
+      <div className="flex justify-center items-center gap-4">
+        <Button
+          variant="outline"
+          size="sm"
+          disabled={page <= 1 || loading}
+          onClick={() => setPage((p) => p - 1)}
+        >
+          <ChevronLeft className="h-4 w-4 mr-1" /> Prev
+        </Button>
+
+        <span className="text-sm">
+          Page <strong>{page}</strong> of {totalPages}
+        </span>
+
+        <Button
+          variant="outline"
+          size="sm"
+          disabled={page >= totalPages || loading}
+          onClick={() => setPage((p) => p + 1)}
+        >
+          Next <ChevronRight className="h-4 w-4 ml-1" />
+        </Button>
+      </div>
     </div>
   );
 };
