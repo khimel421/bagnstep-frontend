@@ -31,7 +31,7 @@ const OrdersPage: React.FC = () => {
       />
 
       <div className="hidden md:block">
-        <SimpleTable orders={filteredOrders}  />
+        <SimpleTable   />
       </div>
 
       <OrderCardList orders={filteredOrders} />
