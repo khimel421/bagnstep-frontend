@@ -31,7 +31,7 @@ const { orders, page, setPage, totalPages, loading } = useOrders();
       />
 
       <div className="hidden md:block">
-        <SimpleTable  />
+        <SimpleTable   />
       </div>
 
       <OrderCardList orders={filteredOrders} />
