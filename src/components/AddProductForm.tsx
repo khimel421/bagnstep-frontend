@@ -57,7 +57,7 @@ export default function AddProductForm() {
 
       try {
         const response = await axios.post(
-          "https://api.cloudinary.com/v1_1/da4l4bhhn/image/upload",
+          "https://api.cloudinary.com/v1_1/dwcah9uyr/image/upload",
           formData
         );
         uploadedImageUrls.push(response.data.secure_url);

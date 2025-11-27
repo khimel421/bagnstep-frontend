@@ -169,7 +169,7 @@ useEffect(() => {
 
         // ✅ Redirect to receipt page using order ID
         console.log(order)
-        router.push(`/`);
+        router.push(`/order-confirmation`);
       } else {
         throw new Error("Failed to place order");
       }
