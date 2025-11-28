@@ -52,12 +52,12 @@ export default function AddProductForm() {
     for (const image of selectedImages) {
       const formData = new FormData();
       formData.append("file", image);
-      formData.append("upload_preset", "productImages");
+      formData.append("upload_preset", "upload_preset");
       formData.append("folder", "uploads");
 
       try {
         const response = await axios.post(
-          "https://api.cloudinary.com/v1_1/da4l4bhhn/image/upload",
+          "https://api.cloudinary.com/v1_1/dwcah9uyr/image/upload",
           formData
         );
         uploadedImageUrls.push(response.data.secure_url);
