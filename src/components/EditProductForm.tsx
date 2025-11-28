@@ -104,7 +104,7 @@ export default function EditProductDialog({ product, onUpdated }: EditProductDia
     for (const image of newImages) {
       const formData = new FormData();
       formData.append("file", image);
-      formData.append("upload_preset", "productImages");
+      formData.append("upload_preset", "upload_preset");
       formData.append("folder", "uploads");
       try {
         const res = await axios.post(
