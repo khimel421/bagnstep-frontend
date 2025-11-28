@@ -29,9 +29,9 @@ const { orders } = useOrders();
         onChange={(e) => setSearchQuery(e.target.value)}
         className="mb-6 px-3 py-2 border rounded-md w-full"
       />
-
+      {/* bugsssssssssssssss */}
       <div className="hidden md:block">
-        <SimpleTable   />
+        <SimpleTable/>
       </div>
 
       <OrderCardList orders={filteredOrders} />
