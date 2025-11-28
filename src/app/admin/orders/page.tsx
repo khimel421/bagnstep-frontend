@@ -6,7 +6,7 @@ import { useOrders } from "@/hooks/useOrders";
 import { Order } from "@/types/types";
 
 const OrdersPage: React.FC = () => {
-const { orders, page, setPage, totalPages, loading } = useOrders();
+const { orders } = useOrders();
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredOrders = orders.filter((order: Order) => {

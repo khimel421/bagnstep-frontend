@@ -17,8 +17,7 @@ const SimpleTable = () => {
   const router = useRouter();
   const { orders, loading, page, setPage, totalPages } = useOrders();
 
-  console.log(orders)
-  console.log(page)
+
 
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
