@@ -108,7 +108,7 @@ export default function EditProductDialog({ product, onUpdated }: EditProductDia
       formData.append("folder", "uploads");
       try {
         const res = await axios.post(
-          "https://api.cloudinary.com/v1_1/da4l4bhhn/image/upload",
+          "https://api.cloudinary.com/v1_1/dwcah9uyr/image/upload",
           formData
         );
         uploaded.push(res.data.secure_url);
