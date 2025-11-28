@@ -1,6 +1,6 @@
 "use client";
 
-import { Order } from "@/types/types";
+import { useOrders } from "@/hooks/useOrders";
 import { useRouter } from "next/navigation";
 import {
   Table,
@@ -12,20 +12,9 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 
-interface SimpleTableProps {
-  orders: Order[];
-  // onDelete?: (id: string) => void; // optional if you want to pass delete logic
-}
-
-const SimpleTable = ({ orders}: SimpleTableProps) => {
+const SimpleTable = () => {
   const router = useRouter();
-
-  // const handleDelete = (id: string) => {
-  //   const confirmDelete = window.confirm("Are you sure you want to delete this order?");
-  //   if (confirmDelete && onDelete) {
-  //     onDelete(id);
-  //   }
-  // };
+  const { orders } = useOrders(); // pull orders from hook
 
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
@@ -49,10 +38,10 @@ const SimpleTable = ({ orders}: SimpleTableProps) => {
             <TableHead>Total</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Created</TableHead>
-            {/* <TableHead>Actions</TableHead> */}
             <TableHead>View</TableHead>
           </TableRow>
         </TableHeader>
+
         <TableBody>
           {orders.length > 0 ? (
             orders.map((order) => (
@@ -60,6 +49,7 @@ const SimpleTable = ({ orders}: SimpleTableProps) => {
                 <TableCell>{order.id.slice(0, 8)}...</TableCell>
                 <TableCell>{order.customer?.name || "N/A"}</TableCell>
                 <TableCell>{order.customer?.phone || "N/A"}</TableCell>
+
                 <TableCell>
                   {Number(order.totalAmount).toLocaleString("en-BD", {
                     style: "currency",
@@ -67,22 +57,15 @@ const SimpleTable = ({ orders}: SimpleTableProps) => {
                     minimumFractionDigits: 0,
                   })}
                 </TableCell>
+
                 <TableCell className="capitalize">{order.status}</TableCell>
                 <TableCell>{formatDate(order.createdAt)}</TableCell>
-                {/* <TableCell>
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={() => handleDelete(order.id)}
-                  >
-                    Delete
-                  </Button>
-                </TableCell> */}
+
                 <TableCell>
                   <Button
                     variant="default"
                     size="sm"
-                    onClick={() => router.push(`./orders/${order.id}`)}
+                    onClick={() => router.push(`/admin/orders/${order.id}`)}
                   >
                     View
                   </Button>
@@ -91,7 +74,7 @@ const SimpleTable = ({ orders}: SimpleTableProps) => {
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={8} className="text-center py-4">
+              <TableCell colSpan={7} className="text-center py-4">
                 No orders found.
               </TableCell>
             </TableRow>
