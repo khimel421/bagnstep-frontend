@@ -35,9 +35,9 @@ export default function CartPage() {
   // Calculate total price
   const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
-  if(isLoading){
-    return <AnimatedLoader onFinish={() => setShowLoader(false)} />
-  }
+  // if(isLoading){
+  //   return <AnimatedLoader onFinish={() => setShowLoader(false)} />
+  // }
 
   return (
     <>

@@ -59,12 +59,13 @@ export default function ProductCard({
             src={coverImage}
             alt={name}
             fill
-            priority
-            sizes="(min-width: 640px) 300px, 50vw"
+            priority={index === 0} // or index < 2
+            sizes="(max-width: 640px) 50vw, 300px"
             className="object-cover transition-transform duration-300 group-hover:scale-105"
             placeholder="blur"
             blurDataURL="/249.jpg"
           />
+
 
           {discountPercent > 0 && (
             <Badge className="absolute left-3 top-3 bg-orange-500 text-white shadow-md">
@@ -80,32 +81,6 @@ export default function ProductCard({
 
         {/* -------------- Content -------------- */}
         <CardContent className="flex flex-grow flex-col gap-3 ">
-          {/* Product title */}
-
-
-          {/* Size picker (only for shoes & if stock) */}
-          {/* Size picker (only for shoes & if stock) */}
-          {/* {(category as string).toLowerCase() === "shoes" && !isOutOfStock && (
-            <div className="   text-center grid grid-cols-6  gap-1 ">
-              {availableSizes.map((sizeObj) => (
-                <div
-                  key={sizeObj.size}
-                  // variant={selectedSize === sizeObj.size ? "default" : "outline"}
-                  // size="sm"
-                  className={` border lato-bold text-sm  cursor-pointer rounded-md `}
-                  onClick={() => setSelectedSize(sizeObj.size)}
-                >
-                  {sizeObj.size}
-                </div>
-              ))}
-            </div>
-          )} */}
-
-
-
-
-
-          {/* Prices */}
           <div className="mt-auto flex items-center justify-center gap-2">
             {discountPrice ? (
               <>
