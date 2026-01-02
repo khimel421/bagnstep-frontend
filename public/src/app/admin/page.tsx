@@ -10,9 +10,6 @@ import axios, { all } from "axios";
 import { Clipboard, DollarSign, ShoppingBag, TriangleAlert } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import ProductTable from "@/components/admin-components/ProductTable";
-import ProductModal from "@/components/admin-components/ProductModal";
-import EditProductForm from "@/components/EditProductForm";
 import { toast } from "sonner";
 
 
