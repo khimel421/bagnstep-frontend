@@ -59,7 +59,7 @@ export default function ProductCard({
             src={coverImage}
             alt={name}
             fill
-            priority={index === 0} // or index < 2
+            // priority={index === 0} // or index < 2
             sizes="(max-width: 640px) 50vw, 300px"
             className="object-cover transition-transform duration-300 group-hover:scale-105"
             placeholder="blur"
